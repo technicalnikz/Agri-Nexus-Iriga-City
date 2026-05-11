@@ -1833,8 +1833,8 @@
               </div>
               <div class="mp-form-group"><label>Middle Name/Initial *</label><input type="text" id="mp-middlename"
                   placeholder="Enter middle name" /></div>
-              <div class="mp-form-group"><label>Age *</label><input type="number" id="farmer-age" placeholder="Age"
-                  readonly /></div>
+              <div class="mp-form-group"><label>Extension Name</label><input type="text" id="mp-extname"
+                  placeholder="e.g. Jr., Sr." /></div>
             </div>
             <div class="grid-2" style="margin-bottom:16px">
               <div class="mp-form-group"><label>RSBSA No. (if existing)</label><input type="text"
@@ -1843,7 +1843,7 @@
                   maxlength="11" minlength="11"
                   oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);" /></div>
             </div>
-            <div class="grid-4" style="margin-bottom:20px">
+            <div class="grid-3" style="margin-bottom:16px">
               <div class="mp-form-group">
                 <label>Sex *</label>
                 <div class="custom-select-wrapper">
@@ -1893,8 +1893,12 @@
                   <input type="hidden" id="education-value" name="education" />
                 </div>
               </div>
+            </div>
+            <div class="grid-2" style="margin-bottom:20px">
               <div class="mp-form-group"><label>Date of Birth *</label><input type="date" id="farmer-dob"
                   onchange="computeAge()" /></div>
+              <div class="mp-form-group"><label>Age *</label><input type="number" id="farmer-age" placeholder="Age"
+                  readonly /></div>
             </div>
             <div class="inner-card light">
               <div class="inner-card-title">Status Indicators (Check all that apply)</div>
@@ -2095,8 +2099,12 @@
               <div class="form-grid" style="margin-top:14px">
                 <div class="form-group"><label class="form-label">First Name</label><input class="form-input"
                     type="text" id="rsbsa-fname" /></div>
+                <div class="form-group"><label class="form-label">Middle Name</label><input class="form-input" type="text"
+                    id="rsbsa-mname" /></div>
                 <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text"
                     id="rsbsa-lname" /></div>
+                <div class="form-group"><label class="form-label">Extension Name</label><input class="form-input" type="text"
+                    id="rsbsa-extname" /></div>
                 <div class="form-group"><label class="form-label">Date of Birth</label><input class="form-input"
                     type="date" id="rsbsa-dob" /></div>
                 <div class="form-group"><label class="form-label">Sex</label><select class="form-select" id="rsbsa-sex">
@@ -2594,7 +2602,7 @@
             prefillMemberProfile(latestApp);
 
             // Update Profile
-            const fullName = [latestApp.firstName, latestApp.middleName, latestApp.lastName].filter(Boolean).join(' ');
+            const fullName = [latestApp.firstName, latestApp.middleName, latestApp.lastName, latestApp.extensionName].filter(Boolean).join(' ');
             if (document.getElementById('profile-name')) document.getElementById('profile-name').textContent = fullName;
 
             const fullAddress = [latestApp.street, latestApp.barangay, latestApp.municipality, latestApp.province].filter(Boolean).join(', ');
@@ -3250,6 +3258,7 @@
       if (document.getElementById('mp-lastname')) document.getElementById('mp-lastname').value = app.lastName || '';
       if (document.getElementById('mp-firstname')) document.getElementById('mp-firstname').value = app.firstName || '';
       if (document.getElementById('mp-middlename')) document.getElementById('mp-middlename').value = app.middleName || '';
+      if (document.getElementById('mp-extname')) document.getElementById('mp-extname').value = app.extensionName || '';
       if (document.getElementById('farmer-age')) document.getElementById('farmer-age').value = app.age || '';
       if (document.getElementById('farmer-dob')) document.getElementById('farmer-dob').value = app.dob || '';
 
@@ -3408,7 +3417,9 @@
       document.getElementById('rsbsa-app-id').value = app.id;
 
       if (document.getElementById('rsbsa-fname')) document.getElementById('rsbsa-fname').value = app.firstName || '';
+      if (document.getElementById('rsbsa-mname')) document.getElementById('rsbsa-mname').value = app.middleName || '';
       if (document.getElementById('rsbsa-lname')) document.getElementById('rsbsa-lname').value = app.lastName || '';
+      if (document.getElementById('rsbsa-extname')) document.getElementById('rsbsa-extname').value = app.extensionName || '';
       if (document.getElementById('rsbsa-dob')) document.getElementById('rsbsa-dob').value = app.dob || '';
       if (document.getElementById('rsbsa-sex')) document.getElementById('rsbsa-sex').value = app.sex || '';
       if (document.getElementById('rsbsa-address')) document.getElementById('rsbsa-address').value = app.barangay || '';
@@ -3452,6 +3463,7 @@
       const lastName = document.querySelector('input[placeholder="Enter last name"]')?.value.trim() || '';
       const firstName = document.querySelector('input[placeholder="Enter first name"]')?.value.trim() || '';
       const middleName = document.querySelector('input[placeholder="Enter middle name"]')?.value.trim() || '';
+      const extensionName = document.getElementById('mp-extname')?.value.trim() || '';
       const barangay = getVal('barangay-value');
       const landTenure = getVal('tenure-value');
       const membership = getVal('membership-value');
@@ -3579,7 +3591,7 @@
       // Build record — always reset to Pending for admin re-review
       const record = {
         applicationType,
-        cluster, lastName, firstName, middleName, dob, sex, civilStatus, education, contactNumber,
+        cluster, lastName, firstName, middleName, extensionName, dob, sex, civilStatus, education, contactNumber,
         rsbsaNo, province, municipality, barangay, street, statusIndicators,
         landTenure, membership, cropType, hectares: totalHectares,
         riceIrrigated, riceRainfed, riceUpland, yieldDry, yieldWet, yieldKg, otherCrops,
@@ -3642,7 +3654,9 @@
       errEl.style.display = 'none';
 
       const fname = document.getElementById('rsbsa-fname').value.trim();
+      const mname = document.getElementById('rsbsa-mname').value.trim();
       const lname = document.getElementById('rsbsa-lname').value.trim();
+      const extname = document.getElementById('rsbsa-extname').value.trim();
       const dob = document.getElementById('rsbsa-dob').value;
       const sex = document.getElementById('rsbsa-sex').value;
       const address = document.getElementById('rsbsa-address').value.trim();
@@ -3700,7 +3714,9 @@
 
       const record = {
         firstName: fname,
+        middleName: mname,
         lastName: lname,
+        extensionName: extname,
         dob: dob,
         sex: sex,
         barangay: address,

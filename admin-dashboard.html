@@ -2074,37 +2074,51 @@
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
         <div class="card" style="cursor:pointer;" onclick="showView('cluster-report', null); renderClusterReport();">
           <div class="card-body">
-            <div
-              style="width:44px;height:44px;background:#eaf3ea;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <div style="width:44px;height:44px;background:#eaf3ea;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
               </svg>
             </div>
             <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Member Profile Application</div>
-            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">Register or update your farmer
-              membership profile with the City Agriculture Office. Required for accessing assistance programs and
-              subsidies.</div>
-            <a href="#" onclick="event.preventDefault();showView('cluster-report',null);renderClusterReport();"
-              style="font-size:13px;font-weight:700;color:#2d6a2d;text-decoration:none;">Continue →</a>
+            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">Register or update farmer membership profile with the City Agriculture Office. Required for accessing assistance programs and subsidies.</div>
+            <a href="#" onclick="event.preventDefault();showView('cluster-report',null);renderClusterReport();" style="font-size:13px;font-weight:700;color:#2d6a2d;text-decoration:none;">Continue →</a>
           </div>
         </div>
         <div class="card" style="cursor:pointer;" onclick="showView('rsbsa', null)">
           <div class="card-body">
-            <div
-              style="width:44px;height:44px;background:#eaf3ea;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <div style="width:44px;height:44px;background:#eaf3ea;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
-                <polyline points="9 11 12 14 22 4" />
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
               </svg>
             </div>
-            <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">RSBSA Enrollment Application
+            <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">RSBSA Enrollment Application</div>
+            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">Enroll in the Registry System for Basic Sectors in Agriculture (RSBSA). Required for government agricultural programs, insurance, and financial assistance.</div>
+            <a href="#" onclick="event.preventDefault();" style="font-size:13px;font-weight:700;color:#2d6a2d;text-decoration:none;">Continue →</a>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer;" onclick="showView('pwd-report', null); renderPwdReport();">
+          <div class="card-body">
+            <div style="width:44px;height:44px;background:#e8f0ff;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a4fa0" stroke-width="1.8">
+                <circle cx="12" cy="5" r="2"/><path d="M12 7v6l3 3"/><path d="M6 11a6 6 0 1 0 12 0"/>
+              </svg>
             </div>
-            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">Enroll in the Registry System for
-              Basic Sectors in Agriculture (RSBSA). Required for government agricultural programs, insurance, and
-              financial assistance.</div>
-            <a href="#" onclick="event.preventDefault();"
-              style="font-size:13px;font-weight:700;color:#2d6a2d;text-decoration:none;">Continue →</a>
+            <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">PWD Farmers Report</div>
+            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">View and export the list of registered farmers identified as Persons with Disability (PWD) based on approved member profile applications.</div>
+            <a href="#" onclick="event.preventDefault();showView('pwd-report',null);renderPwdReport();" style="font-size:13px;font-weight:700;color:#1a4fa0;text-decoration:none;">View Report →</a>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer;" onclick="showView('senior-report', null); renderSeniorReport();">
+          <div class="card-body">
+            <div style="width:44px;height:44px;background:#fff0d4;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8c5700" stroke-width="1.8">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Senior Citizen Farmers Report</div>
+            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">View and export the list of registered farmers who are Senior Citizens (60 years old and above) based on approved member profile applications.</div>
+            <a href="#" onclick="event.preventDefault();showView('senior-report',null);renderSeniorReport();" style="font-size:13px;font-weight:700;color:#8c5700;text-decoration:none;">View Report →</a>
           </div>
         </div>
       </div>
@@ -2182,6 +2196,117 @@
               </tr>
             </thead>
             <tbody id="cluster-details-table-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PWD FARMERS REPORT -->
+    <div class="view" id="view-pwd-report">
+      <div class="page-header">
+        <div class="page-header-row" style="align-items: center;">
+          <div>
+            <div onclick="showView('reports', document.querySelector('.sidebar-item[onclick*=\'reports\']'))"
+              style="font-size: 14px; font-weight: 700; color: #555; cursor: pointer; font-family: 'Montserrat', sans-serif; margin-bottom: 4px;">
+              &lt; Back to Reports
+            </div>
+            <h1 style="margin-top:0;">PWD Farmers Report</h1>
+            <p id="pwd-page-subtitle">Persons with Disability among registered farmers</p>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <div style="display: flex; align-items: center; background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 0 12px; height: 38px; box-sizing: border-box; width: 250px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" style="margin-right: 8px; flex-shrink: 0;">
+                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="text" id="pwd-search-input" placeholder="Search farmers..."
+                style="border:none;background:transparent;outline:none;font-family:'Montserrat',sans-serif;font-size:13px;width:100%;color:#333;height:100%;box-sizing:border-box;"
+                onkeyup="renderPwdReport()">
+            </div>
+            <button onclick="exportPwdCSV()"
+              style="padding: 0 16px; height: 38px; box-sizing: border-box; font-weight: 700; background-color: #1a4fa0; border: none; color: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center; font-family:'Montserrat',sans-serif; font-size:13px; white-space:nowrap;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Export to CSV
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body no-pad table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="text-transform:uppercase;">#</th>
+                <th style="text-transform:uppercase;">Full Name</th>
+                <th style="text-transform:uppercase;">Age</th>
+                <th style="text-transform:uppercase;">Sex</th>
+                <th style="text-transform:uppercase;">Barangay</th>
+                <th style="text-transform:uppercase;">Cluster</th>
+                <th style="text-transform:uppercase;">Crop Type</th>
+                <th style="text-transform:uppercase;">Hectares</th>
+                <th style="text-transform:uppercase;">Contact</th>
+              </tr>
+            </thead>
+            <tbody id="pwd-table-body">
+              <tr><td colspan="9" style="text-align:center;color:var(--text-light);padding:24px;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SENIOR CITIZEN FARMERS REPORT -->
+    <div class="view" id="view-senior-report">
+      <div class="page-header">
+        <div class="page-header-row" style="align-items: center;">
+          <div>
+            <div onclick="showView('reports', document.querySelector('.sidebar-item[onclick*=\'reports\']'))"
+              style="font-size: 14px; font-weight: 700; color: #555; cursor: pointer; font-family: 'Montserrat', sans-serif; margin-bottom: 4px;">
+              &lt; Back to Reports
+            </div>
+            <h1 style="margin-top:0;">Senior Citizen Farmers Report</h1>
+            <p id="senior-page-subtitle">Farmers aged 60 years and above</p>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <div style="display: flex; align-items: center; background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 0 12px; height: 38px; box-sizing: border-box; width: 250px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" style="margin-right: 8px; flex-shrink: 0;">
+                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="text" id="senior-search-input" placeholder="Search farmers..."
+                style="border:none;background:transparent;outline:none;font-family:'Montserrat',sans-serif;font-size:13px;width:100%;color:#333;height:100%;box-sizing:border-box;"
+                onkeyup="renderSeniorReport()">
+            </div>
+            <button onclick="exportSeniorCSV()"
+              style="padding: 0 16px; height: 38px; box-sizing: border-box; font-weight: 700; background-color: #7a5c00; border: none; color: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center; font-family:'Montserrat',sans-serif; font-size:13px; white-space:nowrap;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Export to CSV
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body no-pad table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="text-transform:uppercase;">#</th>
+                <th style="text-transform:uppercase;">Full Name</th>
+                <th style="text-transform:uppercase;">Age</th>
+                <th style="text-transform:uppercase;">Date of Birth</th>
+                <th style="text-transform:uppercase;">Sex</th>
+                <th style="text-transform:uppercase;">Barangay</th>
+                <th style="text-transform:uppercase;">Cluster</th>
+                <th style="text-transform:uppercase;">Crop Type</th>
+                <th style="text-transform:uppercase;">Hectares</th>
+                <th style="text-transform:uppercase;">Contact</th>
+              </tr>
+            </thead>
+            <tbody id="senior-table-body">
+              <tr><td colspan="10" style="text-align:center;color:var(--text-light);padding:24px;">Loading...</td></tr>
             </tbody>
           </table>
         </div>
@@ -2930,7 +3055,7 @@
             <div style="margin-bottom:20px;">
               <h3 style="font-size:12px; text-transform:uppercase; color:var(--green-mid); letter-spacing:1px; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:4px;">Personal Information</h3>
               <div style="display:grid; gap:8px;">
-                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Full Name:</span> <span style="font-weight:700; color:#111;">${app.firstName} ${app.middleName || ''} ${app.lastName}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Full Name:</span> <span style="font-weight:700; color:#111;">${app.firstName} ${app.middleName || ''} ${app.lastName} ${app.extensionName || ''}</span></div>
                 <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Birthdate:</span> <span style="font-weight:600;">${app.dob || '—'} (Age: ${age})</span></div>
                 <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Sex:</span> <span style="font-weight:600;">${app.sex || '—'}</span></div>
                 <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Civil Status:</span> <span style="font-weight:600;">${app.civilStatus || '—'}</span></div>
@@ -3162,7 +3287,7 @@
         </td></tr>`;
       } else {
         html = clusterApps.map((a, i) => {
-          const name = [a.lastName, a.firstName, a.middleName].filter(Boolean).join(', ') || '—';
+          const name = [a.lastName, a.firstName, a.middleName, a.extensionName].filter(Boolean).join(', ') || '—';
           const contact = a.contactNumber || '—';
           const address = [a.street, a.barangay].filter(Boolean).join(', ') || '—';
           const farmLocation = a.barangay || '—';
@@ -3212,7 +3337,7 @@
 
       const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
       const headers = [
-        '#', 'Last Name', 'First Name', 'Middle Name', 'Date of Birth', 'Sex', 'Civil Status',
+        '#', 'Last Name', 'First Name', 'Middle Name', 'Extension Name', 'Date of Birth', 'Sex', 'Civil Status',
         'Education', 'Contact Number', 'ID Type', 'RSBSA No.',
         'Province', 'Municipality', 'Barangay', 'Street',
         'Cluster / Association', 'Land Tenure', 'Membership',
@@ -3225,7 +3350,7 @@
 
       const rows = clusterApps.map((a, i) => [
         i + 1,
-        a.lastName, a.firstName, a.middleName,
+        a.lastName, a.firstName, a.middleName, a.extensionName,
         a.dob, a.sex, a.civilStatus, a.education, a.contactNumber, a.idType, a.rsbsaNo,
         a.province, a.municipality, a.barangay, a.street,
         a.cluster, a.landTenure, a.membership,
@@ -3256,7 +3381,7 @@
         if (!data || data.length === 0) return alert("No data to export.");
 
         const headers = [
-          "ID", "Submitted At", "Status", "Cluster", "Last Name", "First Name", "Middle Name", "DOB", "Sex", "Civil Status",
+          "ID", "Submitted At", "Status", "Cluster", "Last Name", "First Name", "Middle Name", "Extension Name", "DOB", "Sex", "Civil Status",
           "Education", "Contact Number", "RSBSA No", "Province", "Municipality", "Barangay", "Street", "Status Indicators",
           "Land Tenure", "Membership", "Crop Type", "Total Hectares", "Irrigated", "Rainfed", "Upland", "Dry Yield",
           "Wet Yield", "Yield Kg", "Other Crops", "Income Y1", "Income Y2", "Income Y3", "Remarks Y1", "Remarks Y2",
@@ -3268,7 +3393,7 @@
 
         data.forEach(row => {
           const values = [
-            row.id, row.submittedAt, row.status, row.cluster, row.lastName, row.firstName, row.middleName, row.dob, row.sex, row.civilStatus,
+            row.id, row.submittedAt, row.status, row.cluster, row.lastName, row.firstName, row.middleName, row.extensionName, row.dob, row.sex, row.civilStatus,
             row.education, row.contactNumber, row.rsbsaNo, row.province, row.municipality, row.barangay, row.street, row.statusIndicators,
             row.landTenure, row.membership, row.cropType, row.hectares, row.riceIrrigated, row.riceRainfed, row.riceUpland, row.yieldDry,
             row.yieldWet, row.yieldKg, row.otherCrops, row.incomeY1, row.incomeY2, row.incomeY3, row.remarksY1, row.remarksY2,
@@ -3301,7 +3426,7 @@
 
       const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
       const headers = [
-        '#', 'Last Name', 'First Name', 'Middle Name', 'Date of Birth', 'Sex', 'Civil Status',
+        '#', 'Last Name', 'First Name', 'Middle Name', 'Extension Name', 'Date of Birth', 'Sex', 'Civil Status',
         'Education', 'Contact Number', 'RSBSA No.',
         'Province', 'Municipality', 'Barangay', 'Street',
         'Cluster / Association', 'Land Tenure', 'Membership',
@@ -3334,7 +3459,7 @@
         if (a.adminRemarks) { try { const r = JSON.parse(a.adminRemarks); lastRemark = Array.isArray(r) && r.length ? r[r.length - 1].message : ''; } catch (e) { } }
         return [
           i + 1,
-          a.lastName, a.firstName, a.middleName,
+          a.lastName, a.firstName, a.middleName, a.extensionName,
           a.dob, a.sex, a.civilStatus, a.education, a.contactNumber, a.rsbsaNo,
           a.province, a.municipality, a.barangay, a.street,
           a.cluster, a.landTenure, a.membership,
@@ -3552,6 +3677,7 @@
       const lastName = document.querySelector('input[placeholder="Enter last name"]')?.value.trim() || '';
       const firstName = document.querySelector('input[placeholder="Enter first name"]')?.value.trim() || '';
       const middleName = document.querySelector('input[placeholder="Enter middle name"]')?.value.trim() || '';
+      const extensionName = document.getElementById('mp-extname')?.value.trim() || '';
       const barangay = getVal('barangay-value');
       const landTenure = getVal('tenure-value');
       const membership = getVal('membership-value');
@@ -3624,7 +3750,7 @@
 
       // Build record
       const record = {
-        cluster, lastName, firstName, middleName, dob, sex, civilStatus, education, contactNumber,
+        cluster, lastName, firstName, middleName, extensionName, dob, sex, civilStatus, education, contactNumber,
         rsbsaNo, province, municipality, barangay, street, statusIndicators,
         landTenure, membership, cropType, hectares: totalHectares,
         riceIrrigated, riceRainfed, riceUpland, yieldDry, yieldWet, yieldKg, otherCrops,
@@ -3667,6 +3793,193 @@
       successEl.style.display = 'block';
       successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
       renderDashboardOverview();
+    }
+
+    // ── HELPER: compute age from DOB string ──────────────────────────────────
+    function calcAge(dob) {
+      if (!dob) return null;
+      const today = new Date();
+      const birth = new Date(dob);
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+      return age;
+    }
+
+    // ── PWD REPORT ───────────────────────────────────────────────────────────
+    async function renderPwdReport() {
+      let apps = await getApplications();
+      apps = apps.filter(a =>
+        a.applicationType !== 'RSBSA Enrolment' &&
+        a.status === 'Approved' &&
+        a.statusIndicators && a.statusIndicators.toLowerCase().includes('pwd')
+      );
+
+      const q = (document.getElementById('pwd-search-input')?.value || '').toLowerCase();
+      if (q) {
+        apps = apps.filter(a => {
+          const name = [a.firstName, a.middleName, a.lastName].filter(Boolean).join(' ').toLowerCase();
+          return name.includes(q) || (a.barangay || '').toLowerCase().includes(q) || (a.cluster || '').toLowerCase().includes(q);
+        });
+      }
+
+      const tbody = document.getElementById('pwd-table-body');
+      const subtitle = document.getElementById('pwd-page-subtitle');
+      if (!tbody) return;
+
+      if (apps.length === 0) {
+        if (subtitle) subtitle.textContent = q ? 'No matching PWD farmers found' : 'No PWD farmers found among approved applications';
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:var(--text-light);padding:32px;">No PWD farmers found.</td></tr>`;
+        return;
+      }
+
+      if (subtitle) subtitle.textContent = `${apps.length} PWD farmer${apps.length !== 1 ? 's' : ''} found`;
+      tbody.innerHTML = apps.map((a, i) => {
+        const name = [a.lastName, a.firstName, a.middleName].filter(Boolean).join(', ') || '—';
+        const age = calcAge(a.dob);
+        return `<tr>
+          <td style="color:var(--text-light);font-size:13px;">${i + 1}</td>
+          <td style="font-weight:600;color:#333;">${name}</td>
+          <td>${age !== null ? age : '—'}</td>
+          <td>${a.sex || '—'}</td>
+          <td>${a.barangay || '—'}</td>
+          <td style="font-size:12px;color:#666;line-height:1.3;">${a.cluster || '—'}</td>
+          <td>${a.cropType || '—'}</td>
+          <td>${a.hectares || '0'}</td>
+          <td>${a.contactNumber || '—'}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    async function exportPwdCSV() {
+      let apps = await getApplications();
+      apps = apps.filter(a =>
+        a.applicationType !== 'RSBSA Enrolment' &&
+        a.status === 'Approved' &&
+        a.statusIndicators && a.statusIndicators.toLowerCase().includes('pwd')
+      );
+
+      if (apps.length === 0) { alert('No PWD farmer records to export.'); return; }
+
+      const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+      const headers = ['#','Last Name','First Name','Middle Name','Age','Date of Birth','Sex','Civil Status',
+        'Contact Number','Province','Municipality','Barangay','Street',
+        'Cluster / Association','Land Tenure','Membership',
+        'Status Indicators','Crop Type','Other Crops',
+        'Total Hectares','Irrigated (ha)','Rainfed (ha)','Upland (ha)',
+        'Dry Season Yield','Wet Season Yield','Total Yield (kg)',
+        'RSBSA No.','Application Status','Submitted At'];
+
+      const rows = apps.map((a, i) => [
+        i + 1, a.lastName, a.firstName, a.middleName,
+        calcAge(a.dob) ?? '', a.dob, a.sex, a.civilStatus, a.contactNumber,
+        a.province, a.municipality, a.barangay, a.street,
+        a.cluster, a.landTenure, a.membership,
+        a.statusIndicators, a.cropType, a.otherCrops,
+        a.hectares, a.riceIrrigated, a.riceRainfed, a.riceUpland,
+        a.yieldDry, a.yieldWet, a.yieldKg,
+        a.rsbsaNo, a.status,
+        a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-PH', { year:'numeric', month:'long', day:'numeric' }) : ''
+      ].map(esc).join(','));
+
+      const bom = '\uFEFF';
+      const csv = bom + [headers.map(esc).join(','), ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `PWD_Farmers_Report_${new Date().toISOString().slice(0,10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ── SENIOR CITIZEN REPORT ────────────────────────────────────────────────
+    async function renderSeniorReport() {
+      let apps = await getApplications();
+      apps = apps.filter(a => {
+        if (a.applicationType === 'RSBSA Enrolment' || a.status !== 'Approved') return false;
+        const age = calcAge(a.dob);
+        return age !== null && age >= 60;
+      });
+
+      const q = (document.getElementById('senior-search-input')?.value || '').toLowerCase();
+      if (q) {
+        apps = apps.filter(a => {
+          const name = [a.firstName, a.middleName, a.lastName].filter(Boolean).join(' ').toLowerCase();
+          return name.includes(q) || (a.barangay || '').toLowerCase().includes(q) || (a.cluster || '').toLowerCase().includes(q);
+        });
+      }
+
+      const tbody = document.getElementById('senior-table-body');
+      const subtitle = document.getElementById('senior-page-subtitle');
+      if (!tbody) return;
+
+      if (apps.length === 0) {
+        if (subtitle) subtitle.textContent = q ? 'No matching Senior Citizen farmers found' : 'No Senior Citizen farmers found among approved applications';
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;color:var(--text-light);padding:32px;">No Senior Citizen farmers found.</td></tr>`;
+        return;
+      }
+
+      if (subtitle) subtitle.textContent = `${apps.length} Senior Citizen farmer${apps.length !== 1 ? 's' : ''} found (aged 60+)`;
+      tbody.innerHTML = apps.map((a, i) => {
+        const name = [a.lastName, a.firstName, a.middleName].filter(Boolean).join(', ') || '—';
+        const age = calcAge(a.dob);
+        const dobDisplay = a.dob ? new Date(a.dob).toLocaleDateString('en-PH', { year:'numeric', month:'short', day:'numeric' }) : '—';
+        return `<tr>
+          <td style="color:var(--text-light);font-size:13px;">${i + 1}</td>
+          <td style="font-weight:600;color:#333;">${name}</td>
+          <td><span class="badge badge-orange">${age}</span></td>
+          <td>${dobDisplay}</td>
+          <td>${a.sex || '—'}</td>
+          <td>${a.barangay || '—'}</td>
+          <td style="font-size:12px;color:#666;line-height:1.3;">${a.cluster || '—'}</td>
+          <td>${a.cropType || '—'}</td>
+          <td>${a.hectares || '0'}</td>
+          <td>${a.contactNumber || '—'}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    async function exportSeniorCSV() {
+      let apps = await getApplications();
+      apps = apps.filter(a => {
+        if (a.applicationType === 'RSBSA Enrolment' || a.status !== 'Approved') return false;
+        const age = calcAge(a.dob);
+        return age !== null && age >= 60;
+      });
+
+      if (apps.length === 0) { alert('No Senior Citizen farmer records to export.'); return; }
+
+      const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+      const headers = ['#','Last Name','First Name','Middle Name','Age','Date of Birth','Sex','Civil Status',
+        'Contact Number','Province','Municipality','Barangay','Street',
+        'Cluster / Association','Land Tenure','Membership',
+        'Status Indicators','Crop Type','Other Crops',
+        'Total Hectares','Irrigated (ha)','Rainfed (ha)','Upland (ha)',
+        'Dry Season Yield','Wet Season Yield','Total Yield (kg)',
+        'RSBSA No.','Application Status','Submitted At'];
+
+      const rows = apps.map((a, i) => [
+        i + 1, a.lastName, a.firstName, a.middleName,
+        calcAge(a.dob) ?? '', a.dob, a.sex, a.civilStatus, a.contactNumber,
+        a.province, a.municipality, a.barangay, a.street,
+        a.cluster, a.landTenure, a.membership,
+        a.statusIndicators, a.cropType, a.otherCrops,
+        a.hectares, a.riceIrrigated, a.riceRainfed, a.riceUpland,
+        a.yieldDry, a.yieldWet, a.yieldKg,
+        a.rsbsaNo, a.status,
+        a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-PH', { year:'numeric', month:'long', day:'numeric' }) : ''
+      ].map(esc).join(','));
+
+      const bom = '\uFEFF';
+      const csv = bom + [headers.map(esc).join(','), ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `SeniorCitizen_Farmers_Report_${new Date().toISOString().slice(0,10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
     }
 
   </script>

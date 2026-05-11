@@ -65,7 +65,7 @@ app.post('/api/login', (req, res) => {
 const getApplicationsQuery = `
 SELECT 
   a.application_id as id, f.user_id as user_id, f.first_name as firstName, f.last_name as lastName, 
-  f.middle_name as middleName, f.dob, f.sex, f.civil_status as civilStatus, f.education, 
+  f.middle_name as middleName, f.extension_name as extensionName, f.dob, f.sex, f.civil_status as civilStatus, f.education, 
   f.contact_number as contactNumber, f.rsbsa_no as rsbsaNo, f.id_type as idType,
   addr.province, addr.municipality, addr.barangay, addr.street, addr.cluster_name as cluster,
   fp.land_tenure as landTenure, fp.membership_type as membership, fp.total_hectares as hectares,
@@ -283,8 +283,8 @@ function insertApplication(data, res) {
             if (err) return rollback(err);
 
             const farmerIdAction = (fid) => {
-                db.run(`UPDATE farmers SET first_name=?, last_name=?, middle_name=?, dob=?, sex=?, civil_status=?, education=?, contact_number=?, id_type=?, rsbsa_no=? WHERE farmer_id=?`,
-                    [data.firstName, data.lastName, data.middleName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.rsbsaNo, fid], (err) => {
+                db.run(`UPDATE farmers SET first_name=?, last_name=?, middle_name=?, extension_name=?, dob=?, sex=?, civil_status=?, education=?, contact_number=?, id_type=?, rsbsa_no=? WHERE farmer_id=?`,
+                    [data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.rsbsaNo, fid], (err) => {
                         if (err) return rollback(err);
                         proceedWithAddress(fid);
                     });
@@ -293,8 +293,8 @@ function insertApplication(data, res) {
             if (existingFarmer) {
                 farmerIdAction(existingFarmer.farmer_id);
             } else {
-                db.run(`INSERT INTO farmers (user_id, first_name, last_name, middle_name, dob, sex, civil_status, education, contact_number, id_type, rsbsa_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [data.user_id, data.firstName, data.lastName, data.middleName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.rsbsaNo], function (err) {
+                db.run(`INSERT INTO farmers (user_id, first_name, last_name, middle_name, extension_name, dob, sex, civil_status, education, contact_number, id_type, rsbsa_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [data.user_id, data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.rsbsaNo], function (err) {
                         if (err) return rollback(err);
                         farmerIdAction(this.lastID);
                     });
@@ -316,8 +316,8 @@ app.put('/api/applications/:id', (req, res) => {
             if (err || !appRow) return rollback(err || new Error("Application not found"));
             const farmerId = appRow.farmer_id;
 
-            db.run(`UPDATE farmers SET first_name=?, last_name=?, middle_name=?, dob=?, sex=?, civil_status=?, education=?, contact_number=?, id_type=?, rsbsa_no=? WHERE farmer_id=?`,
-                [data.firstName, data.lastName, data.middleName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.rsbsaNo, farmerId]);
+            db.run(`UPDATE farmers SET first_name=?, last_name=?, middle_name=?, extension_name=?, dob=?, sex=?, civil_status=?, education=?, contact_number=?, id_type=?, rsbsa_no=? WHERE farmer_id=?`,
+                [data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.rsbsaNo, farmerId]);
 
             db.run(`UPDATE addresses SET province=?, municipality=?, barangay=?, street=?, cluster_name=? WHERE farmer_id=?`,
                 [data.province, data.municipality, data.barangay, data.street, data.cluster, farmerId]);

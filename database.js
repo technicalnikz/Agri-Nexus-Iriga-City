@@ -43,6 +43,7 @@ db.serialize(() => {
             first_name TEXT,
             last_name TEXT,
             middle_name TEXT,
+            extension_name TEXT,
             dob TEXT,
             sex TEXT,
             civil_status TEXT,
