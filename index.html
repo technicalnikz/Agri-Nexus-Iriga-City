@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agri-Nexus Iriga City</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --green-dark: #005c20;
+      --green-mid: #007128;
+      --green-ui: #2d6a2d;
+      --green-light: #eef2e8;
+      --green-pale: #f4f7f0;
+      --border: #d8ddd0;
+      --text-dark: #0d1a0d;
+      --text-mid: #3a4a3a;
+      --text-light: #6b7b6b;
+      --white: #fff;
+      --bg: #f3f5f0;
+      --gold: #c8930a;
+      --gold-light: #fff8e6;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--white);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      transition: box-shadow 0.3s;
+    }
+
+    .nav.scrolled {
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .nav-brand-main {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--green-mid);
+    }
+
+    .nav-brand-sub {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-light);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-mid);
+      text-decoration: none;
+      transition: color 0.18s;
+    }
+
+    .nav-links a:hover {
+      color: var(--green-mid);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-nav-solid {
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+      background: var(--green-ui);
+      border: 1.5px solid transparent;
+      border-radius: 8px;
+      padding: 8px 18px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.18s;
+    }
+
+    .btn-nav-solid:hover {
+      background: var(--green-dark);
+    }
+
+    /* ── ANNOUNCEMENT STRIP ── */
+
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, #f0f5eb 0%, #e6f0dc 40%, #d4eac8 100%);
+      display: flex;
+      align-items: center;
+      padding: 80px 5% 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -80px;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 113, 40, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 16px 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green-ui);
+      margin-bottom: 24px;
+    }
+
+    .hero-tag-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4caf50;
+    }
+
+    .hero-title {
+      font-size: clamp(36px, 4.5vw, 58px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+
+    .hero-title .accent {
+      color: var(--green-mid);
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 520px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .btn-hero-primary {
+      background: var(--green-ui);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 14px 28px;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(45, 106, 45, 0.3);
+      transition: background 0.18s, transform 0.15s;
+    }
+
+    .btn-hero-primary:hover {
+      background: var(--green-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-hero-outline {
+      background: var(--white);
+      color: var(--text-dark);
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 14px 28px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color 0.18s, background 0.18s;
+    }
+
+    .btn-hero-outline:hover {
+      border-color: var(--green-ui);
+      background: var(--green-light);
+    }
+
+
+
+
+    /* ── SECTIONS ── */
+    .section {
+      padding: 80px 5%;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--green-ui);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      color: var(--text-dark);
+      margin-bottom: 14px;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-light);
+      line-height: 1.7;
+      max-width: 560px;
+      margin-bottom: 48px;
+    }
+
+    /* ── ABOUT RSBSA ── */
+    .req-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 0;
+    }
+
+    .req-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-mid);
+      line-height: 1.5;
+    }
+
+    .req-check {
+      color: var(--green-ui);
+      font-weight: 900;
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .section-bg {
+      background: var(--bg);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 5%;
+      right: 5%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green-light), var(--green-mid), var(--green-light));
+      z-index: 0;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      text-align: center;
+      padding: 0 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2.5px solid var(--green-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--green-mid);
+      box-shadow: 0 4px 16px rgba(0, 113, 40, 0.15);
+    }
+
+    .step-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .step-desc {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* ── PORTAL SECTION ── */
+    .portal-section {
+      background: linear-gradient(160deg, #0d2a12 0%, #1a4a1a 50%, #005c20 100%);
+      color: #fff;
+      padding: 80px 5%;
+    }
+
+    .portal-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .portal-section .section-tag {
+      color: #a0e0a0;
+    }
+
+    .portal-section .section-title {
+      color: #fff;
+    }
+
+    .portal-section .section-desc {
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0 auto 48px;
+    }
+
+    .portal-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .portal-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 36px 32px;
+      text-align: left;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .portal-card:hover {
+      background: rgba(255, 255, 255, 0.13);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-4px);
+    }
+
+    .portal-card-title {
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .portal-card-desc {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.65);
+      font-weight: 500;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .portal-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-portal {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 13px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.18s, transform 0.15s;
+    }
+
+    .btn-portal-green {
+      background: var(--green-ui);
+      color: #fff;
+      border: 2px solid transparent;
+    }
+
+    .btn-portal-green:hover {
+      background: #3d8a3d;
+    }
+
+    .btn-portal-outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-portal-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: #0a1a0a;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 56px 5% 32px;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand-main {
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand-sub {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 280px;
+    }
+
+    .footer-col-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .footer-col-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col-links a {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.18s;
+    }
+
+    .footer-col-links a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .portal-cards {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .steps::before {
+        display: none;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav" id="navbar">
+    <a class="nav-logo" href="index.html">
+      <img src="logo.webp" alt="Iriga City Agriculture Office" />
+      <div>
+        <div class="nav-brand-main">Agri-Nexus</div>
+        <div class="nav-brand-sub">Iriga City</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#portals">Portal</a></li>
+      <li><a href="#how-it-works">Process</a></li>
+      <li><a href="#about">About RSBSA</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a class="btn-nav-solid" href="register.html">Register Now</a>
+    </div>
+  </nav>
+
+  <!-- ANNOUNCEMENT STRIP -->
+
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-tag">
+          <span class="hero-tag-dot"></span>
+          Iriga City Agriculture Office
+        </div>
+        <h1 class="hero-title">
+          Modernizing<br />
+          Farmer <span class="accent">Registry</span><br />
+          & Assistance
+        </h1>
+        <p class="hero-desc">
+          Agri-Nexus is the digital portal for RSBSA registration, agricultural assistance programs, and farm management
+          for Iriga City's farming community.
+        </p>
+        <div class="hero-btns">
+          <a class="btn-hero-primary" href="register.html">Register as Farmer</a>
+          <a class="btn-hero-outline" href="login.html">Sign In to Portal</a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT RSBSA -->
+  <section class="section" id="about">
+    <div class="section-inner">
+      <div class="section-tag fade-in">About RSBSA</div>
+      <h2 class="section-title fade-in">What is RSBSA Registration?</h2>
+      <p class="section-desc fade-in" style="margin-bottom:32px;">
+        The Registry System for Basic Sectors in Agriculture (RSBSA) is the official registry that makes a farmer a
+        legitimate, recognized beneficiary of government agricultural programs, subsidies, insurance, and assistance.
+      </p>
+      <ul class="req-list fade-in">
+        <li><span class="req-check">✓</span> 2×2 photo (recent)</li>
+        <li><span class="req-check">✓</span> Filled-out RSBSA Enrolment Form</li>
+        <li><span class="req-check">✓</span> Government-issued ID (PhilSys, Voter's, Driver's License, etc.)</li>
+        <li><span class="req-check">✓</span> Proof of land ownership: Tax Declaration, Land Title, or Barangay
+          Certification of farm location</li>
+        <li><span class="req-check">✓</span> Geotag verification of farm by DA personnel</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section section-bg" id="how-it-works">
+    <div class="section-inner">
+      <div class="section-tag fade-in">Process</div>
+      <h2 class="section-title fade-in">How Registration Works</h2>
+      <p class="section-desc fade-in">From gathering your documents to receiving agricultural assistance — here's the
+        complete RSBSA registration and assistance process.</p>
+      <div class="steps fade-in">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-title">Create Account</div>
+          <div class="step-desc">Register online with your email address and create a secure password.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-title">Complete Profile</div>
+          <div class="step-desc">Register online with your email address and create a secure password.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-title">Submit Documents</div>
+          <div class="step-desc">Bring hard copies of your requirements to the DA office for verification.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-title">Field Validation</div>
+          <div class="step-desc">Office conducts geotagging validation of your farm location.</div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-title">Get Assistance</div>
+          <div class="step-desc">Access seeds, fertilizers, insurance, and machinery programs as a registered farmer.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTALS -->
+  <section class="portal-section" id="portals">
+    <div class="portal-inner">
+      <div class="section-tag fade-in">Portals</div>
+      <h2 class="section-title fade-in">Access Your Portal</h2>
+      <p class="section-desc fade-in">New to Agri-Nexus? Create an account to register and access assistance programs.
+        Already registered? Sign in to your dashboard.</p>
+      <div class="portal-cards">
+        <div class="portal-card fade-in">
+          <div class="portal-card-title">Farmer Portal</div>
+          <div class="portal-card-desc">Register with RSBSA, manage your farm records, apply for assistance programs,
+            and track your applications.</div>
+          <div class="portal-btns">
+            <a class="btn-portal btn-portal-green" href="register.html">Register Now</a>
+            <a class="btn-portal btn-portal-outline" href="login.html">Sign In as Farmer</a>
+          </div>
+        </div>
+        <div class="portal-card fade-in">
+          <div class="portal-card-title">Admin Portal</div>
+          <div class="portal-card-desc">For Iriga City Agriculture Office staff. Manage registrations, review pending
+            applications, and oversee programs.</div>
+          <div class="portal-btns">
+            <a class="btn-portal btn-portal-outline" href="login.html">Sign In as Admin</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand-main">Agri-Nexus Iriga City</div>
+          <div class="footer-brand-sub">The official digital platform of the Iriga City Agriculture Office for farmer
+            registration, RSBSA enrollment, and agricultural assistance management.</div>
+        </div>
+        <div>
+          <div class="footer-col-title">Portal</div>
+          <div class="footer-col-links">
+            <a href="login.html">Sign In</a>
+            <a href="register.html">Register</a>
+            <a href="FarmerDashboard.html">Farmer Dashboard</a>
+            <a href="admin-dashboard.html">Admin Dashboard</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Programs</div>
+          <div class="footer-col-links">
+            <a href="#">Seed Distribution</a>
+            <a href="#">Fertilizer Subsidy</a>
+            <a href="#">Crop Insurance (PCIC)</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Office</div>
+          <div class="footer-col-links">
+            <a href="#">City Agriculture Office</a>
+            <a href="#">Iriga City, Camarines Sur</a>
+            <a href="#">Mon-Fri, 8AM-5PM</a>
+            <a href="#about">About RSBSA</a>
+            <a href="#how-it-works">Registration Guide</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Agri-Nexus Iriga City · Iriga City Agriculture Office</span>
+        <span>Built for the farmers of Iriga City, Camarines Sur</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 30));
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+
+</html>

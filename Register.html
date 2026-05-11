@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agri-Nexus Iriga City - Create Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f0f2ef;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 10px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .nav-brand {
+      font-size: 18px;
+      font-weight: 800;
+      color: #007128;
+    }
+
+    .nav-back {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      background: #2d6a2d;
+      padding: 9px 20px;
+      border-radius: 8px;
+      border: 1.5px solid transparent;
+      transition: background 0.18s, color 0.18s, border-color 0.18s;
+    }
+
+    .nav-back:hover {
+      background: #f0ece3;
+      color: #111;
+      border-color: #333;
+      text-decoration: none;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 48px 44px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 2px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .card h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 22px;
+    }
+
+    .role-toggle {
+      display: flex;
+      background: #f0f2ef;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 16px;
+      gap: 4px;
+    }
+
+    .role-btn {
+      flex: 1;
+      padding: 10px 12px;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      background: transparent;
+      color: #888;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+
+    .role-btn.active {
+      background: #fff;
+      color: #007128;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.10);
+    }
+
+    .role-btn svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      flex-shrink: 0;
+    }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eaf3ea;
+      color: #007128;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 4px 12px;
+      margin-bottom: 20px;
+      border: 1.5px solid #c3dfc3;
+    }
+
+    .role-badge svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #bbb;
+    }
+
+    .step.active {
+      color: #007128;
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      color: #888;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step.active .step-num {
+      background: #007128;
+      color: #fff;
+    }
+
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: #e0e0e0;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 8px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #d4d4d4;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Montserrat', sans-serif;
+      color: #333;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.18s;
+    }
+
+    .form-group input::placeholder {
+      color: #bbb;
+    }
+
+    .form-group input:focus {
+      border-color: #2d6a2d;
+    }
+
+    .form-group input.error {
+      border-color: #e03c3c;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-wrapper input {
+      padding-right: 46px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #888;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-password svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .field-error {
+      font-size: 12px;
+      color: #e03c3c;
+      font-weight: 600;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .password-strength {
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .strength-bar {
+      flex: 1;
+      height: 3px;
+      border-radius: 2px;
+      background: #e0e0e0;
+      transition: background 0.3s;
+    }
+
+    .strength-label {
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      background: #2d6a2d;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      border: 1.5px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 8px;
+      margin-bottom: 20px;
+      transition: background 0.18s, color 0.18s, border-color 0.18s;
+    }
+
+    .btn-submit:hover {
+      background: #f0ece3;
+      color: #111;
+      border-color: #333;
+    }
+
+    .signin-text {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .signin-text a {
+      color: #2d6a2d;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .signin-text a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img src="logo.webp" alt="Iriga City Agriculture Office" />
+      <span class="nav-brand">Agri-Nexus Iriga City</span>
+    </a>
+    <a class="nav-back" href="index.html">Back to Home</a>
+  </nav>
+
+  <main>
+    <div class="card">
+      <h1>Create Your Account</h1>
+
+      <div class="role-toggle">
+        <button class="role-btn active" id="btn-farmer" onclick="setRole('farmer')">
+          <svg viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Farmer
+        </button>
+        <button class="role-btn" id="btn-admin" onclick="setRole('admin')">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          Admin
+        </button>
+      </div>
+
+      <div class="role-badge" id="role-badge">
+        <svg viewBox="0 0 24 24">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        <span id="role-badge-text">Registering as Farmer</span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" placeholder="Enter your email" oninput="clearErr('email')" />
+        <div class="field-error" id="email-err">Please enter a valid email address.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password *</label>
+        <div class="password-wrapper">
+          <input type="password" id="password" placeholder="Create a password (min. 6 characters)"
+            oninput="checkStrength(this.value); clearErr('password')" />
+          <button class="toggle-password" onclick="togglePwd('password')">
+            <svg viewBox="0 0 24 24">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </button>
+        </div>
+        <div class="password-strength">
+          <div class="strength-bar" id="bar1"></div>
+          <div class="strength-bar" id="bar2"></div>
+          <div class="strength-bar" id="bar3"></div>
+          <div class="strength-bar" id="bar4"></div>
+        </div>
+        <div class="strength-label" id="strength-label" style="color:#bbb;"></div>
+        <div class="field-error" id="password-err">Password must be at least 6 characters.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password *</label>
+        <div class="password-wrapper">
+          <input type="password" id="confirm-password" placeholder="Confirm your password"
+            oninput="clearErr('confirm-password')" />
+          <button class="toggle-password" onclick="togglePwd('confirm-password')">
+            <svg viewBox="0 0 24 24">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </button>
+        </div>
+        <div class="field-error" id="confirm-password-err">Passwords do not match.</div>
+      </div>
+
+      <button class="btn-submit" id="submit-btn" onclick="handleRegister()">Continue</button>
+
+      <p class="signin-text">Already have an account? <a href="login.html">Sign in here</a></p>
+    </div>
+  </main>
+
+  <script>
+    let currentRole = 'farmer';
+    const pwdVis = {};
+
+    function setRole(role) {
+      currentRole = role;
+      document.getElementById('btn-farmer').classList.toggle('active', role === 'farmer');
+      document.getElementById('btn-admin').classList.toggle('active', role === 'admin');
+
+      const isFarmer = role === 'farmer';
+      const icon = isFarmer
+        ? '<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'
+        : '<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
+
+      document.getElementById('role-badge').innerHTML = icon + `<span>Registering as ${isFarmer ? 'Farmer' : 'Admin'}</span>`;
+      document.getElementById('submit-btn').textContent = isFarmer ? 'Continue' : 'Continue';
+    }
+
+    function togglePwd(id) {
+      pwdVis[id] = !pwdVis[id];
+      document.getElementById(id).type = pwdVis[id] ? 'text' : 'password';
+    }
+
+    function clearErr(id) {
+      const el = document.getElementById(id);
+      const err = document.getElementById(id + '-err');
+      if (el) el.classList.remove('error');
+      if (err) err.style.display = 'none';
+    }
+
+    function showErr(id, msg) {
+      const el = document.getElementById(id);
+      const err = document.getElementById(id + '-err');
+      if (el) el.classList.add('error');
+      if (err) { err.textContent = msg; err.style.display = 'block'; }
+    }
+
+    function checkStrength(val) {
+      let score = [val.length >= 6, val.length >= 10, /[A-Z]/.test(val) && /[0-9]/.test(val), /[^A-Za-z0-9]/.test(val)].filter(Boolean).length;
+      const colors = ['#e03c3c', '#f59c22', '#4285f4', '#007128'];
+      const labels = ['Weak', 'Fair', 'Good', 'Strong'];
+      ['bar1', 'bar2', 'bar3', 'bar4'].forEach((b, i) => {
+        document.getElementById(b).style.background = i < score ? colors[score - 1] : '#e0e0e0';
+      });
+      const lbl = document.getElementById('strength-label');
+      lbl.textContent = val.length ? (labels[score - 1] || 'Weak') : '';
+      lbl.style.color = score ? colors[score - 1] : '#bbb';
+    }
+
+    async function handleRegister() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm-password').value;
+      let valid = true;
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('email', 'Please enter a valid email address.'); valid = false; }
+      if (password.length < 6) { showErr('password', 'Password must be at least 6 characters.'); valid = false; }
+      if (password !== confirm) { showErr('confirm-password', 'Passwords do not match.'); valid = false; }
+
+      if (valid) {
+        try {
+          const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, role: currentRole })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            // Usually duplicate email (409)
+            if (response.status === 409) {
+              showErr('email', data.error || 'This email is already registered.');
+            } else {
+              alert('Registration failed: ' + data.error);
+            }
+            return;
+          }
+
+          // ── Security: never auto-login after registration ──────────────────
+          // Clear any existing session so we don't inherit another user's state.
+          sessionStorage.clear();
+
+          // Redirect to login page with a success flag so a welcome notice
+          // is shown. The user must sign in explicitly with their credentials.
+          window.location.href = 'login.html?registered=1';
+          // ──────────────────────────────────────────────────────────────────
+        } catch (error) {
+          console.error('Registration error:', error);
+          alert('A network error occurred. Please try again.');
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,3676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agri-Nexus Iriga City – Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --green-dark: #007128;
+      --green-mid: #2d6a2d;
+      --green-light: #eef2e8;
+      --green-pale: #f4f7f0;
+      --gold: #7a5c00;
+      --gold-light: #fff3cd;
+      --beige: #f0ece3;
+      --border: #d8ddd0;
+      --text-dark: #111;
+      --text-mid: #444;
+      --text-light: #888;
+      --white: #fff;
+      --bg: #f0f2ef;
+      --sidebar-w: 250px;
+      --nav-h: 60px;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* ── TOPNAV ── */
+    .topnav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .topnav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+    }
+
+    .topnav-logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .nav-brand {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--green-dark);
+    }
+
+    .topnav-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .topnav-notif {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold-light);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .topnav-notif .dot {
+      position: absolute;
+      top: 7px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      background: #e03c3c;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+    }
+
+    .topnav-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--gold-light);
+    }
+
+    .topnav-user {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .role-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      background: var(--gold-light);
+      color: var(--gold);
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 100;
+      padding: 20px 0;
+    }
+
+    .sidebar-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      padding: 14px 20px 6px;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-mid);
+      cursor: pointer;
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .sidebar-item:hover {
+      background: var(--gold-light);
+      color: var(--gold);
+    }
+
+    .sidebar-item.active {
+      background: var(--gold-light);
+      color: var(--gold);
+      border-left-color: var(--gold);
+    }
+
+    .sidebar-item svg {
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .sidebar-item.active svg {
+      opacity: 1;
+    }
+
+    .sidebar-badge {
+      margin-left: auto;
+      background: #e03c3c;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+
+    .sidebar-badge.neutral {
+      background: var(--green-mid);
+    }
+
+    /* ── ADMIN HEADER STRIPE ── */
+    .admin-stripe {
+      background: linear-gradient(135deg, #1a3a1a 0%, #2d6a2d 60%, #007128 100%);
+      padding: 24px 28px;
+      color: #fff;
+      margin-bottom: 24px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .admin-stripe h1 {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .admin-stripe p {
+      font-size: 13px;
+      opacity: 0.75;
+      margin-top: 4px;
+    }
+
+    .admin-stripe-right {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      margin-top: var(--nav-h);
+      padding: 28px 28px 40px;
+      min-height: calc(100vh - var(--nav-h));
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      margin-bottom: 24px;
+    }
+
+    .page-header h1 {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .page-header p {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    .page-header-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--green-mid);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: background 0.18s, color 0.18s, border-color 0.18s;
+    }
+
+    .btn-primary:hover {
+      background: var(--beige);
+      color: #111;
+      border-color: #333;
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 9px 18px;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: background 0.18s;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* ── STAT CARDS ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: box-shadow 0.18s;
+    }
+
+    .stat-card:hover {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    .stat-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-icon.green {
+      background: var(--green-light);
+    }
+
+    .stat-icon.gold {
+      background: var(--gold-light);
+    }
+
+    .stat-icon.blue {
+      background: #e8f0ff;
+    }
+
+    .stat-icon.red {
+      background: #fdecea;
+    }
+
+    .stat-change {
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .stat-change.up {
+      color: #2d8c2d;
+    }
+
+    .stat-change.warn {
+      color: #e07800;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    /* ── LAYOUT ── */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
+    }
+
+    .content-grid.full {
+      grid-template-columns: 1fr;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-header h2 {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .card-body.no-pad {
+      padding: 0;
+    }
+
+    .card-body.table-scroll {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .btn-sm {
+      font-size: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-sm:hover {
+      background: var(--green-light);
+      border-color: var(--green-mid);
+      color: var(--green-dark);
+    }
+
+    /* ── TABLE ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--green-pale);
+    }
+
+    .data-table td {
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      border-bottom: 1px solid #f0f0f0;
+      color: var(--text-mid);
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .data-table tr:hover td {
+      background: var(--green-pale);
+    }
+
+    /* ── BADGES ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .badge-green {
+      background: #dcf0dc;
+      color: #1a6b1a;
+    }
+
+    .badge-orange {
+      background: #fff0d4;
+      color: #8c5700;
+    }
+
+    .badge-red {
+      background: #fdecea;
+      color: #c0392b;
+    }
+
+    .badge-blue {
+      background: #e3eeff;
+      color: #1a4fa0;
+    }
+
+    .badge-gray {
+      background: #f0f0f0;
+      color: #666;
+    }
+
+    /* ── APPROVE / REJECT ── */
+    .action-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-approve {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 5px 13px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--green-light);
+      color: var(--green-dark);
+      border: 1.5px solid var(--green-mid);
+      transition: background 0.15s;
+    }
+
+    .btn-approve:hover {
+      background: var(--green-mid);
+      color: #fff;
+    }
+
+    .btn-reject {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 5px 13px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #fdecea;
+      color: #c0392b;
+      border: 1.5px solid #f5b7b1;
+      transition: background 0.15s;
+    }
+
+    .btn-reject:hover {
+      background: #c0392b;
+      color: #fff;
+    }
+
+    /* ── SEARCH ── */
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0 14px;
+      height: 38px;
+    }
+
+    .search-bar input {
+      border: none;
+      outline: none;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-dark);
+      width: 200px;
+      background: transparent;
+    }
+
+    .search-bar input::placeholder {
+      color: var(--text-light);
+    }
+
+    /* ── CLUSTER PROGRESS ── */
+    .cluster-progress-wrap {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 10px;
+    }
+
+    .cluster-progress-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cluster-progress-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--green-dark);
+    }
+
+    .cluster-progress-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .cluster-progress-bar-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: var(--green-mid);
+      border-radius: 3px;
+    }
+
+    .cluster-progress-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-mid);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* ── DONUT ── */
+    .donut-wrap {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .donut-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .donut-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-mid);
+    }
+
+    .donut-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    svg.donut {
+      transform: rotate(-90deg);
+    }
+
+    .donut-ring {
+      fill: none;
+      stroke-width: 18;
+    }
+
+    /* ── ACTIVITY ── */
+    .activity-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .activity-dot.green {
+      background: var(--green-mid);
+    }
+
+    .activity-dot.orange {
+      background: #f59c22;
+    }
+
+    .activity-dot.blue {
+      background: #4285f4;
+    }
+
+    .activity-dot.red {
+      background: #e03c3c;
+    }
+
+    .activity-text {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.5;
+    }
+
+    .activity-time {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    /* ── ANNOUNCEMENT ── */
+    .announcement {
+      background: var(--gold-light);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+
+    .announcement:last-child {
+      margin-bottom: 0;
+    }
+
+    .announcement-title {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .announcement-body {
+      font-size: 12px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+
+    .announcement-date {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    /* ── FARM SUMMARY ── */
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-key {
+      font-size: 13px;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .info-val {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* ── MAP PLACEHOLDER ── */
+    .map-placeholder {
+      background: linear-gradient(160deg, #e6f0e6 0%, #d0e6c8 100%);
+      border-radius: 8px;
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--green-mid);
+    }
+
+    .map-placeholder p {
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.7;
+    }
+
+    /* ── VIEWS ── */
+    .view {
+      display: none;
+      animation: fadeIn 0.25s ease both;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── LOGOUT ── */
+    .sidebar-logout {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #c0392b;
+      cursor: pointer;
+      margin-top: 8px;
+      border-top: 1px solid var(--border);
+      text-decoration: none;
+    }
+
+    .sidebar-logout:hover {
+      background: #fdecea;
+    }
+
+    /* ── CLUSTER REPORT ── */
+    .cluster-report-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .cluster-report-back {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      cursor: pointer;
+      color: var(--text-mid);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background .15s;
+    }
+
+    .cluster-report-back:hover {
+      background: var(--green-pale);
+      border-color: var(--green-mid);
+      color: var(--green-dark);
+    }
+
+    .cluster-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .cluster-summary-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+
+    .cluster-summary-card .cs-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-bottom: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cluster-summary-card .cs-count {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--green-dark);
+    }
+
+    .cluster-summary-card .cs-label {
+      font-size: 11px;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .cluster-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .cluster-filter-bar select {
+      padding: 8px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      background: var(--white);
+      color: var(--text-mid);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .cluster-filter-bar select:focus {
+      border-color: var(--green-mid);
+    }
+
+    .empty-cluster {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text-light);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .empty-cluster svg {
+      margin: 0 auto 14px;
+      display: block;
+      opacity: .35;
+    }
+
+    .cluster-tag {
+      display: inline-block;
+      background: var(--green-light);
+      color: var(--green-dark);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 20px;
+      white-space: nowrap;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* INTEGRATED MEMBER PROFILE CUSTOM STYLES */
+    .mp-page-header {
+      text-align: center;
+      padding: 20px 20px 40px
+    }
+
+    .mp-page-header .tag {
+      font-size: 13px;
+      font-weight: 700;
+      color: #2d6a2d;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px
+    }
+
+    .mp-page-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #0d0d0d;
+      margin-bottom: 12px
+    }
+
+    .mp-page-header p {
+      font-size: 15px;
+      color: #666
+    }
+
+    .outer-card {
+      max-width: 900px;
+      margin: 0 auto 60px;
+      border: 1.5px solid #d8ddd0;
+      border-radius: 16px;
+      overflow: hidden
+    }
+
+    .outer-card-header {
+      background: #eef2e8;
+      padding: 28px 36px 20px;
+      border-bottom: 1.5px solid #d8ddd0
+    }
+
+    .outer-card-header h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 6px
+    }
+
+    .outer-card-header p {
+      font-size: 13px;
+      color: #555
+    }
+
+    .outer-card-body {
+      background: #fff;
+      padding: 36px 36px 40px
+    }
+
+    .form-section {
+      margin-bottom: 36px
+    }
+
+    .form-section+.form-section {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 32px
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 20px
+    }
+
+    .inner-card {
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px
+    }
+
+    .inner-card.beige {
+      background: #f0ece3
+    }
+
+    .inner-card.green {
+      background: #eef2e8
+    }
+
+    .inner-card.light {
+      background: #f4f6f2
+    }
+
+    .inner-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 16px
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px
+    }
+
+    .grid-1-2 {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 16px
+    }
+
+    .mp-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .mp-form-group label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #222
+    }
+
+    .mp-form-group input,
+    .mp-form-group textarea {
+      padding: 11px 14px;
+      border: 1.5px solid #d0d0d0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      color: #333;
+      background: #fff;
+      outline: none;
+      transition: border-color .18s;
+      width: 100%
+    }
+
+    .mp-form-group input::placeholder,
+    .mp-form-group textarea::placeholder {
+      color: #bbb
+    }
+
+    .mp-form-group input:focus,
+    .mp-form-group textarea:focus {
+      border-color: #2d6a2d
+    }
+
+    .mp-form-group input[readonly] {
+      background: #f0f0f0;
+      color: #888;
+      cursor: not-allowed
+    }
+
+    .mp-form-group textarea {
+      resize: vertical;
+      min-height: 80px
+    }
+
+    .input-icon-wrapper {
+      position: relative
+    }
+
+    .input-icon-wrapper input {
+      padding-right: 40px
+    }
+
+    .input-icon-wrapper .icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      pointer-events: none
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 24px
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #222;
+      cursor: pointer
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2d6a2d;
+      cursor: pointer;
+      flex-shrink: 0
+    }
+
+    .disclaimer {
+      background: #eef2e8;
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-size: 13px;
+      color: #444;
+      line-height: 1.7;
+      margin-bottom: 24px
+    }
+
+    .btn-submit {
+      background: #2d6a2d;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 14px 32px;
+      border-radius: 10px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: background .18s, color .18s, border-color .18s
+    }
+
+    .btn-submit:hover {
+      background: #f0ece3;
+      color: #111;
+      border-color: #333
+    }
+
+    .custom-select-wrapper {
+      position: relative
+    }
+
+    .custom-select-trigger {
+      width: 100%;
+      padding: 11px 38px 11px 14px;
+      border: 1.5px solid #d0d0d0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      color: #bbb;
+      background: #fff;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color .18s;
+      user-select: none
+    }
+
+    .custom-select-trigger.selected {
+      color: #333
+    }
+
+    .custom-select-trigger.open {
+      border-color: #2d6a2d
+    }
+
+    .custom-select-trigger .arrow {
+      width: 0;
+      height: 0;
+      flex-shrink: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #555;
+      transition: transform .18s
+    }
+
+    .custom-select-trigger.open .arrow {
+      transform: rotate(180deg)
+    }
+
+    .custom-options {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1.5px solid #d0d0d0;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .1);
+      z-index: 300;
+      max-height: 280px;
+      overflow-y: auto
+    }
+
+    .custom-options.open {
+      display: block
+    }
+
+    .custom-optgroup-label {
+      padding: 8px 16px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      border-top: 1px solid #eee
+    }
+
+    .custom-optgroup-label:first-child {
+      border-top: none
+    }
+
+    .custom-option {
+      padding: 11px 16px;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      color: #222;
+      cursor: pointer;
+      transition: background .15s
+    }
+
+    .custom-option:hover {
+      background: #f0ece3
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(2px);
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+      animation: modalIn 0.25s ease-out;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-light);
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="confirm-modal" class="modal-overlay" style="display: none; z-index: 3000;">
+    <div class="modal" style="max-width: 400px; border-radius:14px; text-align: center;">
+      <div class="modal-header" style="justify-content: center; position: relative;">
+        <h2 id="confirm-title" style="font-size:18px;">Confirmation</h2>
+        <button class="modal-close" style="position: absolute; right: 20px;"
+          onclick="closeConfirmModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 30px 24px;">
+        <p id="confirm-message" style="font-size: 15px; color: #444; line-height: 1.6;"></p>
+      </div>
+      <div class="modal-footer" style="justify-content: center; background: #f9f9f9;">
+        <button class="btn-sm"
+          style="background:#fff; border:1.5px solid #ddd; border-radius:10px; padding: 10px 24px; font-weight:700; cursor:pointer;"
+          onclick="closeConfirmModal()">Cancel</button>
+        <button id="confirm-btn" class="btn-primary"
+          style="padding: 10px 30px; border-radius:10px; font-weight:700;">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOPNAV -->
+  <nav class="topnav">
+    <a class="topnav-logo" href="admin-dashboard.html">
+      <img src="logo.webp" alt="Agri-Nexus" onerror="this.style.display='none'" />
+      <span class="nav-brand">Agri-Nexus Iriga City</span>
+    </a>
+    <div class="topnav-right">
+
+      <span class="topnav-user" id="nav-username">Admin</span>
+      <span class="role-badge">Admin</span>
+      <div class="topnav-avatar" id="nav-avatar">A</div>
+    </div>
+  </nav>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item active" onclick="showView('overview', this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7" />
+        <rect x="14" y="3" width="7" height="7" />
+        <rect x="14" y="14" width="7" height="7" />
+        <rect x="3" y="14" width="7" height="7" />
+      </svg>
+      Overview
+    </a>
+    <a class="sidebar-item" onclick="showView('farmers', this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+      Farmer Registry
+      <span class="sidebar-badge neutral" id="sidebar-farmer-count">0</span>
+    </a>
+    <a class="sidebar-item" onclick="showView('pending', this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 6 12 12 16 14" />
+      </svg>
+      Pending Applications
+      <span class="sidebar-badge" id="sidebar-pending-count">0</span>
+    </a>
+    <a class="sidebar-item" onclick="showView('rsbsa', this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 11l3 3L22 4" />
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+      </svg>
+      RSBSA Enrolments
+      <span class="sidebar-badge neutral" id="sidebar-rsbsa-count">0</span>
+    </a>
+
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" onclick="showView('reports', this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="20" x2="18" y2="10" />
+        <line x1="12" y1="20" x2="12" y2="4" />
+        <line x1="6" y1="20" x2="6" y2="14" />
+      </svg>
+      Reports
+    </a>
+
+    <a class="sidebar-logout" href="#" onclick="handleSignOut(); return false;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+      </svg>
+      Sign Out
+    </a>
+  </aside>
+
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <div class="view active" id="view-overview">
+      <div class="admin-stripe">
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p id="stripe-date">Iriga City Agriculture Office</p>
+        </div>
+        <div class="admin-stripe-right">
+          <button class="btn-primary" onclick="showView('add-farmer', null)">+ Add Farmer</button>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d"
+                stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg></div>
+            <span class="stat-change up" id="stat-farmers-sub"></span>
+          </div>
+          <div class="stat-value" id="stat-farmers">0</div>
+          <div class="stat-label">Registered Farmers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c0392b"
+                stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg></div>
+            <span class="stat-change warn" id="stat-pending-sub"></span>
+          </div>
+          <div class="stat-value" id="stat-pending">0</div>
+          <div class="stat-label">Pending Applications</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a4fa0"
+                stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              </svg></div>
+            <span class="stat-change up" id="stat-hectares-sub"></span>
+          </div>
+          <div class="stat-value" id="stat-hectares">0</div>
+          <div class="stat-label">Total Hectares</div>
+        </div>
+
+      </div>
+
+      <div class="content-grid full">
+        <div>
+          <!-- Cluster -->
+          <div class="card">
+            <div class="card-header">
+              <h2>Cluster</h2><button class="btn-sm" onclick="showView('reports', null)">Full Report</button>
+            </div>
+            <div class="card-body">
+              <div class="cluster-progress-wrap" id="chart-cluster">
+                <!-- mock data rendered via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Transactions -->
+          <div class="card">
+            <div class="card-header">
+              <h2>Transactions</h2><button class="btn-sm" onclick="showView('farmers', null)">View All</button>
+            </div>
+            <div class="card-body no-pad table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>NAME</th>
+                    <th>CLUSTER</th>
+                    <th>CROP</th>
+                    <th>STATUS</th>
+                  </tr>
+                </thead>
+                <tbody id="transactions-body">
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- FARMER REGISTRY -->
+    <div class="view" id="view-farmers">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1>Farmer Registry</h1>
+            <p id="farmers-page-subtitle">No registered farmers yet</p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div class="search-bar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="text" id="farmer-search-input" placeholder="Search farmers..."
+                oninput="renderFarmersTable()">
+            </div>
+            <select id="farmer-cluster-filter" onchange="renderFarmersTable()"
+              style="height: 38px; border-radius: 6px; border: 1px solid #ccc; padding: 0 10px; font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none; background: #fff; cursor: pointer;">
+              <option value="">All Clusters</option>
+              <option value="Ka-Agriprenuers Agriculture Cooperative">Ka-Agriprenuers</option>
+              <option value="La Trinidad Farmers Association">La Trinidad</option>
+              <option value="Mabukug Farmers Association Inc.">Mabukug</option>
+              <option value="SAGMONREY-AN Communal Irrigation Association Inc.">SAGMONREY-AN</option>
+              <option value="Salvacion Farmers Agriculture Cooperative">Salvacion</option>
+              <option value="Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.">SAMMAFIA</option>
+              <option value="San Jose Farmers Association of Iriga City Camarines Sur">San Jose</option>
+              <option value="Sto. Nino Farmers Association">Sto. Nino</option>
+            </select>
+            <button class="btn-primary" onclick="showView('add-farmer', null)">+ Add Farmer</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body no-pad">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="text-transform:uppercase;">#</th>
+                <th style="text-transform:uppercase;">Full Name</th>
+                <th style="text-transform:uppercase;">Cluster</th>
+                <th style="text-transform:uppercase;">Crop Type</th>
+                <th style="text-transform:uppercase;">Hectares</th>
+                <th style="text-transform:uppercase;">Land Tenure</th>
+                <th style="text-transform:uppercase;">RSBSA</th>
+                <th style="text-transform:uppercase;text-align:center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="farmers-table-body">
+              <tr>
+                <td colspan="8" style="text-align:center;color:var(--text-light);padding:24px;">No farmers registered
+                  yet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ADD FARMER VIEW -->
+    <div class="view" id="view-add-farmer">
+      <span class="back-link"
+        onclick="showView('farmers', document.querySelector('.sidebar-item[onclick*=\'farmers\']'))"
+        style="margin-bottom: 0;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Back to Registry
+      </span>
+
+      <div class="mp-page-header">
+        <div class="tag">APPLY NOW</div>
+        <h1>Member Profile Application</h1>
+        <p>Complete the form your RSBSA registration process</p>
+      </div>
+
+      <div class="outer-card">
+        <div class="outer-card-header">
+          <h2>Member Profile Registration Form</h2>
+          <p>Please provide accurate information. Fields marked with * are required.</p>
+        </div>
+        <div class="outer-card-body">
+
+          <div class="form-section">
+            <div class="inner-card beige">
+              <div class="inner-card-title">Cluster / Association</div>
+              <div class="mp-form-group" style="margin-bottom:16px">
+                <label>Name of Cluster *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="cluster-trigger"
+                    onclick="toggleSelect('cluster')">
+                    <span id="cluster-label">Select your cluster/association</span><span class="arrow"></span>
+                  </button>
+                  <div class="custom-options" id="cluster-options">
+                    <div class="custom-option"
+                      onclick="pickOption('cluster','Ka-Agriprenuers Agriculture Cooperative')">Ka-Agriprenuers
+                      Agriculture Cooperative</div>
+                    <div class="custom-option" onclick="pickOption('cluster','La Trinidad Farmers Association')">La
+                      Trinidad Farmers Association</div>
+                    <div class="custom-option" onclick="pickOption('cluster','Mabukug Farmers Association Inc.')">
+                      Mabukug Farmers Association Inc.</div>
+                    <div class="custom-option"
+                      onclick="pickOption('cluster','SAGMONREY-AN Communal Irrigation Association Inc.')">SAGMONREY-AN
+                      Communal Irrigation Association Inc.</div>
+                    <div class="custom-option"
+                      onclick="pickOption('cluster','Salvacion Farmers Agriculture Cooperative')">Salvacion Farmers
+                      Agriculture Cooperative</div>
+                    <div class="custom-option"
+                      onclick="pickOption('cluster','Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.')">
+                      Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.</div>
+                    <div class="custom-option"
+                      onclick="pickOption('cluster','San Jose Farmers Association of Iriga City Camarines Sur')">San
+                      Jose Farmers Association of Iriga City Camarines Sur</div>
+                    <div class="custom-option" onclick="pickOption('cluster','Sto. Nino Farmers Association')">Sto. Nino
+                      Farmers Association</div>
+                  </div>
+                  <input type="hidden" id="cluster-value" name="cluster" />
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="mp-form-group">
+                  <label>Date of Membership *</label>
+                  <div class="input-icon-wrapper">
+                    <input type="date" />
+                  </div>
+                </div>
+                <div class="mp-form-group">
+                  <label>Type of Membership *</label>
+                  <div class="custom-select-wrapper">
+                    <button type="button" class="custom-select-trigger" id="membership-trigger"
+                      onclick="toggleSelect('membership')">
+                      <span id="membership-label">Select type</span><span class="arrow"></span>
+                    </button>
+                    <div class="custom-options" id="membership-options">
+                      <div class="custom-option" onclick="pickOption('membership','Regular Member')">Regular Member
+                      </div>
+                      <div class="custom-option" onclick="pickOption('membership','Associate')">Associate</div>
+                    </div>
+                    <input type="hidden" id="membership-value" name="membership" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Personal Information</div>
+            <div class="grid-4" style="margin-bottom:16px">
+              <div class="mp-form-group"><label>Last Name *</label><input type="text" placeholder="Enter last name" />
+              </div>
+              <div class="mp-form-group"><label>First Name *</label><input type="text" placeholder="Enter first name" />
+              </div>
+              <div class="mp-form-group"><label>Middle Name/Initial *</label><input type="text"
+                  placeholder="Enter middle name" /></div>
+              <div class="mp-form-group"><label>Age *</label><input type="number" id="farmer-age" placeholder="Age"
+                  readonly /></div>
+            </div>
+            <div class="grid-2" style="margin-bottom:16px">
+              <div class="mp-form-group"><label>RSBSA No. (if existing)</label><input type="text"
+                  placeholder="e.g., 05-017-16-024-XXXXX" /></div>
+              <div class="mp-form-group"><label>Contact Number *</label><input type="text" placeholder="09XX XXX XXXX"
+                  maxlength="11" minlength="11"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);" /></div>
+            </div>
+            <div class="grid-4" style="margin-bottom:20px">
+              <div class="mp-form-group">
+                <label>Sex *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="sex-trigger"
+                    onclick="toggleSelect('sex')"><span id="sex-label">Select</span><span class="arrow"></span></button>
+                  <div class="custom-options" id="sex-options">
+                    <div class="custom-option" onclick="pickOption('sex','Male')">Male</div>
+                    <div class="custom-option" onclick="pickOption('sex','Female')">Female</div>
+                  </div>
+                  <input type="hidden" id="sex-value" name="sex" />
+                </div>
+              </div>
+              <div class="mp-form-group">
+                <label>Civil Status *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="civil-trigger"
+                    onclick="toggleSelect('civil')"><span id="civil-label">Select</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="civil-options">
+                    <div class="custom-option" onclick="pickOption('civil','Single')">Single</div>
+                    <div class="custom-option" onclick="pickOption('civil','Married')">Married</div>
+                    <div class="custom-option" onclick="pickOption('civil','Widowed')">Widowed</div>
+                  </div>
+                  <input type="hidden" id="civil-value" name="civil_status" />
+                </div>
+              </div>
+              <div class="mp-form-group">
+                <label>Educational Attainment *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="education-trigger"
+                    onclick="toggleSelect('education')"><span id="education-label">Select</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="education-options">
+                    <div class="custom-option" onclick="pickOption('education','Elementary Level')">Elementary Level
+                    </div>
+                    <div class="custom-option" onclick="pickOption('education','Elementary Graduate')">Elementary
+                      Graduate</div>
+                    <div class="custom-option" onclick="pickOption('education','High School Level')">High School Level
+                    </div>
+                    <div class="custom-option" onclick="pickOption('education','High School Graduate')">High School
+                      Graduate</div>
+                    <div class="custom-option" onclick="pickOption('education','College Level')">College Level</div>
+                    <div class="custom-option" onclick="pickOption('education','College Graduate')">College Graduate
+                    </div>
+                    <div class="custom-option" onclick="pickOption('education','Post Graduate')">Post Graduate</div>
+                  </div>
+                  <input type="hidden" id="education-value" name="education" />
+                </div>
+              </div>
+              <div class="mp-form-group"><label>Date of Birth *</label><input type="date" id="farmer-dob"
+                  onchange="computeAge()" /></div>
+            </div>
+            <div class="inner-card light">
+              <div class="inner-card-title">Status Indicators (Check all that apply)</div>
+              <div class="checkbox-grid">
+                <label class="checkbox-item"><input type="checkbox" /> Agrarian Reform Beneficiary</label>
+                <label class="checkbox-item"><input type="checkbox" /> PWD (Person with Disability)</label>
+                <label class="checkbox-item"><input type="checkbox" /> 4Ps Beneficiary</label>
+                <label class="checkbox-item"><input type="checkbox" /> Indigenous People</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Address Information</div>
+            <div class="grid-3" style="margin-bottom:16px">
+              <div class="mp-form-group"><label>Province *</label><input type="text" value="Camarines Sur" readonly />
+              </div>
+              <div class="mp-form-group">
+                <label>Municipality *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="municipality-trigger"
+                    onclick="toggleSelect('municipality')"><span id="municipality-label">Select Municipality</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="municipality-options">
+                    <div class="custom-option"
+                      onclick="pickOption('municipality','Iriga City');updateBarangay('Iriga City')">Iriga City</div>
+                    <div class="custom-option" onclick="pickOption('municipality','Sagnay');updateBarangay('Sagnay')">
+                      Sagnay</div>
+                  </div>
+                  <input type="hidden" id="municipality-value" name="municipality" />
+                </div>
+              </div>
+              <div class="mp-form-group">
+                <label>Barangay *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="barangay-trigger"
+                    onclick="toggleSelect('barangay')"><span id="barangay-label">Select Barangay</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="barangay-options">
+                    <div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first</div>
+                  </div>
+                  <input type="hidden" id="barangay-value" name="barangay" />
+                </div>
+              </div>
+            </div>
+            <div class="mp-form-group"><label>Street/Purok/Sitio</label><input type="text"
+                placeholder="Enter street, purok, or sitio" /></div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Crops Planted</div>
+            <div class="inner-card green" style="margin-bottom:16px">
+              <div class="inner-card-title">Rice - Area (hectares)</div>
+              <div class="grid-4">
+                <div class="mp-form-group"><label>Irrigated</label><input type="number" id="rice-irrigated" value="0.00"
+                    step="0.01" min="0" oninput="computeTotalRice()" />
+                </div>
+                <div class="mp-form-group"><label>Rainfed</label><input type="number" id="rice-rainfed" value="0.00"
+                    step="0.01" min="0" oninput="computeTotalRice()" /></div>
+                <div class="mp-form-group"><label>Upland</label><input type="number" id="rice-upland" value="0.00"
+                    step="0.01" min="0" oninput="computeTotalRice()" /></div>
+                <div class="mp-form-group"><label>Total</label><input type="number" id="rice-total" value="0.00"
+                    step="0.01" readonly />
+                </div>
+              </div>
+            </div>
+            <div class="inner-card beige" style="margin-bottom:16px">
+              <div class="inner-card-title">Yield</div>
+              <div class="grid-4">
+                <div class="mp-form-group"><label>Dry Season (bag/ha)</label><input type="number" value="0" min="0" />
+                </div>
+                <div class="mp-form-group"><label>Wet season (bag/ha)</label><input type="number" value="0" min="0" />
+                </div>
+                <div class="mp-form-group"><label>Kg/bag</label><input type="number" value="50" min="50" /></div>
+                <div class="mp-form-group"><label>Other Crops (specify)</label><input type="text"
+                    placeholder="e.g., Corn, Vegetables" /></div>
+              </div>
+            </div>
+            <div class="inner-card light" style="margin-bottom:16px">
+              <div class="inner-card-title">Annual Income (Php)</div>
+              <div class="grid-3">
+                <div class="mp-form-group"><label>Year 1</label><input type="text" value="0.00"
+                    oninput="formatIncome(this)" /></div>
+                <div class="mp-form-group"><label>Year 2</label><input type="text" value="0.00"
+                    oninput="formatIncome(this)" /></div>
+                <div class="mp-form-group"><label>Year 3</label><input type="text" value="0.00"
+                    oninput="formatIncome(this)" /></div>
+              </div>
+            </div>
+            <div class="inner-card light">
+              <div class="inner-card-title">Remarks (Challenges/Issues)</div>
+              <div class="grid-3">
+                <div class="mp-form-group"><label>Year 1</label><textarea
+                    placeholder="e.g., typhoon damage, low price"></textarea></div>
+                <div class="mp-form-group"><label>Year 2</label><textarea
+                    placeholder="e.g., lack of source of water"></textarea></div>
+                <div class="mp-form-group"><label>Year 3</label><textarea
+                    placeholder="e.g., pest &amp; disease"></textarea></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Tenurial Status</div>
+            <div class="grid-1-2">
+              <div class="mp-form-group">
+                <label>Land Tenure *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="tenure-trigger"
+                    onclick="toggleSelect('tenure')"><span id="tenure-label">Select status</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="tenure-options">
+                    <div class="custom-option" onclick="pickOption('tenure','Tenant')">Tenant</div>
+                    <div class="custom-option" onclick="pickOption('tenure','Owner')">Owner</div>
+                    <div class="custom-option" onclick="pickOption('tenure','Rental')">Rental</div>
+                    <div class="custom-option" onclick="pickOption('tenure','Lease')">Lease</div>
+                  </div>
+                  <input type="hidden" id="tenure-value" name="land_tenure" />
+                </div>
+              </div>
+              <div class="mp-form-group"><label>Types of Equipment/Machines/Facilities Owned</label><input type="text"
+                  placeholder="e.g., Hand tractor, Thresher, Water Pump" /></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Identification</div>
+            <div class="grid-1-2">
+              <div class="mp-form-group">
+                <label>Government ID Type *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="idtype-trigger"
+                    onclick="toggleSelect('idtype')"><span id="idtype-label">Select ID Type</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="idtype-options">
+                    <div class="custom-option"
+                      onclick="pickOption('idtype','Philippine Identification (PhilID/ePhilID)')">Philippine
+                      Identification (PhilID/ePhilID)</div>
+                    <div class="custom-option" onclick="pickOption('idtype','TIN ID')">TIN ID</div>
+                    <div class="custom-option" onclick="pickOption('idtype','PhilHealth ID')">PhilHealth ID</div>
+                    <div class="custom-option" onclick="pickOption('idtype','Voters ID')">Voter's ID</div>
+                    <div class="custom-option" onclick="pickOption('idtype','Drivers License')">Driver's License</div>
+                    <div class="custom-option" onclick="pickOption('idtype','PRC ID')">PRC ID</div>
+                    <div class="custom-option" onclick="pickOption('idtype','Postal ID')">Postal ID</div>
+                    <div class="custom-option" onclick="pickOption('idtype','Senior Citizen ID')">Senior Citizen ID
+                    </div>
+                  </div>
+                  <input type="hidden" id="idtype-value" name="id_type" />
+                </div>
+              </div>
+              <div class="mp-form-group"><label>ID Number *</label><input type="text" id="id-number-input"
+                  placeholder="Enter ID Number" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section" style="border-top:1px solid #e0e0e0;padding-top:32px">
+            <div class="disclaimer">By submitting this form, I certify that all information provided is true and
+              correct. I understand that any false statement may result in the denial or cancellation of Member Profile
+              Application.</div>
+            <div id="submit-success"
+              style="display:none;background:#dcf0dc;color:#1a6b1a;border:1.5px solid #a8d8a8;border-radius:10px;padding:14px 18px;font-size:14px;font-weight:700;margin-bottom:16px;">
+              ✓ Application submitted successfully! Your cluster records have been sent to the Agriculture Office for
+              review.
+            </div>
+            <div id="submit-error"
+              style="display:none;background:#fdecea;color:#c0392b;border:1.5px solid #f5b7b1;border-radius:10px;padding:14px 18px;font-size:13px;font-weight:700;margin-bottom:16px;">
+            </div>
+            <button class="btn-submit" id="submit-btn" onclick="submitApplication()">Submit Application</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- PENDING APPLICATIONS -->
+    <div class="view" id="view-pending">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1>Pending Applications</h1>
+            <p id="pending-page-subtitle">No applications awaiting review</p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div class="search-bar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="text" id="pending-search-input" placeholder="Search applications..."
+                oninput="renderPendingTable()">
+            </div>
+            <select id="pending-cluster-filter" onchange="renderPendingTable()"
+              style="height: 38px; border-radius: 6px; border: 1px solid #ccc; padding: 0 10px; font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none; background: #fff; cursor: pointer;">
+              <option value="">All Clusters</option>
+              <option value="Ka-Agriprenuers Agriculture Cooperative">Ka-Agriprenuers</option>
+              <option value="La Trinidad Farmers Association">La Trinidad</option>
+              <option value="Mabukug Farmers Association Inc.">Mabukug</option>
+              <option value="SAGMONREY-AN Communal Irrigation Association Inc.">SAGMONREY-AN</option>
+              <option value="Salvacion Farmers Agriculture Cooperative">Salvacion</option>
+              <option value="Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.">SAMMAFIA</option>
+              <option value="San Jose Farmers Association of Iriga City Camarines Sur">San Jose</option>
+              <option value="Sto. Nino Farmers Association">Sto. Nino</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body no-pad">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="text-transform:uppercase;">Applicant</th>
+                <th style="text-transform:uppercase;text-align:center;">Cluster</th>
+                <th style="text-transform:uppercase;">Submitted</th>
+                <th style="text-transform:uppercase;">Type</th>
+                <th style="text-transform:uppercase;text-align:center;">ID Verified</th>
+                <th style="text-transform:uppercase;text-align:center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pending-table-body">
+              <tr>
+                <td colspan="6" style="text-align:center;color:var(--text-light);padding:24px;">No pending applications
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RSBSA ENROLMENTS -->
+    <div class="view" id="view-rsbsa">
+      <div class="page-header">
+        <div class="page-header-row" style="align-items: center;">
+          <div>
+            <div onclick="showView('reports')"
+              style="font-size: 14px; font-weight: 700; color: #555; cursor: pointer; font-family: 'Montserrat', sans-serif; margin-bottom: 4px;">
+              &lt; Back to Reports
+            </div>
+            <h1 style="margin-top:0;">RSBSA Enrolments</h1>
+            <p id="rsbsa-page-subtitle">No RSBSA enrolments awaiting review</p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div class="search-bar">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="text" id="rsbsa-search-input" placeholder="Search enrolments..."
+                oninput="renderRsbsaTable()">
+            </div>
+            <button class="btn-primary" onclick="exportRsbsaCSV()"
+              style="padding: 0 16px; height: 38px; box-sizing: border-box; font-weight: 700; background-color: #1e4620; border: none; color: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center; white-space:nowrap;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                style="margin-right: 6px;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Export to CSV
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body no-pad">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="text-transform:uppercase;">Applicant</th>
+                <th style="text-transform:uppercase;text-align:center;">Barangay</th>
+                <th style="text-transform:uppercase;">Submitted</th>
+                <th style="text-transform:uppercase;text-align:center;">Files</th>
+                <th style="text-transform:uppercase;text-align:center;">Status</th>
+                <th style="text-transform:uppercase;text-align:center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="rsbsa-table-body">
+              <tr>
+                <td colspan="6" style="text-align:center;color:var(--text-light);padding:24px;">No RSBSA enrolments</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- REPORTS -->
+    <div class="view" id="view-reports">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1>Reports</h1>
+            <p>Agricultural data overview for Iriga City</p>
+          </div>
+
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+        <div class="card" style="cursor:pointer;" onclick="showView('cluster-report', null); renderClusterReport();">
+          <div class="card-body">
+            <div
+              style="width:44px;height:44px;background:#eaf3ea;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </div>
+            <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Member Profile Application</div>
+            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">Register or update your farmer
+              membership profile with the City Agriculture Office. Required for accessing assistance programs and
+              subsidies.</div>
+            <a href="#" onclick="event.preventDefault();showView('cluster-report',null);renderClusterReport();"
+              style="font-size:13px;font-weight:700;color:#2d6a2d;text-decoration:none;">Continue →</a>
+          </div>
+        </div>
+        <div class="card" style="cursor:pointer;" onclick="showView('rsbsa', null)">
+          <div class="card-body">
+            <div
+              style="width:44px;height:44px;background:#eaf3ea;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
+                <polyline points="9 11 12 14 22 4" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+              </svg>
+            </div>
+            <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">RSBSA Enrollment Application
+            </div>
+            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">Enroll in the Registry System for
+              Basic Sectors in Agriculture (RSBSA). Required for government agricultural programs, insurance, and
+              financial assistance.</div>
+            <a href="#" onclick="event.preventDefault();"
+              style="font-size:13px;font-weight:700;color:#2d6a2d;text-decoration:none;">Continue →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLUSTER RECORDS REPORT -->
+    <div class="view" id="view-cluster-report">
+      <div class="page-header">
+        <div class="page-header-row" style="align-items: center;">
+          <div>
+            <div onclick="showView('reports', document.querySelector('.sidebar-item[onclick*=\'reports\']'))"
+              style="font-size: 14px; font-weight: 700; color: #555; cursor: pointer; font-family: 'Montserrat', sans-serif; margin-bottom: 4px;">
+              &lt; Back to Reports
+            </div>
+            <h1 style="margin-top:0;">Cluster Records Report</h1>
+            <p>Select a cluster to view its farmers</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="cluster-tables-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+    </div>
+
+    <!-- CLUSTER DETAILS REPORT -->
+    <div class="view" id="view-cluster-details">
+      <div class="page-header">
+        <div class="page-header-row" style="align-items: center;">
+          <div>
+            <div onclick="showView('cluster-report', null)"
+              style="font-size: 14px; font-weight: 700; color: #555; cursor: pointer; font-family: 'Montserrat', sans-serif; margin-bottom: 4px;">
+              &lt; Back to Clusters
+            </div>
+            <h1 style="margin-top:0;" id="cluster-details-title">Cluster Name</h1>
+            <p>Farmers registered under this cluster</p>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <div
+              style="display: flex; align-items: center; background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 0 12px; height: 38px; box-sizing: border-box; width: 250px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"
+                style="margin-right: 8px; flex-shrink: 0;">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="text" id="cluster-details-search-input" placeholder="Search farmers..."
+                style="border:none;background:transparent;outline:none;font-family:'Montserrat',sans-serif;font-size:13px;width:100%;color:#333; height: 100%; box-sizing: border-box;"
+                onkeyup="renderClusterDetailsTable()">
+            </div>
+            <button class="btn-primary" onclick="exportClusterDetailsCSV()"
+              style="padding: 0 16px; height: 38px; box-sizing: border-box; font-weight: 700; background-color: #1e4620; border: none; color: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                style="margin-right: 6px;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Export to CSV
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body no-pad table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="text-transform:uppercase;">#</th>
+                <th style="text-transform:uppercase;">Full Name</th>
+                <th style="text-transform:uppercase;">Contact</th>
+                <th style="text-transform:uppercase;">Address</th>
+                <th style="text-transform:uppercase;">Total Land Area</th>
+                <th style="text-transform:uppercase;">Type of Farm</th>
+                <th style="text-transform:uppercase;">Date</th>
+                <th style="text-transform:uppercase;text-align:center;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="cluster-details-table-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RSBSA MODAL -->
+    <div id="rsbsa-modal"
+      style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:300; align-items:center; justify-content:center;">
+      <div class="card" style="width:500px; max-width:90%; max-height:90vh; overflow-y:auto; margin:0;">
+        <div class="card-header" style="justify-content:space-between;">
+          <h2 style="margin:0;">Review RSBSA Application</h2>
+          <button onclick="closeRsbsaModal()"
+            style="background:none; border:none; font-size:20px; cursor:pointer; color:#888;">&times;</button>
+        </div>
+        <div class="card-body">
+          <div id="rsbsa-modal-content"></div>
+          <div style="margin-top:20px;">
+            <label style="font-size:13px;font-weight:700;display:block;margin-bottom:8px;">Admin Remarks
+              (Optional)</label>
+            <textarea id="rsbsa-admin-remarks" placeholder="Add comments, issues, or missing requirements..."
+              style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; min-height:80px; font-family:'Montserrat',sans-serif; font-size:13px;"></textarea>
+          </div>
+          <div style="display:flex; gap:10px; margin-top:20px; justify-content:flex-end;">
+            <input type="hidden" id="rsbsa-modal-id">
+            <button class="btn-outline" style="color:#c0392b; border-color:#c0392b; background:#fdecea;"
+              onclick="submitRsbsaReview('Rejected')">Reject</button>
+            <button class="btn-primary" onclick="submitRsbsaReview('Approved')">Approve</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMBER PROFILE REVIEW MODAL -->
+    <div id="member-review-modal"
+      style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:300; align-items:center; justify-content:center;">
+      <div class="card"
+        style="width:800px; max-width:95%; max-height:95vh; overflow-y:auto; margin:0; border-radius:12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+        <div class="card-header"
+          style="justify-content:space-between; background: var(--green-pale); border-bottom: 2px solid var(--green-mid);">
+          <h2 style="margin:0; color: var(--green-dark); font-size: 18px; font-weight: 800;">Review Member Profile
+            Application</h2>
+          <button onclick="closeMemberReviewModal()"
+            style="background:none; border:none; font-size:24px; cursor:pointer; color:#888; font-weight:300; transition: color 0.2s;"
+            onmouseover="this.style.color='#111'" onmouseout="this.style.color='#888'">&times;</button>
+        </div>
+        <div class="card-body" style="padding: 24px;">
+          <div id="member-modal-content"></div>
+
+          <div
+            style="margin-top:24px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+            <label
+              style="font-size:13px;font-weight:700;display:block;margin-bottom:10px; color: var(--text-dark);">Admin
+              Remarks & Feedback</label>
+            <textarea id="member-admin-remarks"
+              placeholder="Add comments, issues, or missing requirements for the farmer..."
+              style="width:100%; padding:12px; border:1px solid #ccc; border-radius:6px; min-height:100px; font-family:'Montserrat',sans-serif; font-size:13px; outline: none; transition: border-color 0.2s;"
+              onfocus="this.style.borderColor='var(--green-mid)'" onblur="this.style.borderColor='#ccc'"></textarea>
+          </div>
+
+          <div
+            style="display:flex; gap:12px; margin-top:24px; justify-content:flex-end; border-top: 1px solid #eee; padding-top: 20px;">
+            <input type="hidden" id="member-modal-id">
+            <button class="btn-outline"
+              style="color:#c0392b; border: 1.5px solid #c0392b; background:#fff; padding: 10px 24px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s;"
+              onmouseover="this.style.background='#fdecea'" onmouseout="this.style.background='#fff'"
+              onclick="submitMemberReview('Rejected')">Reject Application</button>
+            <button class="btn-primary"
+              style="background: var(--green-mid); border: 1.5px solid var(--green-mid); padding: 10px 32px; font-weight: 700; border-radius: 8px; cursor: pointer; color: #fff; transition: all 0.2s;"
+              onmouseover="this.style.background='#1e4620'; this.style.borderColor='#1e4620'"
+              onmouseout="this.style.background='var(--green-mid)'; this.style.borderColor='var(--green-mid)'"
+              onclick="submitMemberReview('Approved')">Approve Application</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- IMAGE PREVIEW MODAL (LIGHTBOX) -->
+  <div id="image-preview-modal"
+    style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); z-index:1000; align-items:center; justify-content:center; cursor:zoom-out;"
+    onclick="closeImagePreview()">
+    <button
+      style="position:absolute; top:20px; right:30px; background:none; border:none; color:#fff; font-size:40px; cursor:pointer; font-weight:300;">&times;</button>
+    <img id="preview-img" src=""
+      style="max-width:90%; max-height:90%; border-radius:4px; box-shadow:0 0 30px rgba(0,0,0,0.5); object-fit:contain; cursor:default;"
+      onclick="event.stopPropagation()">
+  </div>
+
+  <script>
+    // ── ROLE GUARD ──────────────────────────────────────
+    (function () {
+      var role = sessionStorage.getItem('user_role');
+      if (role === 'farmer') {
+        window.location.replace('farmer-dashboard.html');
+      }
+    })();
+
+    // ── DYNAMIC DATE ────────────────────────────────────
+    (function () {
+      var el = document.getElementById('stripe-date');
+      if (el) {
+        var now = new Date();
+        var opts = { year: 'numeric', month: 'long', day: 'numeric' };
+        el.textContent = 'Iriga City Agriculture Office — ' + now.toLocaleDateString('en-PH', opts);
+      }
+    })();
+
+    // ── ADMIN NAME FROM SESSION ─────────────────────────
+    (function () {
+      var email = sessionStorage.getItem('user_email') || '';
+      var name = email ? email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Admin';
+      var initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      var nameEl = document.getElementById('nav-username');
+      var avatarEl = document.getElementById('nav-avatar');
+      if (nameEl) nameEl.textContent = name;
+      if (avatarEl) avatarEl.textContent = initials || 'A';
+    })();
+
+    // ── VIEW SWITCHING ──────────────────────────────────
+    // ── VIEW HISTORY TRACKING ──────────────────────────
+    let viewHistory = [];
+
+    function showView(name, clickedEl, isBack = false) {
+      // Track history before switching
+      const currentActive = document.querySelector('.view.active');
+      if (currentActive && !isBack) {
+        const currentName = currentActive.id.replace('view-', '');
+        if (currentName !== name) {
+          viewHistory.push(currentName);
+        }
+      }
+
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const target = document.getElementById('view-' + name);
+      if (target) target.classList.add('active');
+
+      // Auto-reset the Add Farmer form whenever navigating to it
+      if (name === 'add-farmer') resetAddFarmerForm();
+
+      document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+      if (clickedEl) {
+        clickedEl.classList.add('active');
+      } else {
+        // Try to find matching sidebar item if clickedEl is null
+        document.querySelectorAll('.sidebar-item').forEach(s => {
+          const oc = s.getAttribute('onclick');
+          if (oc && oc.includes("'" + name + "'")) s.classList.add('active');
+        });
+      }
+    }
+
+    function goBackView() {
+      if (viewHistory.length > 0) {
+        const prevView = viewHistory.pop();
+        showView(prevView, null, true);
+      }
+    }
+
+    document.addEventListener('keydown', function (e) {
+      // Alt + Left Arrow
+      if (e.altKey && e.key === 'ArrowLeft') {
+        if (viewHistory.length > 0) {
+          e.preventDefault();
+          goBackView();
+        }
+      }
+    });
+
+
+    function goToReports() {
+      const sidebarReports = document.querySelector('.sidebar-item[onclick*="reports"]');
+      showView('reports', sidebarReports);
+    }
+
+    // ── CLUSTER REPORT DATA ─────────────────────────────
+    // Reads from sessionStorage key 'member_profile_applications'
+    // Each application object is expected to have:
+    //   { firstName, lastName, middleName, cluster, barangay, cropType,
+    //     hectares, landTenure, membership, submittedAt, status }
+
+    const KNOWN_CLUSTERS = [
+      'Ka-Agriprenuers Agriculture Cooperative',
+      'La Trinidad Farmers Association',
+      'Mabukug Farmers Association Inc.',
+      'SAGMONREY-AN Communal Irrigation Association Inc.',
+      'Salvacion Farmers Agriculture Cooperative',
+      'Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.',
+      'San Jose Farmers Association of Iriga City Camarines Sur',
+      'Sto. Nino Farmers Association'
+    ];
+
+    async function getApplications() {
+      try {
+        const response = await fetch('/api/applications');
+        if (!response.ok) throw new Error('Network error');
+        return await response.json();
+      } catch (e) {
+        console.error('Failed to fetch applications:', e);
+        return [];
+      }
+    }
+
+    async function renderDashboardOverview() {
+      // Fetch dynamic data
+      const apps = await getApplications();
+      window.allApps = apps;
+
+      const memberApps = apps.filter(a => a.applicationType !== 'RSBSA Enrolment');
+      const rsbsaApps = apps.filter(a => a.applicationType === 'RSBSA Enrolment');
+
+      // Compute dynamic stats
+      const approvedMemberApps = memberApps.filter(a => a.status === 'Approved');
+      const totalFarmers = approvedMemberApps.length;
+      const pendingAppsCount = memberApps.filter(a => !a.status || a.status === 'Pending').length;
+      const pendingRsbsaCount = rsbsaApps.filter(a => !a.status || a.status === 'Pending').length;
+
+      // Update Overview Design Match with dynamic numbers
+      document.getElementById('stat-farmers').textContent = totalFarmers;
+      document.getElementById('stat-farmers-sub').textContent = '';
+      document.getElementById('sidebar-farmer-count').textContent = approvedMemberApps.length;
+
+      document.getElementById('stat-pending').textContent = pendingAppsCount;
+      document.getElementById('stat-pending-sub').textContent = '';
+      document.getElementById('sidebar-pending-count').textContent = pendingAppsCount;
+      if (document.getElementById('sidebar-rsbsa-count')) {
+        document.getElementById('sidebar-rsbsa-count').textContent = rsbsaApps.length;
+      }
+
+      let totalHectares = 0;
+      approvedMemberApps.forEach(a => {
+        if (a.hectares && !isNaN(a.hectares)) totalHectares += parseFloat(a.hectares);
+      });
+
+      document.getElementById('stat-hectares').textContent = Math.round(totalHectares);
+      document.getElementById('stat-hectares-sub').textContent = '';
+
+      // Render Cluster Progress — count from ALL approved member profile applications
+      // Build from actual data first, then fill in any known clusters not yet in data at 0
+      const clusterCounts = {};
+
+      // First pass: count from real approved applications
+      approvedMemberApps.forEach(a => {
+        if (a.cluster) {
+          const key = a.cluster.trim();
+          clusterCounts[key] = (clusterCounts[key] || 0) + 1;
+        }
+      });
+
+      // Second pass: add any KNOWN_CLUSTERS not yet present (so they show at 0)
+      KNOWN_CLUSTERS.forEach(name => {
+        if (!(name in clusterCounts)) clusterCounts[name] = 0;
+      });
+
+      let clusterData = Object.keys(clusterCounts).map(name => ({
+        name: name
+          .replace('Agriculture Cooperative', '<br>Agriculture Coop.')
+          .replace('Farmers Association Inc.', '<br>Farmers Assoc. Inc.')
+          .replace('Farmers Association', '<br>Farmers Assoc.')
+          .replace('Communal Irrigation Association Inc.', '<br>CIA Inc.')
+          .replace('Farmer Irrigators Association (SAMMAFIA) Inc.', '<br>(SAMMAFIA) Inc.')
+          .replace('of Iriga City Camarines Sur', '<br>Iriga City'),
+        rawName: name,
+        count: clusterCounts[name]
+      })).sort((a, b) => b.count - a.count);
+
+      const maxCount = clusterData.length && clusterData[0].count > 0 ? clusterData[0].count : 1;
+      clusterData.forEach(c => {
+        c.percent = Math.round((c.count / maxCount) * 100);
+      });
+
+      if (clusterData.length === 0) {
+        document.getElementById('chart-cluster').innerHTML = '<div style="padding: 20px; color: var(--text-light); font-size: 13px;">No cluster data available.</div>';
+      } else {
+        document.getElementById('chart-cluster').innerHTML = clusterData.map(c => `
+          <div class="cluster-progress-col" title="${c.rawName}: ${c.count} approved farmer(s)">
+            <div class="cluster-progress-val">${c.count}</div>
+            <div class="cluster-progress-bar-bg">
+              <div class="cluster-progress-bar-fill" style="width: ${c.percent}%"></div>
+            </div>
+            <div class="cluster-progress-label">${c.name}</div>
+          </div>
+        `).join('');
+      }
+
+      // Render Transactions — only Approved and Pending (exclude Rejected)
+      const tbodyTransactions = document.getElementById('transactions-body');
+      // Sort by submittedAt descending, skip Rejected
+      const transactions = [...memberApps]
+        .filter(a => a.status !== 'Rejected')
+        .sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+
+      if (transactions.length === 0) {
+        tbodyTransactions.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--text-light);padding:20px;">No transactions yet</td></tr>`;
+      } else {
+        tbodyTransactions.innerHTML = transactions.map(a => {
+          const name = [a.lastName, a.firstName, a.middleName].filter(Boolean).join(', ') || '—';
+          const statusClass = a.status === 'Approved' ? 'badge-green' : a.status === 'Rejected' ? 'badge-red' : 'badge-orange';
+          const statusText = a.status || 'Pending';
+          return `
+            <tr>
+              <td style="font-weight:600;">${name}</td>
+              <td style="color:#666;font-size:12px;">${a.cluster || '—'}</td>
+              <td style="color:#555;">${a.cropType || '—'}</td>
+              <td><span class="badge ${statusClass}">${statusText}</span></td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Dynamic Data for Other Views
+      window.pendingApps = memberApps.filter(a => a.status === 'Pending');
+      renderPendingTable();
+
+      // Populate RSBSA Table (must be set BEFORE renderFarmersTable so RSBSA status shows correctly)
+      window.rsbsaApps = rsbsaApps;
+      renderRsbsaTable();
+
+      // Populate Farmer Registry (All Farmers)
+      window.allFarmers = approvedMemberApps;
+      renderFarmersTable();
+    }
+
+    function renderPendingTable() {
+      const tbodyPending = document.getElementById('pending-table-body');
+      if (!tbodyPending || !window.pendingApps) return;
+
+      const q = (document.getElementById('pending-search-input')?.value || '').toLowerCase();
+      const clusterFilter = document.getElementById('pending-cluster-filter')?.value || '';
+
+      const filtered = window.pendingApps.filter(a => {
+        const name = [a.firstName, a.middleName, a.lastName].filter(Boolean).join(' ').toLowerCase();
+        const cluster = (a.cluster || '').toLowerCase();
+
+        const matchesSearch = name.includes(q) || cluster.includes(q);
+        const matchesCluster = !clusterFilter || a.cluster === clusterFilter || (clusterFilter.includes('San Jose') && cluster.includes('san jose'));
+
+        return matchesSearch && matchesCluster;
+      });
+
+      if (filtered.length === 0) {
+        document.getElementById('pending-page-subtitle').textContent = q ? "No applications match your search" : "No applications awaiting review";
+        tbodyPending.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-light);padding:24px;">No applications found</td></tr>`;
+      } else {
+        document.getElementById('pending-page-subtitle').textContent = `${filtered.length} applications awaiting review and approval`;
+        tbodyPending.innerHTML = filtered.map((a, i) => {
+          const name = [a.firstName, a.middleName, a.lastName].filter(Boolean).join(' ') || '—';
+          const date = a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '—';
+          const type = a.applicationType || 'Member Profile';
+          const userRsbsa = window.rsbsaApps ? window.rsbsaApps.find(r => r.user_id === a.user_id) : null;
+          let idBadge = '<span class="badge" style="background:#f0f0f0;color:#888;font-weight:700;border:1px solid #ddd;">Not Enrolled</span>';
+          if (userRsbsa) {
+            if (userRsbsa.status === 'Approved') idBadge = '<span class="badge badge-green" style="font-weight:700;">Registered</span>';
+            else if (userRsbsa.status === 'Rejected') idBadge = '<span class="badge badge-red" style="font-weight:700;">Rejected</span>';
+            else idBadge = '<span class="badge badge-orange" style="font-weight:700;">Pending</span>';
+          }
+
+          return `
+            <tr>
+              <td style="color:#555;">${name}</td>
+              <td style="color:#666;font-size:12px;line-height:1.2;max-width:180px;text-align:center;">${a.cluster || '—'}</td>
+              <td style="color:#555;">${date}</td>
+              <td style="color:#555;">${type}</td>
+              <td style="text-align:center;">${idBadge}</td>
+              <td style="text-align:center;">
+                <div style="display:flex;gap:8px;justify-content:center;">
+                  <button style="background:#fff;border:1px solid #2d6a2d;color:#2d6a2d;font-weight:700;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;" onclick="openMemberReviewModal(${a.id})">Review</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
+    function robustParseFiles(uploadedFiles) {
+      if (!uploadedFiles) return [];
+      const fragments = uploadedFiles.split('|||').filter(Boolean);
+      let allFiles = [];
+      fragments.forEach(fragment => {
+        const trimmed = fragment.trim();
+        if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+          try {
+            const parsed = JSON.parse(trimmed);
+            if (Array.isArray(parsed)) {
+              allFiles = allFiles.concat(parsed);
+            } else {
+              allFiles.push(parsed);
+            }
+          } catch (e) {
+            let cleaned = trimmed;
+            if (cleaned.startsWith('[')) cleaned = cleaned.substring(1);
+            if (cleaned.endsWith(']')) cleaned = cleaned.substring(0, cleaned.length - 1);
+            try {
+              const secondTry = JSON.parse(cleaned);
+              allFiles.push(secondTry);
+            } catch (e2) {
+              allFiles.push(trimmed);
+            }
+          }
+        } else {
+          allFiles.push(trimmed);
+        }
+      });
+      return allFiles;
+    }
+
+    function renderRsbsaTable() {
+      const rsbsaTable = document.getElementById('rsbsa-table-body');
+      if (!rsbsaTable || !window.rsbsaApps) return;
+
+      const pendingRsbsaCount = window.rsbsaApps.filter(a => !a.status || a.status === 'Pending').length;
+      const q = (document.getElementById('rsbsa-search-input')?.value || '').toLowerCase();
+
+      const filtered = window.rsbsaApps.filter(a => {
+        const name = [a.firstName, a.lastName].filter(Boolean).join(' ').toLowerCase();
+        const brgy = (a.barangay || '').toLowerCase();
+        return name.includes(q) || brgy.includes(q);
+      });
+
+      if (filtered.length === 0) {
+        document.getElementById('rsbsa-page-subtitle').textContent = q ? "No enrolments match your search" : "No RSBSA enrolments found";
+        rsbsaTable.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-light);padding:24px;">No enrolments found</td></tr>`;
+      } else {
+        document.getElementById('rsbsa-page-subtitle').textContent = pendingRsbsaCount > 0 ? `${pendingRsbsaCount} enrolments awaiting review` : "All enrolments reviewed";
+        rsbsaTable.innerHTML = filtered.map(a => {
+          const name = [a.lastName, a.firstName].filter(Boolean).join(', ') || '—';
+          const date = a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-US') : '—';
+          const files = robustParseFiles(a.uploadedFiles);
+          const filesCount = files.length;
+          const statusClass = a.status === 'Approved' ? 'badge-green' : a.status === 'Rejected' ? 'badge-red' : 'badge-orange';
+          return `
+            <tr>
+              <td style="color:#555;font-weight:600;">${name}</td>
+              <td style="color:#666;text-align:center;">${a.barangay || '—'}</td>
+              <td style="color:#555;">${date}</td>
+              <td style="color:#555;text-align:center;">${filesCount} files</td>
+              <td style="text-align:center;"><span class="badge ${statusClass}">${a.status || 'Pending'}</span></td>
+              <td style="text-align:center;">
+                <div style="display:flex;gap:8px;justify-content:center;">
+                  <button style="background:#fff;border:1px solid #2d6a2d;color:#2d6a2d;font-weight:700;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;" onclick='openRsbsaModal(${a.id})'>Review</button>
+                  <button style="background:#fff;border:1px solid #c0392b;color:#c0392b;font-weight:700;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;" onclick="deleteRsbsaEnrolment(${a.id})">Delete</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
+    // RSBSA Modal Functions
+    function openRsbsaModal(id) {
+      const app = window.allApps.find(a => a.id === id);
+      if (!app) return;
+      document.getElementById('rsbsa-modal-id').value = id;
+      document.getElementById('rsbsa-admin-remarks').value = '';
+
+      const files = robustParseFiles(app.uploadedFiles);
+      let filesHtml = files.length ? files.map(f => {
+        if (typeof f === 'string') {
+          return `<div style="padding:4px 0;border-bottom:1px solid #eee;color:#1a4fa0;">📄 ${f}</div>`;
+        } else {
+          let fileLink = `<div style="color:#1a4fa0;">📄 ${f.name || 'File'}</div>`;
+          if (f.dataUrl) {
+            if (f.dataUrl.startsWith('data:image/')) {
+              fileLink = `
+                  <div style="display:inline-flex; align-items:center; gap:10px; cursor:pointer;" onclick="viewImage('${f.dataUrl}', '${f.name || 'Image'}')">
+                    <img src="${f.dataUrl}" alt="${f.name || 'Image'}" style="height:48px; width:48px; object-fit:cover; border-radius:6px; border:1px solid #ccc; transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"/>
+                    <span style="color:#1a4fa0; text-decoration:underline; font-weight:600; font-size:13px;">${f.name || 'View'}</span>
+                  </div>`;
+            } else {
+              fileLink = `<a href="${f.dataUrl}" download="${f.name || 'file'}" style="color:#1a4fa0; text-decoration:underline; font-weight:600; display:inline-flex; align-items:center; gap:8px;">📄 ${f.name || 'Download'}</a>`;
+            }
+          }
+          return `<div style="padding:10px 0; border-bottom:1px solid #eee;"><div style="font-size:11px; font-weight:700; color:#666; margin-bottom:6px;">${f.category || 'Attachment'}</div>${fileLink}</div>`;
+        }
+      }).join('') : 'No files uploaded';
+
+      let remarksHtml = '';
+      if (app.adminRemarks) {
+        try {
+          const remarks = JSON.parse(app.adminRemarks);
+          if (Array.isArray(remarks) && remarks.length > 0) {
+            remarksHtml = `
+              <div style="margin-top:16px; border-top:1px solid #eee; padding-top:12px;">
+                <div style="font-size:12px; font-weight:700; color:#666; margin-bottom:8px;">Past Remarks History:</div>
+                ${remarks.map(r => `
+                  <div style="background:#f9f9f9; padding:10px; border-radius:6px; margin-bottom:8px; font-size:12px; border-left:4px solid ${r.type === 'approved' ? '#2d6a2d' : '#c0392b'};">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                      <span style="font-weight:700; text-transform:uppercase; font-size:10px; color:${r.type === 'approved' ? '#2d6a2d' : '#c0392b'};">${r.type}</span>
+                      <span style="color:#888; font-size:10px;">${r.date}</span>
+                    </div>
+                    <div style="color:#444; line-height:1.4;">${r.message}</div>
+                    <div style="text-align:right; font-size:10px; color:#aaa; margin-top:4px;">— ${r.author || 'Admin'}</div>
+                  </div>
+                `).reverse().join('')}
+              </div>`;
+          }
+        } catch (e) { }
+      }
+
+      document.getElementById('rsbsa-modal-content').innerHTML = `
+        <div style="font-size:14px; margin-bottom:8px;"><strong>Applicant:</strong> ${app.firstName} ${app.lastName}</div>
+        <div style="font-size:13px; margin-bottom:8px;"><strong>Barangay:</strong> ${app.barangay || '—'}</div>
+        <div style="font-size:13px; margin-bottom:16px;"><strong>Submitted:</strong> ${app.submittedAt ? new Date(app.submittedAt).toLocaleDateString() : ''}</div>
+        <div style="font-size:13px; margin-bottom:12px;"><strong>Uploaded Files:</strong><br><div style="background:#f4f7f0; padding:10px; border-radius:6px; margin-top:6px;">${filesHtml}</div></div>
+        ${remarksHtml}
+      `;
+      document.getElementById('rsbsa-modal').style.display = 'flex';
+    }
+
+    function viewImage(src, name) {
+      const modal = document.getElementById('image-preview-modal');
+      const img = document.getElementById('preview-img');
+      img.src = src;
+      img.alt = name;
+      modal.style.display = 'flex';
+    }
+
+    function closeImagePreview() {
+      document.getElementById('image-preview-modal').style.display = 'none';
+    }
+
+    // ── ESC key closes any open modal / lightbox ─────────────────────────────
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      // Image lightbox (highest priority)
+      const imgModal = document.getElementById('image-preview-modal');
+      if (imgModal && imgModal.style.display !== 'none') {
+        closeImagePreview();
+        return;
+      }
+      // RSBSA review modal
+      const rsbsaModal = document.getElementById('rsbsa-modal');
+      if (rsbsaModal && rsbsaModal.style.display !== 'none') {
+        closeRsbsaModal();
+        return;
+      }
+      // Member review modal
+      const memberModal = document.getElementById('member-review-modal');
+      if (memberModal && memberModal.style.display !== 'none') {
+        closeMemberReviewModal();
+        return;
+      }
+      // Confirm modal
+      const confirmModal = document.getElementById('confirm-modal');
+      if (confirmModal && confirmModal.style.display !== 'none') {
+        closeConfirmModal();
+      }
+    });
+    // ─────────────────────────────────────────────────────────────────────────
+
+    function closeRsbsaModal() {
+      document.getElementById('rsbsa-modal').style.display = 'none';
+    }
+
+    let confirmCallback = null;
+    function showConfirm(title, message, onConfirm) {
+      const modal = document.getElementById('confirm-modal');
+      const titleEl = document.getElementById('confirm-title');
+      const msgEl = document.getElementById('confirm-message');
+      const btn = document.getElementById('confirm-btn');
+
+      titleEl.textContent = title;
+      msgEl.textContent = message;
+      confirmCallback = onConfirm;
+
+      // Update button color based on action
+      if (title.toLowerCase().includes('delete') || title.toLowerCase().includes('reject')) {
+        btn.style.background = '#c0392b';
+        btn.style.borderColor = '#c0392b';
+      } else {
+        btn.style.background = 'var(--green-mid)';
+        btn.style.borderColor = 'var(--green-mid)';
+      }
+
+      modal.style.display = 'flex';
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirm-modal').style.display = 'none';
+      confirmCallback = null;
+    }
+
+    document.getElementById('confirm-btn')?.addEventListener('click', () => {
+      if (confirmCallback) confirmCallback();
+      closeConfirmModal();
+    });
+
+    function handleSignOut() {
+      showConfirm('Sign Out', 'Are you sure you want to sign out from the Admin Dashboard?', () => {
+        window.location.href = 'login.html';
+      });
+    }
+
+    async function submitRsbsaReview(status) {
+      showConfirm(`${status} Enrolment`, `Are you sure you want to mark this RSBSA enrolment as ${status}?`, async () => {
+        const id = document.getElementById('rsbsa-modal-id').value;
+        const remarksMsg = document.getElementById('rsbsa-admin-remarks').value.trim();
+
+        if (remarksMsg) {
+          const remarksObj = { type: status === 'Approved' ? 'approved' : 'rejected', message: remarksMsg, date: new Date().toLocaleDateString('en-US'), author: 'Admin' };
+          const app = window.allApps.find(a => a.id == id);
+          let remarksList = [];
+          if (app && app.adminRemarks) {
+            try { remarksList = JSON.parse(app.adminRemarks); if (!Array.isArray(remarksList)) remarksList = []; } catch (e) { }
+          }
+          remarksList.push(remarksObj);
+
+          try {
+            await fetch('/api/applications/' + id + '/remarks', {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ adminRemarks: JSON.stringify(remarksList) })
+            });
+          } catch (e) { console.error('Failed to save remarks'); }
+        }
+
+        try {
+          await fetch('/api/applications/' + id + '/status', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status })
+          });
+        } catch (e) { console.error('Failed to save status'); }
+
+        closeRsbsaModal();
+        renderDashboardOverview();
+      });
+    }
+
+    async function renderClusterReport() {
+      renderClusterTable();
+    }
+
+    function renderFarmersTable() {
+      const tbodyFarmers = document.getElementById('farmers-table-body');
+      const searchQuery = document.getElementById('farmer-search-input') ? document.getElementById('farmer-search-input').value.toLowerCase() : '';
+      const clusterFilter = document.getElementById('farmer-cluster-filter')?.value || '';
+
+      let apps = window.allFarmers || [];
+
+      if (searchQuery || clusterFilter) {
+        apps = apps.filter(a => {
+          const name = [a.firstName, a.middleName, a.lastName].filter(Boolean).join(' ').toLowerCase();
+          const cluster = (a.cluster || '').toLowerCase();
+
+          const matchesSearch = !searchQuery || name.includes(searchQuery) || cluster.includes(searchQuery);
+          const matchesCluster = !clusterFilter || a.cluster === clusterFilter || (clusterFilter.includes('San Jose') && cluster.includes('san jose'));
+
+          return matchesSearch && matchesCluster;
+        });
+      }
+      if (apps.length === 0) {
+        tbodyFarmers.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--text-light);padding:24px;">No farmers found</td></tr>`;
+        document.getElementById('farmers-page-subtitle').textContent = searchQuery ? "No matching farmers found" : "No registered farmers yet";
+      } else {
+        document.getElementById('farmers-page-subtitle').textContent = `Showing ${apps.length} registered farmers`;
+        tbodyFarmers.innerHTML = apps.map((a, i) => {
+          const name = [a.firstName, a.middleName, a.lastName].filter(Boolean).join(' ') || '—';
+          const num = String(i + 1).padStart(3, '0');
+          const userRsbsa = window.rsbsaApps ? window.rsbsaApps.find(r => r.user_id === a.user_id) : null;
+          let rsbsaBadge = '<span class="badge" style="background:#f0f0f0;color:#888;font-weight:700;border:1px solid #ddd;">Not Enrolled</span>';
+          if (userRsbsa) {
+            if (userRsbsa.status === 'Approved') rsbsaBadge = '<span class="badge badge-green" style="font-weight:700;">Registered</span>';
+            else if (userRsbsa.status === 'Rejected') rsbsaBadge = '<span class="badge badge-red" style="font-weight:700;">Rejected</span>';
+            else rsbsaBadge = '<span class="badge badge-orange" style="font-weight:700;">Pending</span>';
+          }
+          return `
+            <tr>
+              <td style="color:var(--text-light);font-size:13px;">${num}</td>
+              <td style="font-weight:500;color:#333;">${name}</td>
+              <td style="color:#666;font-size:12px;line-height:1.2;max-width:180px;">${a.cluster || '—'}</td>
+              <td style="color:#555;">${a.cropType || '—'}</td>
+              <td style="color:#555;">${a.hectares || '0.0'}</td>
+              <td style="color:#555;">${a.landTenure || '—'}</td>
+              <td>${rsbsaBadge}</td>
+              <td style="text-align:center;">
+                <button style="background:#fdecea;border:1px solid #c0392b;color:#c0392b;font-weight:700;padding:4px 16px;border-radius:4px;cursor:pointer;font-size:12px;" title="Delete Profile" onclick="deleteFarmerProfile(${a.id})">Delete</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
+    function openMemberReviewModal(id) {
+      const app = window.allApps.find(a => a.id === id);
+      if (!app) return;
+      document.getElementById('member-modal-id').value = id;
+      document.getElementById('member-admin-remarks').value = '';
+
+      let remarksHtml = '';
+      if (app.adminRemarks) {
+        try {
+          const remarks = JSON.parse(app.adminRemarks);
+          if (Array.isArray(remarks) && remarks.length > 0) {
+            remarksHtml = `
+              <div style="margin-top:24px; border-top:2px dashed #eee; padding-top:16px;">
+                <div style="font-size:13px; font-weight:800; color:#444; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  Admin Feedback History
+                </div>
+                <div style="display:grid; gap:10px;">
+                  ${remarks.map(r => `
+                    <div style="background:#f9fafb; padding:12px; border-radius:8px; font-size:12px; border-left:4px solid ${r.type === 'approved' ? '#2d6a2d' : '#c0392b'}; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                      <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                        <span style="font-weight:800; text-transform:uppercase; font-size:10px; color:${r.type === 'approved' ? '#2d6a2d' : '#c0392b'}; background:${r.type === 'approved' ? '#eef2e8' : '#fdecea'}; padding: 2px 8px; border-radius:4px;">${r.type}</span>
+                        <span style="color:#888; font-size:10px; font-weight:600;">${r.date}</span>
+                      </div>
+                      <div style="color:#444; line-height:1.5; font-weight:500;">${r.message}</div>
+                      <div style="text-align:right; font-size:10px; color:#aaa; margin-top:6px; font-style:italic;">— Reviewed by ${r.author || 'Admin'}</div>
+                    </div>
+                  `).reverse().join('')}
+                </div>
+              </div>`;
+          }
+        } catch (e) { }
+      }
+
+      // Compute age
+      let age = '—';
+      if (app.dob) {
+        const today = new Date();
+        const birthDate = new Date(app.dob);
+        age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+      }
+
+      const formatCurrency = (num) => {
+        if (num == null || num === '') return '—';
+        return '₱' + Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      };
+
+      const formatNumber = (num) => {
+        if (num == null || num === '') return '0';
+        return Number(num).toLocaleString('en-US');
+      };
+
+      document.getElementById('member-modal-content').innerHTML = `
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+          <!-- Left Column: Personal & Address -->
+          <div>
+            <div style="margin-bottom:20px;">
+              <h3 style="font-size:12px; text-transform:uppercase; color:var(--green-mid); letter-spacing:1px; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:4px;">Personal Information</h3>
+              <div style="display:grid; gap:8px;">
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Full Name:</span> <span style="font-weight:700; color:#111;">${app.firstName} ${app.middleName || ''} ${app.lastName}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Birthdate:</span> <span style="font-weight:600;">${app.dob || '—'} (Age: ${age})</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Sex:</span> <span style="font-weight:600;">${app.sex || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Civil Status:</span> <span style="font-weight:600;">${app.civilStatus || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Education:</span> <span style="font-weight:600;">${app.education || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Contact:</span> <span style="font-weight:600;">${app.contactNumber || '—'}</span></div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:20px;">
+              <h3 style="font-size:12px; text-transform:uppercase; color:var(--green-mid); letter-spacing:1px; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:4px;">Identification & Registry</h3>
+              <div style="display:grid; gap:8px;">
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">ID Type:</span> <span style="font-weight:600;">${app.idType || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">RSBSA No:</span> <span style="font-weight:700; color:var(--green-dark);">${app.rsbsaNo || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Status:</span> <span style="font-weight:600;">${app.statusIndicators || '—'}</span></div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:20px;">
+              <h3 style="font-size:12px; text-transform:uppercase; color:var(--green-mid); letter-spacing:1px; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:4px;">Address & Location</h3>
+              <div style="display:grid; gap:8px;">
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Street:</span> <span style="font-weight:600;">${app.street || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Barangay:</span> <span style="font-weight:600;">${app.barangay || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Municipality:</span> <span style="font-weight:600;">${app.municipality || '—'}, ${app.province || '—'}</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Farm Profile & Income -->
+          <div>
+            <div style="margin-bottom:20px;">
+              <h3 style="font-size:12px; text-transform:uppercase; color:var(--green-mid); letter-spacing:1px; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:4px;">Farm Profile</h3>
+              <div style="display:grid; gap:8px;">
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:120px; display:inline-block;">Permanent Cluster:</span> <span style="font-weight:700; color:#111;">${app.cluster || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:120px; display:inline-block;">Land Tenure:</span> <span style="font-weight:600;">${app.landTenure || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:120px; display:inline-block;">Membership:</span> <span style="font-weight:600;">${app.membership || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:120px; display:inline-block;">Primary Crop:</span> <span style="font-weight:700; color:var(--green-dark);">${app.cropType || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:120px; display:inline-block;">Other Crops:</span> <span style="font-weight:600;">${app.otherCrops || '—'}</span></div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:20px;">
+              <h3 style="font-size:12px; text-transform:uppercase; color:var(--green-mid); letter-spacing:1px; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:4px;">Production Data</h3>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; background:#f4f7f0; padding:12px; border-radius:8px;">
+                <div>
+                  <div style="font-size:11px; color:#666; font-weight:700; text-transform:uppercase; margin-bottom:4px;">Area (Hectares)</div>
+                  <div style="font-size:12px; margin-bottom:2px;"><span style="color:#888;">Irrigated:</span> ${app.riceIrrigated || '0'}</div>
+                  <div style="font-size:12px; margin-bottom:2px;"><span style="color:#888;">Rainfed:</span> ${app.riceRainfed || '0'}</div>
+                  <div style="font-size:12px; margin-bottom:2px;"><span style="color:#888;">Upland:</span> ${app.riceUpland || '0'}</div>
+                  <div style="font-size:13px; font-weight:700; margin-top:4px; border-top:1px solid #ddd; padding-top:2px;">Total: ${app.hectares || '0'} ha</div>
+                </div>
+                <div>
+                  <div style="font-size:11px; color:#666; font-weight:700; text-transform:uppercase; margin-bottom:4px;">Yield (Kg)</div>
+                  <div style="font-size:12px; margin-bottom:2px;"><span style="color:#888;">Dry:</span> ${formatNumber(app.yieldDry)}</div>
+                  <div style="font-size:12px; margin-bottom:2px;"><span style="color:#888;">Wet:</span> ${formatNumber(app.yieldWet)}</div>
+                  <div style="font-size:13px; font-weight:700; margin-top:20px; border-top:1px solid #ddd; padding-top:2px;">Total: ${formatNumber(app.yieldKg)} kg</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:20px;">
+              <h3 style="font-size:12px; text-transform:uppercase; color:var(--green-mid); letter-spacing:1px; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:4px;">Annual Income History</h3>
+              <div style="display:grid; gap:8px;">
+                <div style="font-size:13px; display:flex; justify-content:space-between; align-items:center;">
+                  <span style="color:#888; font-weight:600;">Year 1:</span> 
+                  <span style="font-weight:700; color:#111;">${formatCurrency(app.incomeY1)}</span>
+                </div>
+                ${app.remarksY1 ? `<div style="font-size:11px; color:#666; font-style:italic; background:#fff; padding:4px 8px; border-radius:4px; border:1px solid #eee;">"${app.remarksY1}"</div>` : ''}
+                
+                <div style="font-size:13px; display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                  <span style="color:#888; font-weight:600;">Year 2:</span> 
+                  <span style="font-weight:700; color:#111;">${formatCurrency(app.incomeY2)}</span>
+                </div>
+                ${app.remarksY2 ? `<div style="font-size:11px; color:#666; font-style:italic; background:#fff; padding:4px 8px; border-radius:4px; border:1px solid #eee;">"${app.remarksY2}"</div>` : ''}
+
+                <div style="font-size:13px; display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                  <span style="color:#888; font-weight:600;">Year 3:</span> 
+                  <span style="font-weight:700; color:#111;">${formatCurrency(app.incomeY3)}</span>
+                </div>
+                ${app.remarksY3 ? `<div style="font-size:11px; color:#666; font-style:italic; background:#fff; padding:4px 8px; border-radius:4px; border:1px solid #eee;">"${app.remarksY3}"</div>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div style="font-size:12px; color:#999; text-align:right; margin-top:12px;">Submitted on: ${app.submittedAt ? new Date(app.submittedAt).toLocaleString() : '—'}</div>
+        ${remarksHtml}
+      `;
+      document.getElementById('member-review-modal').style.display = 'flex';
+    }
+
+    function closeMemberReviewModal() {
+      document.getElementById('member-review-modal').style.display = 'none';
+    }
+
+    async function submitMemberReview(status) {
+      showConfirm(`${status} Application`, `Are you sure you want to mark this member profile as ${status}?`, async () => {
+        const id = document.getElementById('member-modal-id').value;
+        const remarksMsg = document.getElementById('member-admin-remarks').value.trim();
+
+        if (remarksMsg) {
+          const remarksObj = { type: status === 'Approved' ? 'approved' : 'rejected', message: remarksMsg, date: new Date().toLocaleDateString('en-US'), author: 'Admin' };
+          const app = window.allApps.find(a => a.id == id);
+          let remarksList = [];
+          if (app && app.adminRemarks) {
+            try { remarksList = JSON.parse(app.adminRemarks); if (!Array.isArray(remarksList)) remarksList = []; } catch (e) { }
+          }
+          remarksList.push(remarksObj);
+
+          try {
+            await fetch('/api/applications/' + id + '/remarks', {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ adminRemarks: JSON.stringify(remarksList) })
+            });
+          } catch (e) { console.error('Failed to save remarks'); }
+        }
+
+        try {
+          await fetch('/api/applications/' + id + '/status', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status })
+          });
+        } catch (e) { console.error('Failed to save status'); }
+
+        closeMemberReviewModal();
+        renderDashboardOverview();
+      });
+    }
+
+    async function updateApplicationStatus(id, status) {
+      // Keep for legacy or simple updates if needed, but the UI now uses modals
+      showConfirm(`${status} Application`, `Are you sure you want to mark this application as ${status}?`, async () => {
+        try {
+          const res = await fetch(`/api/applications/${id}/status`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status })
+          });
+          if (!res.ok) throw new Error('Failed to update status');
+          renderDashboardOverview();
+        } catch (e) {
+          alert(e.message);
+        }
+      });
+    }
+
+    async function deleteFarmerProfile(id) {
+      showConfirm('Delete Profile', 'Are you sure you want to permanently delete this farmer profile?', async () => {
+        try {
+          const res = await fetch(`/api/applications/${id}`, {
+            method: 'DELETE'
+          });
+          if (!res.ok) throw new Error('Failed to delete profile');
+          renderDashboardOverview();
+        } catch (e) {
+          alert(e.message);
+        }
+      });
+    }
+
+    async function deleteRsbsaEnrolment(id) {
+      showConfirm('Delete Enrolment', 'Are you sure you want to delete this RSBSA enrolment?', async () => {
+        try {
+          const res = await fetch(`/api/applications/${id}`, {
+            method: 'DELETE'
+          });
+          if (!res.ok) throw new Error('Failed to delete enrolment');
+          renderDashboardOverview();
+        } catch (e) {
+          alert(e.message);
+        }
+      });
+    }
+
+
+
+    async function renderClusterTable() {
+      const container = document.getElementById('cluster-tables-container');
+      let html = '';
+
+      KNOWN_CLUSTERS.forEach(clusterName => {
+        html += `
+        <div onclick="openClusterDetails('${clusterName}')" style="background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 16px 20px; font-weight: 700; color: #555; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; transition: background 0.15s, border-color 0.15s;" onmouseover="this.style.borderColor='var(--green-mid)';" onmouseout="this.style.borderColor='#ccc';">
+          ${clusterName}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2.5"><polyline points="9 18 15 12 9 6" /></svg>
+        </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function openClusterDetails(clusterName) {
+      window.currentViewCluster = clusterName;
+      document.getElementById('cluster-details-title').textContent = clusterName;
+      const searchInput = document.getElementById('cluster-details-search-input');
+      if (searchInput) searchInput.value = '';
+      showView('cluster-details', null);
+      renderClusterDetailsTable();
+    }
+
+    async function renderClusterDetailsTable() {
+      let apps = await getApplications();
+      apps = apps.filter(a => a.applicationType !== 'RSBSA Enrolment' && a.status === 'Approved');
+
+      const searchInputEl = document.getElementById('cluster-details-search-input');
+      const searchQuery = searchInputEl ? searchInputEl.value.toLowerCase() : '';
+
+      // Filter by cluster
+      let clusterApps = apps.filter(a => (a.cluster || 'Uncategorized') === window.currentViewCluster);
+
+      // Filter by search
+      if (searchQuery) {
+        clusterApps = clusterApps.filter(a => {
+          const name = [a.firstName, a.middleName, a.lastName].filter(Boolean).join(' ').toLowerCase();
+          return name.includes(searchQuery);
+        });
+      }
+
+      const tbody = document.getElementById('cluster-details-table-body');
+      let html = '';
+
+      if (clusterApps.length === 0) {
+        html = `<tr><td colspan="8">
+          <div class="empty-cluster" style="padding:48px 20px; text-align: center;">
+            <span style="font-weight:600;color:var(--text-light);">No farmers found for this cluster.</span>
+          </div>
+        </td></tr>`;
+      } else {
+        html = clusterApps.map((a, i) => {
+          const name = [a.lastName, a.firstName, a.middleName].filter(Boolean).join(', ') || '—';
+          const contact = a.contactNumber || '—';
+          const address = [a.street, a.barangay].filter(Boolean).join(', ') || '—';
+          const farmLocation = a.barangay || '—';
+          const area = a.hectares != null ? Number(a.hectares).toFixed(2) + ' ha' : '—';
+          const crop = a.cropType || '—';
+          const date = a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' }) : '—';
+
+          return `<tr>
+            <td style="font-weight:700;color:var(--text-light);">${i + 1}</td>
+            <td style="font-weight:700;">${name}</td>
+            <td>${contact}</td>
+            <td>${address}</td>
+            <td>${area}</td>
+            <td>${crop}</td>
+            <td style="white-space:nowrap;">${date}</td>
+            <td style="text-align:center;">
+              <div style="display:flex;gap:6px;justify-content:center;">
+                <button style="background:#fff;border:1px solid #2d6a2d;color:#2d6a2d;font-weight:700;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;" title="View Profile" onclick="openMemberReviewModal(${a.id})">View</button>
+                <button style="background:#fdecea;border:1px solid #c0392b;color:#c0392b;font-weight:700;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;" title="Delete Profile" onclick="deleteFarmerProfile(${a.id})">Delete</button>
+              </div>
+            </td>
+          </tr>`;
+        }).join('');
+      }
+
+      tbody.innerHTML = html;
+    }
+
+    async function exportClusterDetailsCSV() {
+      let apps = await getApplications();
+      apps = apps.filter(a => a.applicationType !== 'RSBSA Enrolment' && a.status === 'Approved');
+      let clusterApps = apps.filter(a => (a.cluster || 'Uncategorized') === window.currentViewCluster);
+
+      const searchInputEl = document.getElementById('cluster-details-search-input');
+      const searchQuery = searchInputEl ? searchInputEl.value.toLowerCase() : '';
+      if (searchQuery) {
+        clusterApps = clusterApps.filter(a => {
+          const name = [a.firstName, a.middleName, a.lastName].filter(Boolean).join(' ').toLowerCase();
+          return name.includes(searchQuery);
+        });
+      }
+
+      if (clusterApps.length === 0) {
+        alert('No records to export.');
+        return;
+      }
+
+      const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+      const headers = [
+        '#', 'Last Name', 'First Name', 'Middle Name', 'Date of Birth', 'Sex', 'Civil Status',
+        'Education', 'Contact Number', 'ID Type', 'RSBSA No.',
+        'Province', 'Municipality', 'Barangay', 'Street',
+        'Cluster / Association', 'Land Tenure', 'Membership',
+        'Status Indicators', 'Crop Type', 'Other Crops',
+        'Total Hectares', 'Irrigated (ha)', 'Rainfed (ha)', 'Upland (ha)',
+        'Dry Season Yield', 'Wet Season Yield', 'Total Yield (kg)',
+        'Income Year 1 (PHP)', 'Remarks Y1', 'Income Year 2 (PHP)', 'Remarks Y2', 'Income Year 3 (PHP)', 'Remarks Y3',
+        'Application Status', 'Submitted At'
+      ];
+
+      const rows = clusterApps.map((a, i) => [
+        i + 1,
+        a.lastName, a.firstName, a.middleName,
+        a.dob, a.sex, a.civilStatus, a.education, a.contactNumber, a.idType, a.rsbsaNo,
+        a.province, a.municipality, a.barangay, a.street,
+        a.cluster, a.landTenure, a.membership,
+        a.statusIndicators, a.cropType, a.otherCrops,
+        a.hectares, a.riceIrrigated, a.riceRainfed, a.riceUpland,
+        a.yieldDry, a.yieldWet, a.yieldKg,
+        a.incomeY1, a.remarksY1, a.incomeY2, a.remarksY2, a.incomeY3, a.remarksY3,
+        a.status,
+        a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' }) : ''
+      ].map(esc).join(','));
+
+      const bom = '\uFEFF'; // UTF-8 BOM for Excel compatibility
+      const csv = bom + [headers.map(esc).join(','), ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const cleanName = window.currentViewCluster.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      link.href = url;
+      link.download = `MemberProfile_${cleanName}_${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function exportCSV() {
+      try {
+        const res = await fetch('/api/applications');
+        const data = await res.json();
+        if (!data || data.length === 0) return alert("No data to export.");
+
+        const headers = [
+          "ID", "Submitted At", "Status", "Cluster", "Last Name", "First Name", "Middle Name", "DOB", "Sex", "Civil Status",
+          "Education", "Contact Number", "RSBSA No", "Province", "Municipality", "Barangay", "Street", "Status Indicators",
+          "Land Tenure", "Membership", "Crop Type", "Total Hectares", "Irrigated", "Rainfed", "Upland", "Dry Yield",
+          "Wet Yield", "Yield Kg", "Other Crops", "Income Y1", "Income Y2", "Income Y3", "Remarks Y1", "Remarks Y2",
+          "Remarks Y3", "ID Type"
+        ];
+
+        const csvRows = [];
+        csvRows.push(headers.join(','));
+
+        data.forEach(row => {
+          const values = [
+            row.id, row.submittedAt, row.status, row.cluster, row.lastName, row.firstName, row.middleName, row.dob, row.sex, row.civilStatus,
+            row.education, row.contactNumber, row.rsbsaNo, row.province, row.municipality, row.barangay, row.street, row.statusIndicators,
+            row.landTenure, row.membership, row.cropType, row.hectares, row.riceIrrigated, row.riceRainfed, row.riceUpland, row.yieldDry,
+            row.yieldWet, row.yieldKg, row.otherCrops, row.incomeY1, row.incomeY2, row.incomeY3, row.remarksY1, row.remarksY2,
+            row.remarksY3, row.idType
+          ].map(val => `"${(val || '').toString().replace(/"/g, '""')}"`);
+
+          csvRows.push(values.join(','));
+        });
+
+        const csvString = csvRows.join('\n');
+        const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'Farmer_Registry_Export.csv');
+        a.click();
+        window.URL.revokeObjectURL(url);
+      } catch (e) {
+        console.error("Export error", e);
+        alert("Failed to export data.");
+      }
+    }
+
+    async function exportRsbsaCSV() {
+      const rsbsaApps = window.rsbsaApps || [];
+      if (rsbsaApps.length === 0) {
+        alert('No RSBSA enrolment records to export.');
+        return;
+      }
+
+      const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+      const headers = [
+        '#', 'Last Name', 'First Name', 'Middle Name', 'Date of Birth', 'Sex', 'Civil Status',
+        'Education', 'Contact Number', 'RSBSA No.',
+        'Province', 'Municipality', 'Barangay', 'Street',
+        'Cluster / Association', 'Land Tenure', 'Membership',
+        'Status Indicators', 'Crop Type', 'Other Crops',
+        'Total Hectares', 'Irrigated (ha)', 'Rainfed (ha)', 'Upland (ha)',
+        'Dry Season Yield', 'Wet Season Yield', 'Total Yield (kg)',
+        'No. of Files Uploaded', 'Uploaded Files (Name | Category)', 'Image Files',
+        'Application Status', 'Admin Remarks', 'Submitted At'
+      ];
+
+      const rows = rsbsaApps.map((a, i) => {
+        const files = robustParseFiles(a.uploadedFiles);
+        const filesCount = files.length;
+
+        // Build a readable list of file names + categories
+        const fileDetails = files.map(f => {
+          if (typeof f === 'string') return f;
+          const cat = f.category || 'Attachment';
+          const name = f.name || 'Unnamed';
+          return `${name} (${cat})`;
+        }).join(' | ');
+
+        // Separate out image files by name only (base64 data is too large for CSV)
+        const imageFiles = files
+          .filter(f => typeof f === 'object' && f.dataUrl && f.dataUrl.startsWith('data:image/'))
+          .map(f => f.name || 'Image')
+          .join(' | ');
+
+        let lastRemark = '';
+        if (a.adminRemarks) { try { const r = JSON.parse(a.adminRemarks); lastRemark = Array.isArray(r) && r.length ? r[r.length - 1].message : ''; } catch (e) { } }
+        return [
+          i + 1,
+          a.lastName, a.firstName, a.middleName,
+          a.dob, a.sex, a.civilStatus, a.education, a.contactNumber, a.rsbsaNo,
+          a.province, a.municipality, a.barangay, a.street,
+          a.cluster, a.landTenure, a.membership,
+          a.statusIndicators, a.cropType, a.otherCrops,
+          a.hectares, a.riceIrrigated, a.riceRainfed, a.riceUpland,
+          a.yieldDry, a.yieldWet, a.yieldKg,
+          filesCount,
+          fileDetails || '—',
+          imageFiles || '—',
+          a.status || 'Pending',
+          lastRemark,
+          a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' }) : ''
+        ].map(esc).join(',');
+      });
+
+      const bom = '\uFEFF';
+      const csv = bom + [headers.map(esc).join(','), ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `RSBSA_Enrolments_${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Initialize dashboard on load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderDashboardOverview();
+    });
+
+
+
+    // ========================================================
+    // MEMBER PROFILE APPLICATION JAVASCRIPT FUNCTIONS
+    // ========================================================
+    function toggleSelect(id) {
+      const t = document.getElementById(id + '-trigger'), o = document.getElementById(id + '-options'), open = o.classList.contains('open');
+      closeAll();
+      if (!open) { o.classList.add('open'); t.classList.add('open') }
+    }
+
+    function pickOption(id, val) {
+      document.getElementById(id + '-label').textContent = val;
+      document.getElementById(id + '-value').value = val;
+      document.getElementById(id + '-trigger').classList.add('selected');
+      closeAll();
+
+      // Auto-set maxlength on ID Number input when ID type is selected
+      if (id === 'idtype') {
+        const idInput = document.getElementById('id-number-input');
+        if (idInput) {
+          const idLimits = {
+            'Philippine Identification (PhilID/ePhilID)': { max: 16, placeholder: 'XXXX-XXXX-XXXX-XXXX (16 digits)' },
+            'TIN ID': { max: 12, placeholder: 'XXX-XXX-XXX-XXX (9-12 digits)' },
+            'PhilHealth ID': { max: 12, placeholder: 'XX-XXXXXXXXX-X (12 chars)' },
+            'Voters ID': { max: 19, placeholder: 'e.g., VID-XXXXXXXX-XXXXXX' },
+            'Drivers License': { max: 11, placeholder: 'AXX-XX-XXXXXX (11 chars)' },
+            'PRC ID': { max: 7, placeholder: 'XXXXXXX (7 digits)' },
+            'Postal ID': { max: 20, placeholder: 'Enter Postal ID Number' },
+            'Senior Citizen ID': { max: 20, placeholder: 'Enter Senior Citizen ID No.' }
+          };
+          const config = idLimits[val];
+          if (config) {
+            idInput.maxLength = config.max;
+            idInput.placeholder = config.placeholder;
+          } else {
+            idInput.removeAttribute('maxlength');
+            idInput.placeholder = 'Enter ID Number';
+          }
+        }
+      }
+    }
+
+    function closeAll() {
+      document.querySelectorAll('.custom-options.open').forEach(e => e.classList.remove('open'));
+      document.querySelectorAll('.custom-select-trigger.open').forEach(e => e.classList.remove('open'));
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.custom-select-wrapper')) closeAll()
+    });
+
+    const barangayData = {
+      "Iriga City": ["Antipolo", "Cristo Rey", "Del Rosario (Banao)", "Francia", "La Anunciacion", "La Medalla", "La Purisima", "La Trinidad", "Nino Jesus", "Perpetual Help", "Sagrada", "Salvacion", "San Agustin", "San Andres", "San Antonio", "San Francisco (Pob.)", "San Isidro", "San Jose", "San Juan", "San Miguel", "San Nicolas", "San Pedro", "San Rafael", "San Ramon", "San Vicente Norte", "San Vicente Sur", "Santa Cruz Norte", "Santa Cruz Sur", "Santa Elena", "Santa Isabel", "Santa Maria", "Santa Teresita", "Santo Domingo", "Santo Nino", "Santiago", "San Roque (Pob.)"],
+      "Sagnay": ["Aniog", "Atulayan", "Bongalon", "Buracan", "Catalotoan", "Del Carmen", "Kilantaao", "Kilomaon", "Mabca", "Minadongjol", "Nato", "Patitinan", "San Antonio", "San Isidro", "San Roque", "Santo Niño", "Sibaguan", "Tinorongan", "Turague"]
+    };
+
+    function computeTotalRice() {
+      const irrigated = parseFloat(document.getElementById('rice-irrigated').value) || 0;
+      const rainfed = parseFloat(document.getElementById('rice-rainfed').value) || 0;
+      const upland = parseFloat(document.getElementById('rice-upland').value) || 0;
+      document.getElementById('rice-total').value = (irrigated + rainfed + upland).toFixed(2);
+    }
+
+    function computeAge() {
+      const dob = document.getElementById('farmer-dob').value;
+      if (dob) {
+        const today = new Date();
+        const birthDate = new Date(dob);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        const ageEl = document.getElementById('farmer-age');
+        if (ageEl) ageEl.value = age > 0 ? age : 0;
+      }
+    }
+
+    function formatIncome(input) {
+      let val = input.value.replace(/,/g, '');
+      if (val === '') return;
+      if (!isNaN(val)) {
+        let parts = val.split('.');
+        parts[0] = Number(parts[0]).toLocaleString('en-US');
+        input.value = parts.join('.');
+      }
+    }
+
+    function updateBarangay(mun) {
+      const c = document.getElementById('barangay-options'), list = barangayData[mun] || [];
+      document.getElementById('barangay-label').textContent = 'Select Barangay';
+      document.getElementById('barangay-value').value = '';
+      document.getElementById('barangay-trigger').classList.remove('selected');
+      c.innerHTML = list.length ? list.map(b => `<div class="custom-option" onclick="pickOption('barangay','${b}')">${b}</div>`).join('') : '<div class="custom-option" style="color:#bbb;pointer-events:none">No barangays listed</div>';
+    }
+
+    function getVal(id) {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : '';
+    }
+
+    function resetAddFarmerForm() {
+      // Reset all plain text/number/date inputs inside the add-farmer view
+      const view = document.getElementById('view-add-farmer');
+      if (!view) return;
+
+      // Text / number / date inputs (skip readonly province)
+      view.querySelectorAll('input:not([readonly]):not([type="hidden"])').forEach(inp => {
+        if (inp.type === 'number') {
+          // Restore sensible defaults
+          if (inp.id === 'rice-irrigated' || inp.id === 'rice-rainfed' || inp.id === 'rice-upland' || inp.id === 'rice-total') inp.value = '0.00';
+          else if (inp.placeholder === '50' || inp.min === '50') inp.value = '50';
+          else inp.value = inp.id === 'farmer-age' ? '' : '0';
+        } else {
+          inp.value = '';
+        }
+      });
+
+      // Textareas
+      view.querySelectorAll('textarea').forEach(ta => ta.value = '');
+
+      // Checkboxes
+      view.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+      // Hidden value inputs for custom selects
+      ['cluster-value', 'membership-value', 'sex-value', 'civil-value', 'education-value',
+        'municipality-value', 'barangay-value', 'tenure-value', 'idtype-value'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+
+      // Reset custom-select trigger labels
+      const labelDefaults = {
+        'cluster-label': 'Select your cluster/association',
+        'membership-label': 'Select type',
+        'sex-label': 'Select',
+        'civil-label': 'Select',
+        'education-label': 'Select',
+        'municipality-label': 'Select Municipality',
+        'barangay-label': 'Select Barangay',
+        'tenure-label': 'Select status',
+        'idtype-label': 'Select ID Type'
+      };
+      Object.entries(labelDefaults).forEach(([id, txt]) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = txt;
+      });
+
+      // Reset barangay options to default
+      const brgyOpts = document.getElementById('barangay-options');
+      if (brgyOpts) brgyOpts.innerHTML = '<div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first</div>';
+
+      // Reset income fields to 0.00
+      view.querySelectorAll('.inner-card-title')
+        .forEach(el => {
+          if (el.textContent.includes('Annual Income')) {
+            el.nextElementSibling?.querySelectorAll('input').forEach(inp => inp.value = '0.00');
+          }
+        });
+
+      // Reset submit button and banners
+      const btn = document.getElementById('submit-btn');
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Submit Application';
+        btn.style.background = '';
+      }
+      const successEl = document.getElementById('submit-success');
+      if (successEl) successEl.style.display = 'none';
+      const errEl = document.getElementById('submit-error');
+      if (errEl) errEl.style.display = 'none';
+
+      // Scroll to top of the form
+      view.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    async function submitApplication() {
+      const errEl = document.getElementById('submit-error');
+      errEl.style.display = 'none';
+
+      // Collect required fields
+      const cluster = getVal('cluster-value');
+      const lastName = document.querySelector('input[placeholder="Enter last name"]')?.value.trim() || '';
+      const firstName = document.querySelector('input[placeholder="Enter first name"]')?.value.trim() || '';
+      const middleName = document.querySelector('input[placeholder="Enter middle name"]')?.value.trim() || '';
+      const barangay = getVal('barangay-value');
+      const landTenure = getVal('tenure-value');
+      const membership = getVal('membership-value');
+
+      // Collect new fields
+      const dob = document.getElementById('farmer-dob')?.value || '';
+      const sex = getVal('sex-value');
+      const civilStatus = getVal('civil-value');
+      const education = getVal('education-value');
+      const contactNumber = document.querySelector('input[placeholder*="09XX"]')?.value.trim() || '';
+      const rsbsaNo = document.querySelector('input[placeholder*="05-017"]')?.value.trim() || '';
+      const province = 'Camarines Sur';
+      const municipality = getVal('municipality-value');
+      const street = document.querySelector('input[placeholder*="Enter street"]')?.value.trim() || '';
+      const statusIndicators = Array.from(document.querySelectorAll('.checkbox-item input:checked')).map(cb => cb.parentElement.textContent.trim()).join(', ');
+
+      // Collect crop info
+      const riceInputs = document.querySelectorAll('.inner-card.green input[type="number"]');
+      const riceIrrigated = riceInputs[0] ? parseFloat(riceInputs[0].value) || 0 : 0;
+      const riceRainfed = riceInputs[1] ? parseFloat(riceInputs[1].value) || 0 : 0;
+      const riceUpland = riceInputs[2] ? parseFloat(riceInputs[2].value) || 0 : 0;
+      const totalHectares = riceInputs[3] ? parseFloat(riceInputs[3].value) || 0 : 0;
+
+      const yieldInputs = document.querySelectorAll('.inner-card.beige input[type="number"]');
+      const yieldDry = yieldInputs[0] ? parseFloat(yieldInputs[0].value) || 0 : 0;
+      const yieldWet = yieldInputs[1] ? parseFloat(yieldInputs[1].value) || 0 : 0;
+      const yieldKg = yieldInputs[2] ? parseFloat(yieldInputs[2].value) || 0 : 0;
+      const otherCrops = document.querySelector('input[placeholder="e.g., Corn, Vegetables"]')?.value.trim() || '';
+      const cropType = otherCrops ? `Rice + ${otherCrops}` : 'Rice';
+
+      const incomeInputs = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Annual Income'))?.nextElementSibling?.querySelectorAll('input') || [];
+      const incomeY1 = incomeInputs[0] ? parseFloat(incomeInputs[0].value.replace(/,/g, '')) || 0 : 0;
+      const incomeY2 = incomeInputs[1] ? parseFloat(incomeInputs[1].value.replace(/,/g, '')) || 0 : 0;
+      const incomeY3 = incomeInputs[2] ? parseFloat(incomeInputs[2].value.replace(/,/g, '')) || 0 : 0;
+
+      const remarksTextareas = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Remarks'))?.nextElementSibling?.querySelectorAll('textarea') || [];
+      const remarksY1 = remarksTextareas[0] ? remarksTextareas[0].value.trim() : '';
+      const remarksY2 = remarksTextareas[1] ? remarksTextareas[1].value.trim() : '';
+      const remarksY3 = remarksTextareas[2] ? remarksTextareas[2].value.trim() : '';
+
+      const idType = getVal('idtype-value');
+
+      // Validation
+      const missing = [];
+      if (!cluster) missing.push('Cluster / Association');
+      if (!lastName) missing.push('Last Name');
+      if (!firstName) missing.push('First Name');
+      if (!barangay) missing.push('Barangay');
+
+      if (missing.length) {
+        errEl.textContent = 'Please fill in required fields: ' + missing.join(', ');
+        errEl.style.display = 'block';
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      if (contactNumber && contactNumber.length !== 11) {
+        errEl.textContent = 'Contact number must be exactly 11 digits.';
+        errEl.style.display = 'block';
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      if (yieldKg < 50) {
+        errEl.textContent = 'Kg/bag (yield) must be at least 50.';
+        errEl.style.display = 'block';
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Build record
+      const record = {
+        cluster, lastName, firstName, middleName, dob, sex, civilStatus, education, contactNumber,
+        rsbsaNo, province, municipality, barangay, street, statusIndicators,
+        landTenure, membership, cropType, hectares: totalHectares,
+        riceIrrigated, riceRainfed, riceUpland, yieldDry, yieldWet, yieldKg, otherCrops,
+        incomeY1, incomeY2, incomeY3, remarksY1, remarksY2, remarksY3,
+        idType,
+        submittedAt: new Date().toISOString(),
+        status: 'Pending',
+        email: 'admin@irigacity.gov.ph',
+        user_id: null
+      };
+
+      // Save via API
+      try {
+        const response = await fetch('/api/applications', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(record)
+        });
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.error || 'Server error');
+        }
+      } catch (err) {
+        errEl.textContent = 'Failed to submit: ' + err.message;
+        errEl.style.display = 'block';
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Show success
+      const successEl = document.getElementById('submit-success');
+      successEl.innerHTML = `
+        ✓ Farmer application submitted successfully!
+        <div style="margin-top:10px;">
+          <button onclick="resetAddFarmerForm()" style="background:#1a6b1a;color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:13px;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;">
+            + Add Another Farmer
+          </button>
+        </div>
+      `;
+      successEl.style.display = 'block';
+      successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      renderDashboardOverview();
+    }
+
+  </script>
+
+</body>
+
+</html>

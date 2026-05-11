@@ -1,0 +1,3816 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agri-Nexus Iriga City – Farmer Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    :root {
+      --gd: #007128;
+      --gm: #2d6a2d;
+      --gl: #eef2e8;
+      --gp: #f4f7f0;
+      --beige: #f0ece3;
+      --border: #d8ddd0;
+      --td: #111;
+      --tm: #444;
+      --tl: #888;
+      --white: #fff;
+      --bg: #f2f4f0;
+      --sw: 240px;
+      --nh: 60px;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--td);
+      min-height: 100vh
+    }
+
+    /* TOPNAV */
+    .topnav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      height: var(--nh);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px
+    }
+
+    .topnav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      width: var(--sw);
+      flex-shrink: 0
+    }
+
+    .topnav-logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover
+    }
+
+    .nav-brand {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--gd)
+    }
+
+    .topnav-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 14px
+    }
+
+    .topnav-notif {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gl);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative
+    }
+
+    .topnav-notif .dot {
+      position: absolute;
+      top: 7px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      background: #e03c3c;
+      border-radius: 50%;
+      border: 2px solid var(--white)
+    }
+
+    .topnav-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gm);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--gl)
+    }
+
+    .topnav-user {
+      font-size: 13px;
+      font-weight: 600
+    }
+
+    .role-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      background: var(--gl);
+      color: var(--gd)
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: var(--nh);
+      left: 0;
+      bottom: 0;
+      width: var(--sw);
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 100;
+      padding: 20px 0
+    }
+
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--tl);
+      padding: 14px 20px 6px
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--tm);
+      cursor: pointer;
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: background .15s, color .15s
+    }
+
+    .sidebar-item:hover {
+      background: var(--gp);
+      color: var(--gd)
+    }
+
+    .sidebar-item.active {
+      background: var(--gl);
+      color: var(--gd);
+      border-left-color: var(--gm)
+    }
+
+    .sidebar-item svg {
+      flex-shrink: 0;
+      opacity: .7
+    }
+
+    .sidebar-item.active svg {
+      opacity: 1
+    }
+
+    .sidebar-badge {
+      margin-left: auto;
+      background: var(--gm);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 10px
+    }
+
+    .sidebar-logout {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #c0392b;
+      cursor: pointer;
+      margin-top: 8px;
+      border-top: 1px solid var(--border);
+      text-decoration: none
+    }
+
+    .sidebar-logout:hover {
+      background: #fdecea
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: var(--sw);
+      margin-top: var(--nh);
+      padding: 28px 28px 40px;
+      min-height: calc(100vh - var(--nh))
+    }
+
+    /* PAGE HEADER */
+    .page-header {
+      margin-bottom: 24px
+    }
+
+    .page-header h1 {
+      font-size: 24px;
+      font-weight: 800
+    }
+
+    .page-header p {
+      font-size: 13px;
+      color: var(--tl);
+      margin-top: 4px
+    }
+
+    .page-header-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap
+    }
+
+    /* BUTTONS */
+    .btn-primary {
+      background: var(--gm);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: background .18s, color .18s, border-color .18s
+    }
+
+    .btn-primary:hover {
+      background: var(--beige);
+      color: #111;
+      border-color: #333
+    }
+
+    .btn-sm {
+      font-size: 12px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--tm);
+      cursor: pointer;
+      transition: background .15s
+    }
+
+    .btn-sm:hover,
+    .btn-sm.active {
+      background: var(--gl);
+      border-color: var(--gm);
+      color: var(--gd)
+    }
+
+    .btn-outline {
+      background: var(--white);
+      color: var(--tm);
+      border: 1.5px solid var(--border);
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .15s
+    }
+
+    .btn-outline:hover {
+      background: var(--gp);
+      border-color: var(--gm);
+      color: var(--gd)
+    }
+
+    /* LAYOUT */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px
+    }
+
+    /* CARD */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 20px
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .card-header h2 {
+      font-size: 14px;
+      font-weight: 800
+    }
+
+    .card-body {
+      padding: 20px
+    }
+
+    .card-body.no-pad {
+      padding: 0
+    }
+
+    /* TABLE */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    .data-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--tl);
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--gp)
+    }
+
+    .data-table td {
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      border-bottom: 1px solid #f0f0f0;
+      color: var(--tm)
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: none
+    }
+
+    .data-table tr:hover td {
+      background: var(--gp)
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px
+    }
+
+    .badge-green {
+      background: #dcf0dc;
+      color: #1a6b1a
+    }
+
+    .badge-orange {
+      background: #fff0d4;
+      color: #8c5700
+    }
+
+    .badge-blue {
+      background: #e3eeff;
+      color: #1a4fa0
+    }
+
+    .badge-gray {
+      background: #f0f0f0;
+      color: #666
+    }
+
+    .badge-red {
+      background: #fde8e8;
+      color: #c0392b
+    }
+
+    /* ROW */
+    .farm-summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0
+    }
+
+    .farm-summary-row:last-child {
+      border-bottom: none
+    }
+
+    .farm-key {
+      font-size: 13px;
+      color: var(--tl);
+      font-weight: 600
+    }
+
+    .farm-val {
+      font-size: 13px;
+      font-weight: 700
+    }
+
+    /* CHART */
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 120px;
+      padding-top: 12px
+    }
+
+    .chart-bar-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px
+    }
+
+    .chart-bar {
+      width: 100%;
+      background: var(--gl);
+      border-radius: 4px 4px 0 0;
+      min-height: 4px;
+      transition: background .15s
+    }
+
+    .chart-bar:hover {
+      background: var(--gm)
+    }
+
+    .chart-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--tl)
+    }
+
+    .chart-val {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gm)
+    }
+
+    /* PROGRAMS */
+    .program-card {
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: border-color .15s, background .15s
+    }
+
+    .program-card:hover {
+      border-color: var(--gm);
+      background: var(--gp)
+    }
+
+    .program-card:last-child {
+      margin-bottom: 0
+    }
+
+    .program-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--gl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0
+    }
+
+    .program-title {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 4px
+    }
+
+    .program-desc {
+      font-size: 12px;
+      color: var(--tl);
+      line-height: 1.5
+    }
+
+    .program-deadline {
+      font-size: 11px;
+      font-weight: 700;
+      color: #e07800;
+      margin-top: 6px
+    }
+
+    /* ANNOUNCEMENT */
+    .announcement {
+      background: var(--beige);
+      border-left: 4px solid var(--gm);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+      margin-bottom: 12px
+    }
+
+    .announcement:last-child {
+      margin-bottom: 0
+    }
+
+    .announcement-title {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 4px
+    }
+
+    .announcement-body {
+      font-size: 12px;
+      color: var(--tm);
+      line-height: 1.6
+    }
+
+    .announcement-date {
+      font-size: 11px;
+      color: var(--tl);
+      margin-top: 6px
+    }
+
+    /* ADMIN REMARKS */
+    .remarks-card {
+      background: #fffbf0;
+      border: 1.5px solid #f5c842;
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 12px
+    }
+
+    .remarks-card:last-child {
+      margin-bottom: 0
+    }
+
+    .remarks-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px
+    }
+
+    .remarks-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #7a5c00;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .remarks-date {
+      font-size: 11px;
+      color: #a07800
+    }
+
+    .remarks-body {
+      font-size: 12px;
+      color: #5a4400;
+      line-height: 1.6
+    }
+
+    .remarks-author {
+      font-size: 11px;
+      font-weight: 700;
+      color: #7a5c00;
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px solid #f0d87a
+    }
+
+    .remarks-empty {
+      font-size: 13px;
+      color: var(--tl);
+      text-align: center;
+      padding: 20px 0
+    }
+
+    /* VIEWS */
+    .view {
+      display: none;
+      animation: fadeIn .25s ease both
+    }
+
+    .view.active {
+      display: block
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* APPLICATION CARDS */
+    .app-choice-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 8px
+    }
+
+    .app-choice-card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color .2s, box-shadow .2s, transform .2s
+    }
+
+    .app-choice-card:hover {
+      border-color: var(--gm);
+      box-shadow: 0 6px 28px rgba(45, 106, 45, .13);
+      transform: translateY(-3px)
+    }
+
+    .app-choice-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: var(--gl);
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .app-choice-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--td)
+    }
+
+    .app-choice-desc {
+      font-size: 13px;
+      color: var(--tl);
+      line-height: 1.6
+    }
+
+    .app-choice-arrow {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gm)
+    }
+
+    /* FORMS */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .form-group.full {
+      grid-column: 1/-1
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--tm)
+    }
+
+    .form-input,
+    .form-select {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+      color: var(--td);
+      outline: none;
+      transition: border-color .15s
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      border-color: var(--gm)
+    }
+
+    .form-section-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--gd);
+      margin-bottom: 4px;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid var(--gl)
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--tl);
+      cursor: pointer;
+      margin-bottom: 16px
+    }
+
+    .back-link:hover {
+      color: var(--gd)
+    }
+
+    /* UPLOADS (Updated for multiple previews) */
+    .upload-item {
+      margin-bottom: 20px
+    }
+
+    .upload-item:last-child {
+      margin-bottom: 0
+    }
+
+    .upload-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px
+    }
+
+    .upload-req-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--td)
+    }
+
+    .upload-status {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--tl)
+    }
+
+    .upload-status.done {
+      color: #1a6b1a
+    }
+
+    .upload-dropzone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 18px 14px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      background: var(--gp);
+      min-height: 90px
+    }
+
+    .upload-dropzone:hover {
+      border-color: var(--gm);
+      background: var(--gl)
+    }
+
+    .upload-dropzone.has-file {
+      border-color: var(--gm);
+      border-style: solid;
+      background: var(--gl)
+    }
+
+    .upload-hint {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--tl)
+    }
+
+    .upload-preview {
+      display: none;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .upload-preview.show {
+      display: flex
+    }
+
+    .upload-preview img {
+      width: 56px;
+      height: 56px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .file-thumb-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      max-width: 64px;
+      position: relative;
+    }
+
+    .remove-file-btn {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 18px;
+      height: 18px;
+      background: #c0392b;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      cursor: pointer;
+      border: 1px solid white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .remove-file-btn:hover {
+      background: #a93226;
+      transform: scale(1.1);
+    }
+
+    .file-name-badge {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--tm);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 4px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .req-checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .req-check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--tm)
+    }
+
+    .req-check-icon {
+      font-size: 16px;
+      color: var(--tl);
+      transition: color .2s
+    }
+
+    .req-check-item.done .req-check-icon {
+      color: #1a6b1a
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--tl);
+      font-size: 13px
+    }
+
+    .empty-state .icon {
+      font-size: 36px;
+      margin-bottom: 10px
+    }
+
+    /* INTEGRATED MEMBER PROFILE CUSTOM STYLES */
+    .mp-page-header {
+      text-align: center;
+      padding: 20px 20px 40px
+    }
+
+    .mp-page-header .tag {
+      font-size: 13px;
+      font-weight: 700;
+      color: #2d6a2d;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px
+    }
+
+    .mp-page-header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #0d0d0d;
+      margin-bottom: 12px
+    }
+
+    .mp-page-header p {
+      font-size: 15px;
+      color: #666
+    }
+
+    .outer-card {
+      max-width: 900px;
+      margin: 0 auto 60px;
+      border: 1.5px solid #d8ddd0;
+      border-radius: 16px;
+      overflow: hidden
+    }
+
+    .outer-card-header {
+      background: #eef2e8;
+      padding: 28px 36px 20px;
+      border-bottom: 1.5px solid #d8ddd0
+    }
+
+    .outer-card-header h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 6px
+    }
+
+    .outer-card-header p {
+      font-size: 13px;
+      color: #555
+    }
+
+    .outer-card-body {
+      background: #fff;
+      padding: 36px 36px 40px
+    }
+
+    .form-section {
+      margin-bottom: 36px
+    }
+
+    .form-section+.form-section {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 32px
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 20px
+    }
+
+    .inner-card {
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px
+    }
+
+    .inner-card.beige {
+      background: #f0ece3
+    }
+
+    .inner-card.green {
+      background: #eef2e8
+    }
+
+    .inner-card.light {
+      background: #f4f6f2
+    }
+
+    .inner-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 16px
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px
+    }
+
+    .grid-1-2 {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 16px
+    }
+
+    .mp-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .mp-form-group label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #222
+    }
+
+    .mp-form-group input,
+    .mp-form-group textarea {
+      padding: 11px 14px;
+      border: 1.5px solid #d0d0d0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      color: #333;
+      background: #fff;
+      outline: none;
+      transition: border-color .18s;
+      width: 100%
+    }
+
+    .mp-form-group input::placeholder,
+    .mp-form-group textarea::placeholder {
+      color: #bbb
+    }
+
+    .mp-form-group input:focus,
+    .mp-form-group textarea:focus {
+      border-color: #2d6a2d
+    }
+
+    .mp-form-group input[readonly] {
+      background: #f0f0f0;
+      color: #888;
+      cursor: not-allowed
+    }
+
+    .mp-form-group textarea {
+      resize: vertical;
+      min-height: 80px
+    }
+
+    .input-icon-wrapper {
+      position: relative
+    }
+
+    .input-icon-wrapper input {
+      padding-right: 40px
+    }
+
+    .input-icon-wrapper .icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      pointer-events: none
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 24px
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #222;
+      cursor: pointer
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #2d6a2d;
+      cursor: pointer;
+      flex-shrink: 0
+    }
+
+    .disclaimer {
+      background: #eef2e8;
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-size: 13px;
+      color: #444;
+      line-height: 1.7;
+      margin-bottom: 24px
+    }
+
+    .btn-submit {
+      background: #2d6a2d;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      padding: 14px 32px;
+      border-radius: 10px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: background .18s, color .18s, border-color .18s
+    }
+
+    .btn-submit:hover {
+      background: #f0ece3;
+      color: #111;
+      border-color: #333
+    }
+
+    /* Required-field error highlight */
+    .field-invalid input,
+    .field-invalid textarea {
+      border-color: #c0392b !important;
+      background: #fff8f8 !important;
+    }
+
+    .field-invalid .custom-select-trigger {
+      border-color: #c0392b !important;
+      background: #fff8f8 !important;
+    }
+
+    .field-error-msg {
+      font-size: 11px;
+      font-weight: 700;
+      color: #c0392b;
+      margin-top: 4px;
+    }
+
+    .custom-select-wrapper {
+      position: relative
+    }
+
+    .custom-select-trigger {
+      width: 100%;
+      padding: 11px 38px 11px 14px;
+      border: 1.5px solid #d0d0d0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      color: #bbb;
+      background: #fff;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color .18s;
+      user-select: none
+    }
+
+    .custom-select-trigger.selected {
+      color: #333
+    }
+
+    .custom-select-trigger.open {
+      border-color: #2d6a2d
+    }
+
+    .custom-select-trigger .arrow {
+      width: 0;
+      height: 0;
+      flex-shrink: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #555;
+      transition: transform .18s
+    }
+
+    .custom-select-trigger.open .arrow {
+      transform: rotate(180deg)
+    }
+
+    .custom-options {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1.5px solid #d0d0d0;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .1);
+      z-index: 300;
+      max-height: 280px;
+      overflow-y: auto
+    }
+
+    .custom-options.open {
+      display: block
+    }
+
+    .custom-optgroup-label {
+      padding: 8px 16px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      border-top: 1px solid #eee
+    }
+
+    .custom-optgroup-label:first-child {
+      border-top: none
+    }
+
+    .custom-option {
+      padding: 11px 16px;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      color: #222;
+      cursor: pointer;
+      transition: background .15s
+    }
+
+    .custom-option:hover {
+      background: #f0ece3
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+      animation: modalIn 0.2s ease;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--tl);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="confirm-modal" class="modal-overlay" style="display: none; z-index: 3000;">
+    <div class="modal" style="max-width: 400px; border-radius:14px; text-align: center;">
+      <div class="modal-header" style="justify-content: center; position: relative;">
+        <h2 id="confirm-title" style="font-size:18px;">Confirmation</h2>
+        <button class="modal-close" style="position: absolute; right: 20px;"
+          onclick="closeConfirmModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 30px 24px;">
+        <p id="confirm-message" style="font-size: 15px; color: #444; line-height: 1.6;"></p>
+      </div>
+      <div class="modal-footer" style="justify-content: center; background: #f9f9f9;">
+        <button class="btn-sm"
+          style="background:#fff; border:1.5px solid #ddd; border-radius:10px; padding: 10px 24px; font-weight:700; cursor:pointer;"
+          onclick="closeConfirmModal()">Cancel</button>
+        <button id="confirm-btn" class="btn-primary"
+          style="padding: 10px 30px; border-radius:10px; font-weight:700;">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="topnav">
+    <a class="topnav-logo" href="#">
+      <img src="logo.webp" alt="Agri-Nexus" />
+      <span class="nav-brand">Agri-Nexus Iriga City</span>
+    </a>
+    <div class="topnav-right">
+
+      <span class="topnav-user" id="nav-name">—</span>
+      <span class="role-badge">Farmer</span>
+      <div class="topnav-avatar" id="nav-avatar">?</div>
+    </div>
+  </nav>
+
+  <aside class="sidebar">
+    <div class="sidebar-label">Main</div>
+    <a class="sidebar-item active" onclick="showView('farm',this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+      My Farm
+    </a>
+    <a class="sidebar-item" onclick="showView('crops',this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2a10 10 0 0 1 10 10" />
+        <path d="M12 2v20" />
+        <path d="M2 12h20" />
+      </svg>
+      Crop Records
+    </a>
+
+    <a class="sidebar-item" onclick="showView('applications',this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 11l3 3L22 4" />
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+      </svg>
+      Applications
+    </a>
+    <div class="sidebar-label">Support</div>
+    <a class="sidebar-item" onclick="showView('profile',this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+      </svg>
+      My Profile
+    </a>
+    <a class="sidebar-logout" href="#" onclick="handleSignOut(); return false;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+      </svg>
+      Sign Out
+    </a>
+  </aside>
+
+  <main class="main">
+
+    <div class="view active" id="view-farm">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1>My Farm</h1>
+            <p>Farm details and land information</p>
+          </div>
+        </div>
+      </div>
+      <div class="content-grid" style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;">
+        <div>
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header">
+              <h2>Farm Information</h2>
+            </div>
+            <div class="card-body no-pad">
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Barangay</span><span id="farm-barangay"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Land Tenure</span><span id="farm-tenure"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Total Area</span><span id="farm-area"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Irrigated Rice</span><span id="farm-irrigated"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Rainfed Rice</span><span id="farm-rainfed"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Upland / Other</span><span id="farm-upland"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+
+              <div
+                style="padding:16px 24px;display:flex;justify-content:space-between;font-size:13px;align-items:center;">
+                <span style="font-weight:600;color:var(--tm);">RSBSA Status</span><span id="farm-rsbsa"
+                  class="badge badge-gray" style="font-weight:700;text-transform:uppercase;">Not Registered</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h2>Annual Income (₱)</h2>
+            </div>
+            <div class="card-body" id="farm-income-container">
+              <div class="empty-state" style="padding:40px 20px;">
+                <div style="font-size:12px;color:var(--tl);">Income data will be loaded from the database.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header">
+              <h2>Crop Yields</h2>
+            </div>
+            <div class="card-body no-pad" id="farm-yields-container">
+              <div class="empty-state" style="padding:40px 20px;">
+                <div style="font-size:12px;color:var(--tl);">No yield data available.</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h2>Admin Feedback / Remarks</h2>
+            </div>
+            <div class="card-body" id="farm-remarks-container">
+              <div class="empty-state" style="padding:40px 20px;">
+                <div style="font-size:12px;color:var(--tl);">No issues recorded.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="view-crops">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1>Crop Records</h1>
+            <p>Seasonal planting and harvest history</p>
+          </div>
+          <button class="btn-primary" onclick="openCropModal()"
+            style="background:#1a6b1a;border-radius:6px;font-weight:700;padding:8px 16px;">+ Add Record</button>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom: 20px; background: #eef2e8; border-color: #d8e0d0;">
+        <div class="card-body" style="display: flex; gap: 40px; padding: 15px 24px;">
+          <div>
+            <div
+              style="font-size: 11px; font-weight: 700; color: #5a7a5a; text-transform: uppercase; margin-bottom: 4px;">
+              Registered Farm Area</div>
+            <div id="crop-summary-area" style="font-size: 18px; font-weight: 800; color: #1a4d1a;">—</div>
+          </div>
+          <div>
+            <div
+              style="font-size: 11px; font-weight: 700; color: #5a7a5a; text-transform: uppercase; margin-bottom: 4px;">
+              Primary Crop</div>
+            <div id="crop-summary-type" style="font-size: 18px; font-weight: 800; color: #1a4d1a;">—</div>
+          </div>
+          <div style="margin-left: auto; text-align: right;">
+            <div
+              style="font-size: 11px; font-weight: 700; color: #5a7a5a; text-transform: uppercase; margin-bottom: 4px;">
+              Profile Status</div>
+            <div id="crop-summary-status" class="badge badge-gray" style="font-weight: 700; padding: 4px 10px;">
+              Checking...</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body no-pad" id="crop-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="text-transform:uppercase;font-weight:800;color:#111;">Season</th>
+                <th style="text-transform:uppercase;font-weight:800;color:#111;">Crop</th>
+                <th style="text-transform:uppercase;font-weight:800;color:#111;">Area (ha)</th>
+                <th style="text-transform:uppercase;font-weight:800;color:#111;">Yield (bags)</th>
+                <th style="text-transform:uppercase;font-weight:800;color:#111;">Income (₱)</th>
+                <th style="text-transform:uppercase;font-weight:800;color:#111;text-align:center;">Status</th>
+                <th style="text-transform:uppercase;font-weight:800;color:#111;text-align:center;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="crop-tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="view" id="view-profile">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1>My Profile</h1>
+            <p>Personal and registration information</p>
+          </div>
+          <button class="btn-primary" onclick="openEditProfile()"
+            style="background:#1a6b1a;border-radius:6px;font-weight:700;padding:8px 16px;">Edit Profile</button>
+        </div>
+      </div>
+      <div class="content-grid" style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;">
+        <div>
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header">
+              <h2>Personal Information</h2>
+            </div>
+            <div class="card-body no-pad">
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Full Name</span><span id="profile-name"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Date of Birth</span><span id="profile-dob"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Sex</span><span id="profile-sex"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Civil Status</span><span id="profile-civil-status"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Education</span><span id="profile-education"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Contact Number</span><span id="profile-contact"
+                  style="font-weight:700;color:#111;">—</span>
+              </div>
+
+              <div
+                style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Email</span><span id="profile-email"
+                  style="font-weight:700;color:#1a4fa0;">—</span>
+              </div>
+              <div style="padding:16px 24px;display:flex;justify-content:space-between;font-size:13px;"><span
+                  style="font-weight:600;color:var(--tm);">Address</span><span id="profile-address"
+                  style="font-weight:700;color:#111;">—</span></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:20px;">
+            <div class="card-header">
+              <h2>Farm Profile & Production</h2>
+            </div>
+            <div class="card-body no-pad" id="profile-farm-container">
+              <div class="empty-state" style="padding:40px 20px;">
+                <div style="font-size:12px;color:var(--tl);">Farm data will be loaded from your application.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Financial History (Annual Income)</h2>
+            </div>
+            <div class="card-body no-pad" id="profile-income-container">
+              <div class="empty-state" style="padding:40px 20px;">
+                <div style="font-size:12px;color:var(--tl);">Income data will be loaded from your application.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <h2>Registration Status</h2>
+            </div>
+            <div class="card-body no-pad" id="profile-registration-container">
+              <div class="empty-state" style="padding:40px 20px;">
+                <div style="font-size:12px;color:var(--tl);">No registration data available.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="view-applications">
+      <div class="page-header">
+        <div>
+          <h1>Applications</h1>
+          <p>Submit and manage your farmer registration applications</p>
+        </div>
+      </div>
+      <div class="app-choice-grid">
+        <a class="app-choice-card" onclick="openNewApplication()">
+
+          <div class="app-choice-title">Member Profile Application</div>
+          <div class="app-choice-desc">Register or update your farmer membership profile with the City Agriculture
+            Office.</div>
+          <div class="app-choice-arrow">Start Application <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></div>
+        </a>
+        <a class="app-choice-card" onclick="showView('app-rsbsa',null)">
+          <div class="app-choice-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="2">
+              <path d="M9 11l3 3L22 4" />
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+            </svg>
+          </div>
+          <div class="app-choice-title">RSBSA Enrolment Application</div>
+          <div class="app-choice-desc">Enrol in the Registry System for Basic Sectors in Agriculture (RSBSA) for
+            government agricultural assistance.</div>
+          <div class="app-choice-arrow">Start Application <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg></div>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="view" id="view-app-member-profile">
+      <span class="back-link" onclick="showView('applications',null)" style="margin-bottom: 0;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Back to Applications
+      </span>
+
+      <div class="mp-page-header">
+        <div class="tag" id="mp-form-tag">APPLY NOW</div>
+        <h1 id="mp-form-title">Member Profile Application</h1>
+        <p id="mp-form-subtitle">Complete the form your RSBSA registration process</p>
+      </div>
+
+      <div class="outer-card">
+        <div class="outer-card-header">
+          <h2>Member Profile Registration Form</h2>
+          <p>Please provide accurate information. Fields marked with * are required.</p>
+        </div>
+        <div class="outer-card-body">
+          <input type="hidden" id="member-app-id" value="">
+
+          <div class="form-section">
+            <div class="inner-card beige">
+              <div class="inner-card-title">Cluster / Association</div>
+              <div class="mp-form-group" style="margin-bottom:16px">
+                <label>Name of Cluster *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="cluster-trigger"
+                    onclick="toggleSelect('cluster')">
+                    <span id="cluster-label">Select your cluster/association</span><span class="arrow"></span>
+                  </button>
+                  <div class="custom-options" id="cluster-options">
+                    <div class="custom-option"
+                      onclick="pickOption('cluster','Ka-Agriprenuers Agriculture Cooperative')">Ka-Agriprenuers
+                      Agriculture Cooperative</div>
+                    <div class="custom-option" onclick="pickOption('cluster','La Trinidad Farmers Association')">La
+                      Trinidad Farmers Association</div>
+                    <div class="custom-option" onclick="pickOption('cluster','Mabukug Farmers Association Inc.')">
+                      Mabukug Farmers Association Inc.</div>
+                    <div class="custom-option"
+                      onclick="pickOption('cluster','SAGMONREY-AN Communal Irrigation Association Inc.')">SAGMONREY-AN
+                      Communal Irrigation Association Inc.</div>
+                    <div class="custom-option"
+                      onclick="pickOption('cluster','Salvacion Farmers Agriculture Cooperative')">Salvacion Farmers
+                      Agriculture Cooperative</div>
+                    <div class="custom-option"
+                      onclick="pickOption('cluster','Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.')">
+                      Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.</div>
+                    <div class="custom-option"
+                      onclick="pickOption('cluster','San Jose Farmers Association of Iriga City Camarines Sur')">San
+                      Jose Farmers Association of Iriga City Camarines Sur</div>
+                    <div class="custom-option" onclick="pickOption('cluster','Sto. Nino Farmers Association')">Sto. Nino
+                      Farmers Association</div>
+                  </div>
+                  <input type="hidden" id="cluster-value" name="cluster" />
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="mp-form-group">
+                  <label>Date of Membership *</label>
+                  <div class="input-icon-wrapper">
+                    <input type="date" />
+                  </div>
+                </div>
+                <div class="mp-form-group">
+                  <label>Type of Membership *</label>
+                  <div class="custom-select-wrapper">
+                    <button type="button" class="custom-select-trigger" id="membership-trigger"
+                      onclick="toggleSelect('membership')">
+                      <span id="membership-label">Select type</span><span class="arrow"></span>
+                    </button>
+                    <div class="custom-options" id="membership-options">
+                      <div class="custom-option" onclick="pickOption('membership','Regular Member')">Regular Member
+                      </div>
+                      <div class="custom-option" onclick="pickOption('membership','Associate')">Associate</div>
+                    </div>
+                    <input type="hidden" id="membership-value" name="membership" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Personal Information</div>
+            <div class="grid-4" style="margin-bottom:16px">
+              <div class="mp-form-group"><label>Last Name *</label><input type="text" id="mp-lastname"
+                  placeholder="Enter last name" />
+              </div>
+              <div class="mp-form-group"><label>First Name *</label><input type="text" id="mp-firstname"
+                  placeholder="Enter first name" />
+              </div>
+              <div class="mp-form-group"><label>Middle Name/Initial *</label><input type="text" id="mp-middlename"
+                  placeholder="Enter middle name" /></div>
+              <div class="mp-form-group"><label>Age *</label><input type="number" id="farmer-age" placeholder="Age"
+                  readonly /></div>
+            </div>
+            <div class="grid-2" style="margin-bottom:16px">
+              <div class="mp-form-group"><label>RSBSA No. (if existing)</label><input type="text"
+                  placeholder="e.g., 05-017-16-024-XXXXX" /></div>
+              <div class="mp-form-group"><label>Contact Number *</label><input type="text" placeholder="09XX XXX XXXX"
+                  maxlength="11" minlength="11"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);" /></div>
+            </div>
+            <div class="grid-4" style="margin-bottom:20px">
+              <div class="mp-form-group">
+                <label>Sex *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="sex-trigger"
+                    onclick="toggleSelect('sex')"><span id="sex-label">Select</span><span class="arrow"></span></button>
+                  <div class="custom-options" id="sex-options">
+                    <div class="custom-option" onclick="pickOption('sex','Male')">Male</div>
+                    <div class="custom-option" onclick="pickOption('sex','Female')">Female</div>
+                  </div>
+                  <input type="hidden" id="sex-value" name="sex" />
+                </div>
+              </div>
+              <div class="mp-form-group">
+                <label>Civil Status *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="civil-trigger"
+                    onclick="toggleSelect('civil')"><span id="civil-label">Select</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="civil-options">
+                    <div class="custom-option" onclick="pickOption('civil','Single')">Single</div>
+                    <div class="custom-option" onclick="pickOption('civil','Married')">Married</div>
+                    <div class="custom-option" onclick="pickOption('civil','Widowed')">Widowed</div>
+                  </div>
+                  <input type="hidden" id="civil-value" name="civil_status" />
+                </div>
+              </div>
+              <div class="mp-form-group">
+                <label>Educational Attainment *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="education-trigger"
+                    onclick="toggleSelect('education')"><span id="education-label">Select</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="education-options">
+                    <div class="custom-option" onclick="pickOption('education','Elementary Level')">Elementary Level
+                    </div>
+                    <div class="custom-option" onclick="pickOption('education','Elementary Graduate')">Elementary
+                      Graduate</div>
+                    <div class="custom-option" onclick="pickOption('education','High School Level')">High School Level
+                    </div>
+                    <div class="custom-option" onclick="pickOption('education','High School Graduate')">High School
+                      Graduate</div>
+                    <div class="custom-option" onclick="pickOption('education','College Level')">College Level</div>
+                    <div class="custom-option" onclick="pickOption('education','College Graduate')">College Graduate
+                    </div>
+                    <div class="custom-option" onclick="pickOption('education','Post Graduate')">Post Graduate</div>
+                  </div>
+                  <input type="hidden" id="education-value" name="education" />
+                </div>
+              </div>
+              <div class="mp-form-group"><label>Date of Birth *</label><input type="date" id="farmer-dob"
+                  onchange="computeAge()" /></div>
+            </div>
+            <div class="inner-card light">
+              <div class="inner-card-title">Status Indicators (Check all that apply)</div>
+              <div class="checkbox-grid">
+                <label class="checkbox-item"><input type="checkbox" /> Agrarian Reform Beneficiary</label>
+                <label class="checkbox-item"><input type="checkbox" /> PWD (Person with Disability)</label>
+                <label class="checkbox-item"><input type="checkbox" /> 4Ps Beneficiary</label>
+                <label class="checkbox-item"><input type="checkbox" /> Indigenous People</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Address Information</div>
+            <div class="grid-3" style="margin-bottom:16px">
+              <div class="mp-form-group"><label>Province *</label><input type="text" value="Camarines Sur" readonly />
+              </div>
+              <div class="mp-form-group">
+                <label>Municipality *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="municipality-trigger"
+                    onclick="toggleSelect('municipality')"><span id="municipality-label">Select Municipality</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="municipality-options">
+                    <div class="custom-option"
+                      onclick="pickOption('municipality','Iriga City');updateBarangay('Iriga City')">Iriga City</div>
+                    <div class="custom-option" onclick="pickOption('municipality','Sagnay');updateBarangay('Sagnay')">
+                      Sagnay</div>
+                  </div>
+                  <input type="hidden" id="municipality-value" name="municipality" />
+                </div>
+              </div>
+              <div class="mp-form-group">
+                <label>Barangay *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="barangay-trigger"
+                    onclick="toggleSelect('barangay')"><span id="barangay-label">Select Barangay</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="barangay-options">
+                    <div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first</div>
+                  </div>
+                  <input type="hidden" id="barangay-value" name="barangay" />
+                </div>
+              </div>
+            </div>
+            <div class="mp-form-group"><label>Street/Purok/Sitio</label><input type="text" id="mp-street"
+                placeholder="Enter street, purok, or sitio" /></div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Crops Planted</div>
+            <div class="inner-card green" style="margin-bottom:16px">
+              <div class="inner-card-title">Rice - Area (hectares)</div>
+              <div class="grid-4">
+                <div class="mp-form-group"><label>Irrigated</label><input type="number" id="rice-irrigated" value="0.00"
+                    step="0.01" min="0" oninput="computeTotalRice()" />
+                </div>
+                <div class="mp-form-group"><label>Rainfed</label><input type="number" id="rice-rainfed" value="0.00"
+                    step="0.01" min="0" oninput="computeTotalRice()" /></div>
+                <div class="mp-form-group"><label>Upland</label><input type="number" id="rice-upland" value="0.00"
+                    step="0.01" min="0" oninput="computeTotalRice()" /></div>
+                <div class="mp-form-group"><label>Total</label><input type="number" id="rice-total" value="0.00"
+                    step="0.01" readonly />
+                </div>
+              </div>
+            </div>
+            <div class="inner-card beige" style="margin-bottom:16px">
+              <div class="inner-card-title">Yield</div>
+              <div class="grid-4">
+                <div class="mp-form-group"><label>Dry Season (bag/ha)</label><input type="number" value="0" min="0" />
+                </div>
+                <div class="mp-form-group"><label>Wet season (bag/ha)</label><input type="number" value="0" min="0" />
+                </div>
+                <div class="mp-form-group"><label>Kg/bag</label><input type="number" value="50" min="50" /></div>
+                <div class="mp-form-group"><label>Other Crops (specify)</label><input type="text"
+                    placeholder="e.g., Corn, Vegetables" /></div>
+              </div>
+            </div>
+            <div class="inner-card light" style="margin-bottom:16px">
+              <div class="inner-card-title">Annual Income (Php)</div>
+              <div class="grid-3">
+                <div class="mp-form-group"><label>Year 1</label><input type="text" value="0.00"
+                    oninput="formatIncome(this)" /></div>
+                <div class="mp-form-group"><label>Year 2</label><input type="text" value="0.00"
+                    oninput="formatIncome(this)" /></div>
+                <div class="mp-form-group"><label>Year 3</label><input type="text" value="0.00"
+                    oninput="formatIncome(this)" /></div>
+              </div>
+            </div>
+            <div class="inner-card light">
+              <div class="inner-card-title">Remarks (Challenges/Issues)</div>
+              <div class="grid-3">
+                <div class="mp-form-group"><label>Year 1</label><textarea
+                    placeholder="e.g., typhoon damage, low price"></textarea></div>
+                <div class="mp-form-group"><label>Year 2</label><textarea
+                    placeholder="e.g., lack of source of water"></textarea></div>
+                <div class="mp-form-group"><label>Year 3</label><textarea
+                    placeholder="e.g., pest &amp; disease"></textarea></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Tenurial Status</div>
+            <div class="grid-1-2">
+              <div class="mp-form-group">
+                <label>Land Tenure *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="tenure-trigger"
+                    onclick="toggleSelect('tenure')"><span id="tenure-label">Select status</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="tenure-options">
+                    <div class="custom-option" onclick="pickOption('tenure','Tenant')">Tenant</div>
+                    <div class="custom-option" onclick="pickOption('tenure','Owner')">Owner</div>
+                    <div class="custom-option" onclick="pickOption('tenure','Rental')">Rental</div>
+                    <div class="custom-option" onclick="pickOption('tenure','Lease')">Lease</div>
+                  </div>
+                  <input type="hidden" id="tenure-value" name="land_tenure" />
+                </div>
+              </div>
+              <div class="mp-form-group"><label>Types of Equipment/Machines/Facilities Owned</label><input type="text"
+                  placeholder="e.g., Hand tractor, Thresher, Water Pump" /></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Identification</div>
+            <div class="grid-1-2">
+              <div class="mp-form-group">
+                <label>Government ID Type *</label>
+                <div class="custom-select-wrapper">
+                  <button type="button" class="custom-select-trigger" id="idtype-trigger"
+                    onclick="toggleSelect('idtype')"><span id="idtype-label">Select ID Type</span><span
+                      class="arrow"></span></button>
+                  <div class="custom-options" id="idtype-options">
+                    <div class="custom-option"
+                      onclick="pickOption('idtype','Philippine Identification (PhilID/ePhilID)')">Philippine
+                      Identification (PhilID/ePhilID)</div>
+                    <div class="custom-option" onclick="pickOption('idtype','TIN ID')">TIN ID</div>
+                    <div class="custom-option" onclick="pickOption('idtype','PhilHealth ID')">PhilHealth ID</div>
+                    <div class="custom-option" onclick="pickOption('idtype','Voters ID')">Voter's ID</div>
+                    <div class="custom-option" onclick="pickOption('idtype','Drivers License')">Driver's License</div>
+                    <div class="custom-option" onclick="pickOption('idtype','PRC ID')">PRC ID</div>
+                    <div class="custom-option" onclick="pickOption('idtype','Postal ID')">Postal ID</div>
+                    <div class="custom-option" onclick="pickOption('idtype','Senior Citizen ID')">Senior Citizen ID
+                    </div>
+                  </div>
+                  <input type="hidden" id="idtype-value" name="id_type" />
+                </div>
+              </div>
+              <div class="mp-form-group"><label>ID Number *</label><input type="text" id="id-number-input"
+                  placeholder="Enter ID Number" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section" style="border-top:1px solid #e0e0e0;padding-top:32px">
+            <div class="disclaimer">By submitting this form, I certify that all information provided is true and
+              correct. I understand that any false statement may result in the denial or cancellation of Member Profile
+              Application.</div>
+            <div id="submit-success"
+              style="display:none;background:#dcf0dc;color:#1a6b1a;border:1.5px solid #a8d8a8;border-radius:10px;padding:14px 18px;font-size:14px;font-weight:700;margin-bottom:16px;">
+              ✓ Application submitted successfully! Your cluster records have been sent to the Agriculture Office for
+              review.
+            </div>
+            <div id="submit-error"
+              style="display:none;background:#fdecea;color:#c0392b;border:1.5px solid #f5b7b1;border-radius:10px;padding:14px 18px;font-size:13px;font-weight:700;margin-bottom:16px;">
+            </div>
+            <button class="btn-submit" id="submit-btn" onclick="submitApplication()">Submit Application</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="view-app-rsbsa">
+      <span class="back-link" onclick="showView('applications',null)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Back to Applications
+      </span>
+      <div class="page-header" style="margin-bottom:20px">
+        <div>
+          <h1>RSBSA Enrolment Application</h1>
+          <p>Registry System for Basic Sectors in Agriculture — enrolment form</p>
+        </div>
+      </div>
+      <div class="content-grid">
+        <input type="hidden" id="rsbsa-app-id" value="">
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <h2>Farmer Information</h2>
+            </div>
+            <div class="card-body">
+              <div class="form-section-title">Personal Details</div>
+              <div class="form-grid" style="margin-top:14px">
+                <div class="form-group"><label class="form-label">First Name</label><input class="form-input"
+                    type="text" id="rsbsa-fname" /></div>
+                <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text"
+                    id="rsbsa-lname" /></div>
+                <div class="form-group"><label class="form-label">Date of Birth</label><input class="form-input"
+                    type="date" id="rsbsa-dob" /></div>
+                <div class="form-group"><label class="form-label">Sex</label><select class="form-select" id="rsbsa-sex">
+                    <option value="">Select</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select></div>
+                <div class="form-group full"><label class="form-label">Barangay / Address</label><input
+                    class="form-input" type="text" id="rsbsa-address" /></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h2>Upload Requirements</h2>
+            </div>
+            <div class="card-body">
+              <p style="font-size:12px;color:var(--tl);margin-bottom:18px">Upload clear photos or scanned images.
+                Accepted: JPG, PNG, PDF. <strong>You can select multiple files per category.</strong></p>
+
+              <div class="upload-item" id="upload-1">
+                <div class="upload-label-row"><span class="upload-req-title">📸 2x2 Picture</span><span
+                    class="upload-status" id="status-1">Not uploaded</span></div>
+                <label class="upload-dropzone" for="file-1" id="zone-1">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <div class="upload-hint">Click to upload or drag & drop</div>
+                </label>
+                <div class="upload-preview" id="preview-1"></div>
+                <input type="file" id="file-1" accept="image/*,.pdf" multiple style="display:none"
+                  onchange="handleUpload(this,'1')" />
+              </div>
+
+              <div class="upload-item" id="upload-2">
+                <div class="upload-label-row"><span class="upload-req-title">📋 Filled Out RSBSA Form</span><span
+                    class="upload-status" id="status-2">Not uploaded</span></div>
+                <label class="upload-dropzone" for="file-2" id="zone-2">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <div class="upload-hint">Click to upload or drag & drop</div>
+                </label>
+                <div class="upload-preview" id="preview-2"></div>
+                <input type="file" id="file-2" accept="image/*,.pdf" multiple style="display:none"
+                  onchange="handleUpload(this,'2')" />
+              </div>
+
+              <div class="upload-item" id="upload-3">
+                <div class="upload-label-row"><span class="upload-req-title">🪪 Government Issued ID</span><span
+                    class="upload-status" id="status-3">Not uploaded</span></div>
+                <label class="upload-dropzone" for="file-3" id="zone-3">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <div class="upload-hint">Click to upload or drag & drop</div>
+                </label>
+                <div class="upload-preview" id="preview-3"></div>
+                <input type="file" id="file-3" accept="image/*,.pdf" multiple style="display:none"
+                  onchange="handleUpload(this,'3')" />
+              </div>
+
+              <div class="upload-item" id="upload-4">
+                <div class="upload-label-row"><span class="upload-req-title">📄 Proof of Ownership</span><span
+                    class="upload-status" id="status-4">Not uploaded</span></div>
+                <p style="font-size:11px;color:var(--tl);margin:-6px 0 8px">Tax Declaration, Land Title, or Barangay
+                  Certification</p>
+                <label class="upload-dropzone" for="file-4" id="zone-4">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <div class="upload-hint">Click to upload or drag & drop</div>
+                </label>
+                <div class="upload-preview" id="preview-4"></div>
+                <input type="file" id="file-4" accept="image/*,.pdf" multiple style="display:none"
+                  onchange="handleUpload(this,'4')" />
+              </div>
+
+              <div class="upload-item" id="upload-5">
+                <div class="upload-label-row"><span class="upload-req-title">📍 Georeferencing Stub (Geotag)</span><span
+                    class="upload-status" id="status-5">Not uploaded</span></div>
+                <label class="upload-dropzone" for="file-5" id="zone-5">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <div class="upload-hint">Click to upload or drag & drop</div>
+                </label>
+                <div class="upload-preview" id="preview-5"></div>
+                <input type="file" id="file-5" accept="image/*,.pdf" multiple style="display:none"
+                  onchange="handleUpload(this,'5')" />
+              </div>
+
+              <div class="upload-item" id="upload-6">
+                <div class="upload-label-row"><span class="upload-req-title">📁 Additional Documents
+                    (Optional)</span><span class="upload-status" id="status-6">Not uploaded</span></div>
+                <p style="font-size:11px;color:var(--tl);margin:-6px 0 8px">Any other supporting documents you wish to
+                  include.</p>
+                <label class="upload-dropzone" for="file-6" id="zone-6">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <div class="upload-hint">Click to upload or drag & drop</div>
+                </label>
+                <div class="upload-preview" id="preview-6"></div>
+                <input type="file" id="file-6" accept="image/*,.pdf" multiple style="display:none"
+                  onchange="handleUpload(this,'6')" />
+              </div>
+
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h2>Form Actions</h2>
+            </div>
+            <div class="card-body">
+              <div class="form-actions">
+                <button class="btn-primary" id="rsbsa-submit-btn" onclick="submitRsbsa()"><svg width="14" height="14"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M9 11l3 3L22 4" />
+                  </svg>Submit Enrolment</button>
+                <button class="btn-outline" id="rsbsa-draft-btn" onclick="saveRsbsaDraft()">Save Draft</button>
+              </div>
+              <div id="rsbsa-submit-error"
+                style="display:none;background:#fdecea;color:#c0392b;border:1.5px solid #f5b7b1;border-radius:10px;padding:14px 18px;font-size:13px;font-weight:700;margin-top:16px;">
+              </div>
+              <div id="rsbsa-submit-success"
+                style="display:none;background:#dcf0dc;color:#1a6b1a;border:1.5px solid #a8d8a8;border-radius:10px;padding:14px 18px;font-size:14px;font-weight:700;margin-top:16px;">
+                ✓ RSBSA Enrolment submitted successfully! Your application is now under review.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <h2>Enrolment Status</h2>
+            </div>
+            <div class="card-body">
+              <div class="farm-summary-row"><span class="farm-key">Status</span><span class="farm-val"><span
+                    class="badge badge-gray" id="rsbsa-status-badge">Draft</span></span></div>
+              <div class="farm-summary-row"><span class="farm-key">Type</span><span class="farm-val">RSBSA
+                  Enrolment</span></div>
+              <div class="farm-summary-row"><span class="farm-key">Submitted</span><span class="farm-val"
+                  id="rsbsa-submitted-date">—</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h2>Checklist</h2>
+            </div>
+            <div class="card-body">
+              <div class="req-checklist">
+                <div class="req-check-item" id="check-1"><span class="req-check-icon">○</span><span>2x2 Picture</span>
+                </div>
+                <div class="req-check-item" id="check-2"><span class="req-check-icon">○</span><span>Filled Out RSBSA
+                    Form</span></div>
+                <div class="req-check-item" id="check-3"><span class="req-check-icon">○</span><span>Government Issued
+                    ID</span></div>
+                <div class="req-check-item" id="check-4"><span class="req-check-icon">○</span><span>Proof of
+                    Ownership</span></div>
+                <div class="req-check-item" id="check-5"><span class="req-check-icon">○</span><span>Georeferencing
+                    Stub</span></div>
+              </div>
+              <div
+                style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--tl)">
+                <span id="upload-count">0</span> of 5 requirements uploaded
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h2>Admin Remarks</h2>
+            </div>
+            <div class="card-body" id="rsbsa-remarks">
+              <div class="empty-state remarks-empty">No remarks from admin yet.</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h2>About RSBSA</h2>
+            </div>
+            <div class="card-body">
+              <div class="announcement">
+                <div class="announcement-body">RSBSA enrolment is required to qualify for national government
+                  agricultural assistance including seeds, fertilizer, and crop insurance.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="modal-overlay" id="crop-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Add Crop Record</h2>
+        <button class="modal-close" onclick="closeCropModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group full" style="display:flex; gap:12px;">
+            <div style="flex:1;">
+              <label class="form-label">Season</label>
+              <select class="form-select" id="cr-season-type">
+                <option value="Dry Season">Dry Season</option>
+                <option value="Wet Season">Wet Season</option>
+              </select>
+            </div>
+            <div style="flex:1;">
+              <label class="form-label">Year</label>
+              <input type="number" class="form-input" id="cr-season-year" value="2024" min="2000" max="2100">
+            </div>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Crop</label>
+            <input type="text" class="form-input" id="cr-crop" placeholder="e.g., Rice, Corn">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Area (ha)</label>
+            <input type="number" step="0.01" class="form-input" id="cr-area" placeholder="0.00" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Yield (bags)</label>
+            <input type="number" class="form-input" id="cr-yield" placeholder="0" min="0">
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Income (₱)</label>
+            <input type="text" class="form-input" id="cr-income" placeholder="0.00" oninput="formatIncome(this)">
+          </div>
+          <div class="form-group full" id="cr-error" style="display:none;color:#c0392b;font-size:12px;font-weight:700;">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" onclick="closeCropModal()">Cancel</button>
+        <button class="btn-primary" onclick="submitCropRecord()" id="cr-submit-btn">Save Record</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── ROLE GUARD ──────────────────────────────────────────
+    (function () {
+      var role = sessionStorage.getItem('user_role');
+      if (role === 'admin') window.location.replace('admin-dashboard.html');
+
+      // Load application history on load
+      loadMyApplications();
+      fetchCropRecords();
+    })();
+
+    function openCropModal() {
+      document.getElementById('cr-error').style.display = 'none';
+      document.getElementById('cr-season-type').value = 'Wet Season';
+      document.getElementById('cr-season-year').value = new Date().getFullYear();
+      document.getElementById('cr-crop').value = '';
+      document.getElementById('cr-area').value = '';
+      document.getElementById('cr-yield').value = '';
+      document.getElementById('cr-income').value = '';
+      document.getElementById('cr-submit-btn').disabled = false;
+      document.getElementById('cr-submit-btn').textContent = 'Save Record';
+      document.getElementById('crop-modal').classList.add('active');
+    }
+
+    function closeCropModal() {
+      document.getElementById('crop-modal').classList.remove('active');
+    }
+
+    async function submitCropRecord() {
+      const errEl = document.getElementById('cr-error');
+      errEl.style.display = 'none';
+
+      const seasonType = document.getElementById('cr-season-type').value;
+      const seasonYear = document.getElementById('cr-season-year').value;
+      const season = `${seasonType} ${seasonYear}`;
+      const crop = document.getElementById('cr-crop').value.trim();
+      const area = parseFloat(document.getElementById('cr-area').value);
+      const yieldAmt = parseFloat(document.getElementById('cr-yield').value);
+      const incomeStr = document.getElementById('cr-income').value.replace(/,/g, '');
+      const income = parseFloat(incomeStr);
+
+      if (!crop || isNaN(area) || isNaN(yieldAmt) || isNaN(income)) {
+        errEl.textContent = 'Please fill in all fields correctly.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      if (yieldAmt < 0) {
+        errEl.textContent = 'Yield cannot be negative.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      if (income < 0) {
+        errEl.textContent = 'Income cannot be negative.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const userId = sessionStorage.getItem('user_id');
+      if (!userId) {
+        errEl.textContent = 'User not logged in.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      document.getElementById('cr-submit-btn').disabled = true;
+      document.getElementById('cr-submit-btn').textContent = 'Saving...';
+
+      try {
+        const response = await fetch('/api/crop_records', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: userId,
+            season, crop, area, yield: yieldAmt, income, status: 'Completed'
+          })
+        });
+
+        if (!response.ok) throw new Error('Failed to save record');
+
+        closeCropModal();
+        fetchCropRecords(); // refresh list
+      } catch (err) {
+        errEl.textContent = err.message;
+        errEl.style.display = 'block';
+        document.getElementById('cr-submit-btn').disabled = false;
+        document.getElementById('cr-submit-btn').textContent = 'Save Record';
+      }
+    }
+
+    async function fetchCropRecords() {
+      const userId = sessionStorage.getItem('user_id');
+      if (!userId) return;
+
+      try {
+        const response = await fetch('/api/crop_records/me?user_id=' + userId);
+        const data = await response.json();
+        const tbody = document.getElementById('crop-tbody');
+        tbody.innerHTML = '';
+
+        if (data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--tl);">No crop records found.</td></tr>';
+          return;
+        }
+
+        data.forEach(record => {
+          let statusBadge = '<span class="badge badge-green">Completed</span>';
+          if (record.status && record.status !== 'Completed') {
+            statusBadge = '<span class="badge badge-gray">' + record.status + '</span>';
+          }
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = '<td><strong>' + record.season + '</strong></td>' +
+            '<td>' + record.crop + '</td>' +
+            '<td>' + record.area + ' ha</td>' +
+            '<td>' + record.yield + ' bags</td>' +
+            '<td>₱' + record.income.toLocaleString() + '</td>' +
+            '<td style="text-align:center;">' + statusBadge + '</td>' +
+            '<td style="text-align:center;"><button onclick="deleteCropRecord(' + record.id + ')" style="background:none;border:none;color:#c0392b;cursor:pointer;" title="Delete Record"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td>';
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('Error fetching crop records:', err);
+      }
+    }
+
+    async function deleteCropRecord(id) {
+      if (!confirm('Are you sure you want to delete this crop record? This cannot be undone.')) return;
+      try {
+        const response = await fetch('/api/crop_records/' + id, { method: 'DELETE' });
+        if (!response.ok) {
+          const data = await response.json();
+          alert('Failed to delete: ' + (data.error || 'Unknown error'));
+          return;
+        }
+        fetchCropRecords(); // Refresh the table
+      } catch (err) {
+        alert('Network error: ' + err.message);
+      }
+    }
+
+    async function loadMyApplications() {
+      const userId = sessionStorage.getItem('user_id');
+      const email = sessionStorage.getItem('user_email');
+
+      // Default topnav user name
+      if (email) document.getElementById('nav-name').textContent = email.split('@')[0];
+
+      if (!userId) return;
+      try {
+        const res = await fetch(`/api/applications/me?user_id=${userId}`);
+        const apps = await res.json();
+
+        if (apps.length > 0) {
+          const memberApps = apps.filter(a => a.applicationType !== 'RSBSA Enrolment');
+          const rsbsaApps = apps.filter(a => a.applicationType === 'RSBSA Enrolment');
+
+          // ── Update Application Choice Cards based on existing submissions ────────
+          const memberCard = document.querySelector('.app-choice-card[onclick*="openNewApplication"]');
+          const rsbsaCard = document.querySelector('.app-choice-card[onclick*="app-rsbsa"]');
+
+          const latestMember = memberApps.length > 0 ? memberApps[0] : null;
+          const latestRsbsaCheck = rsbsaApps.length > 0 ? rsbsaApps[0] : null;
+
+          function lockCard(card, status) {
+            if (!card) return;
+            card.style.opacity = '0.65';
+            card.style.cursor = 'not-allowed';
+            card.style.pointerEvents = 'none';
+            card.style.borderColor = status === 'Approved' ? '#2d6a2d' : '#e0a800';
+            // Inject or update a status pill
+            let pill = card.querySelector('.app-status-pill');
+            if (!pill) {
+              pill = document.createElement('span');
+              pill.className = 'app-status-pill';
+              pill.style.cssText = 'display:inline-block;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;margin-top:4px;text-transform:uppercase;letter-spacing:.6px;';
+              const arrowEl = card.querySelector('.app-choice-arrow');
+              if (arrowEl) card.insertBefore(pill, arrowEl);
+              else card.appendChild(pill);
+            }
+            pill.textContent = status === 'Approved' ? '✓ Approved' : '⏳ Pending Review';
+            pill.style.background = status === 'Approved' ? '#dcf0dc' : '#fff0d4';
+            pill.style.color = status === 'Approved' ? '#1a6b1a' : '#8c5700';
+            const arrowEl = card.querySelector('.app-choice-arrow');
+            if (arrowEl) arrowEl.style.display = 'none';
+          }
+
+          function unlockCard(card) {
+            if (!card) return;
+            card.style.opacity = '';
+            card.style.cursor = '';
+            card.style.pointerEvents = '';
+            card.style.borderColor = '';
+            const pill = card.querySelector('.app-status-pill');
+            if (pill) pill.remove();
+            const arrowEl = card.querySelector('.app-choice-arrow');
+            if (arrowEl) arrowEl.style.display = '';
+          }
+
+          // Member Profile card
+          if (latestMember && (latestMember.status === 'Pending' || latestMember.status === 'Approved')) {
+            lockCard(memberCard, latestMember.status);
+          } else if (latestMember && latestMember.status === 'Rejected') {
+            // Keep card clickable but show a red "Rejected" pill
+            unlockCard(memberCard);
+            if (memberCard) {
+              let pill = memberCard.querySelector('.app-status-pill');
+              if (!pill) {
+                pill = document.createElement('span');
+                pill.className = 'app-status-pill';
+                pill.style.cssText = 'display:inline-block;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;margin-top:4px;text-transform:uppercase;letter-spacing:.6px;';
+                const arrowEl = memberCard.querySelector('.app-choice-arrow');
+                if (arrowEl) memberCard.insertBefore(pill, arrowEl);
+                else memberCard.appendChild(pill);
+              }
+              pill.textContent = '✕ Rejected — Click to Resubmit';
+              pill.style.background = '#fde8e8';
+              pill.style.color = '#c0392b';
+              memberCard.style.borderColor = '#e74c3c';
+              // Override click so it pre-fills the form (edit mode)
+              memberCard.onclick = () => openEditProfile(true);
+            }
+          } else {
+            unlockCard(memberCard);
+          }
+
+          // RSBSA card
+          if (latestRsbsaCheck && (latestRsbsaCheck.status === 'Pending' || latestRsbsaCheck.status === 'Approved')) {
+            lockCard(rsbsaCard, latestRsbsaCheck.status);
+          } else {
+            unlockCard(rsbsaCard);
+          }
+          // ────────────────────────────────────────────────────────────────────────
+
+          if (memberApps.length > 0) {
+            // Always show the latest submission so updates appear immediately
+            const latestApp = memberApps[0];
+
+            document.getElementById('member-app-id').value = latestApp.id;
+            prefillMemberProfile(latestApp);
+
+            // Update Profile
+            const fullName = [latestApp.firstName, latestApp.middleName, latestApp.lastName].filter(Boolean).join(' ');
+            if (document.getElementById('profile-name')) document.getElementById('profile-name').textContent = fullName;
+
+            const fullAddress = [latestApp.street, latestApp.barangay, latestApp.municipality, latestApp.province].filter(Boolean).join(', ');
+            if (document.getElementById('profile-address')) document.getElementById('profile-address').textContent = fullAddress || '—';
+            if (document.getElementById('profile-email')) document.getElementById('profile-email').textContent = email;
+
+            // Populate additional profile fields once application exists
+            if (document.getElementById('profile-dob')) document.getElementById('profile-dob').textContent = latestApp.dob || '—';
+            if (document.getElementById('profile-sex')) document.getElementById('profile-sex').textContent = latestApp.sex || '—';
+            if (document.getElementById('profile-civil-status')) document.getElementById('profile-civil-status').textContent = latestApp.civilStatus || '—';
+            if (document.getElementById('profile-education')) document.getElementById('profile-education').textContent = latestApp.education || '—';
+            if (document.getElementById('profile-contact')) document.getElementById('profile-contact').textContent = latestApp.contactNumber || '—';
+
+            // Update Topnav Name
+            if (fullName) document.getElementById('nav-name').textContent = fullName;
+            if (fullName) document.getElementById('nav-avatar').textContent = fullName.charAt(0).toUpperCase();
+
+            // Update My Farm View
+            if (document.getElementById('farm-barangay')) document.getElementById('farm-barangay').textContent = fullAddress || '—';
+            if (document.getElementById('farm-tenure')) document.getElementById('farm-tenure').textContent = latestApp.landTenure || '—';
+            if (document.getElementById('farm-area')) document.getElementById('farm-area').textContent = (latestApp.hectares || 0) + ' hectares';
+
+            if (document.getElementById('farm-irrigated')) document.getElementById('farm-irrigated').textContent = (latestApp.riceIrrigated || 0) + ' ha';
+            if (document.getElementById('farm-rainfed')) document.getElementById('farm-rainfed').textContent = (latestApp.riceRainfed || 0) + ' ha';
+            if (document.getElementById('farm-upland')) document.getElementById('farm-upland').textContent = (latestApp.riceUpland || 0) + ' ha';
+
+            // Update Farm Profile Section in Profile View
+            const profileFarmContainer = document.getElementById('profile-farm-container');
+            if (profileFarmContainer) {
+              profileFarmContainer.innerHTML = `
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Land Tenure</span><span style="font-weight:700;color:#111;">${latestApp.landTenure || '—'}</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Total Registered Area</span><span style="font-weight:700;color:#111;">${latestApp.hectares || 0} ha</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Irrigated Rice</span><span style="font-weight:700;color:#111;">${latestApp.riceIrrigated || 0} ha</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Rainfed Rice</span><span style="font-weight:700;color:#111;">${latestApp.riceRainfed || 0} ha</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Upland / Other</span><span style="font-weight:700;color:#111;">${latestApp.riceUpland || 0} ha</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Dry Season Yield</span><span style="font-weight:700;color:#111;">${latestApp.yieldDry || 0} bags/ha</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Wet Season Yield</span><span style="font-weight:700;color:#111;">${latestApp.yieldWet || 0} bags/ha</span>
+              </div>
+              <div style="padding:16px 24px;display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Primary Crop</span><span style="font-weight:700;color:#111;">${latestApp.cropType || '—'}</span>
+              </div>
+              `;
+            }
+
+            // Update RSBSA Status badge based on RSBSA Enrolment application status
+            const rsbsaBadge = document.getElementById('farm-rsbsa');
+            if (rsbsaBadge) {
+              if (rsbsaApps.length > 0) {
+                const rsbsaStatus = rsbsaApps[0].status;
+                if (rsbsaStatus === 'Approved') {
+                  rsbsaBadge.textContent = 'Enrolled ✓';
+                  rsbsaBadge.className = 'badge badge-green';
+                } else if (rsbsaStatus === 'Rejected') {
+                  rsbsaBadge.textContent = 'Rejected';
+                  rsbsaBadge.className = 'badge badge-red';
+                } else {
+                  rsbsaBadge.textContent = 'Pending Review';
+                  rsbsaBadge.className = 'badge badge-orange';
+                }
+              } else {
+                rsbsaBadge.textContent = 'Not Enrolled';
+                rsbsaBadge.className = 'badge badge-gray';
+              }
+            }
+
+            // Update Registration Status
+            const regContainer = document.getElementById('profile-registration-container');
+            if (regContainer) {
+              // Determine RSBSA Enrolment status for display
+              let rsbsaEnrolmentStatus = 'Not Enrolled';
+              let rsbsaEnrolmentBadgeClass = 'badge-gray';
+              if (rsbsaApps.length > 0) {
+                const rs = rsbsaApps[0].status;
+                if (rs === 'Approved') { rsbsaEnrolmentStatus = 'Enrolled ✓'; rsbsaEnrolmentBadgeClass = 'badge-green'; }
+                else if (rs === 'Rejected') { rsbsaEnrolmentStatus = 'Rejected'; rsbsaEnrolmentBadgeClass = 'badge-red'; }
+                else { rsbsaEnrolmentStatus = 'Pending Review'; rsbsaEnrolmentBadgeClass = 'badge-orange'; }
+              }
+
+              regContainer.innerHTML = `
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Civil Status</span><span style="font-weight:700;color:#111;">${latestApp.civilStatus || '—'}</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Education</span><span style="font-weight:700;color:#111;">${latestApp.education || '—'}</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Contact Number</span><span style="font-weight:700;color:#111;">${latestApp.contactNumber || '—'}</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Cluster / Association</span><span style="font-weight:700;color:#111;text-align:right;max-width:60%;">${latestApp.cluster || '—'}</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">RSBSA No.</span><span style="font-weight:700;color:#111;">${latestApp.rsbsaNo || '—'}</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">ID Type Provided</span><span style="font-weight:700;color:#111;">${latestApp.idType || '—'}</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;align-items:center;">
+                <span style="font-weight:600;color:var(--tm);">RSBSA Enrolment</span><span class="badge ${rsbsaEnrolmentBadgeClass}" style="font-weight:700;text-transform:uppercase;">${rsbsaEnrolmentStatus}</span>
+              </div>
+              <div style="padding:16px 24px;display:flex;justify-content:space-between;font-size:13px;align-items:center;">
+                <span style="font-weight:600;color:var(--tm);">Application Status</span><span class="badge ${latestApp.status === 'Approved' ? 'badge-green' : latestApp.status === 'Rejected' ? 'badge-red' : 'badge-orange'}" style="font-weight:700;text-transform:uppercase;">${latestApp.status || 'Pending'}</span>
+              </div>
+             `;
+            }
+
+            // Update Income in My Farm and Profile
+            const farmIncomeContainer = document.getElementById('farm-income-container');
+            const profileIncomeContainer = document.getElementById('profile-income-container');
+            const incomeHTML = `
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Year 1</span><span style="font-weight:700;color:#111;">₱ ${Number(latestApp.incomeY1 || 0).toLocaleString('en-US')}</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Year 2</span><span style="font-weight:700;color:#111;">₱ ${Number(latestApp.incomeY2 || 0).toLocaleString('en-US')}</span>
+              </div>
+              <div style="padding:16px 24px;display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Year 3</span><span style="font-weight:700;color:#111;">₱ ${Number(latestApp.incomeY3 || 0).toLocaleString('en-US')}</span>
+              </div>
+            `;
+            if (farmIncomeContainer) farmIncomeContainer.innerHTML = incomeHTML;
+            if (profileIncomeContainer) profileIncomeContainer.innerHTML = incomeHTML;
+
+            // Update Yields in My Farm
+            const yieldsContainer = document.getElementById('farm-yields-container');
+            if (yieldsContainer) {
+              yieldsContainer.innerHTML = `
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Dry Season (bags/ha)</span><span style="font-weight:800;color:#111;">${latestApp.yieldDry || 0}</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Wet Season (bags/ha)</span><span style="font-weight:800;color:#111;">${latestApp.yieldWet || 0}</span>
+              </div>
+              <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Kg/bag</span><span style="font-weight:800;color:#111;">${latestApp.yieldKg || 0}</span>
+              </div>
+              <div style="padding:16px 24px;display:flex;justify-content:space-between;font-size:13px;">
+                <span style="font-weight:600;color:var(--tm);">Other Crops</span><span style="font-weight:800;color:#111;">${latestApp.otherCrops || '—'}</span>
+              </div>
+            `;
+            }
+
+            // Update Remarks
+            const remarksContainer = document.getElementById('farm-remarks-container');
+            if (remarksContainer) {
+              let allAdminRemarks = [];
+
+              // Collect remarks from Member Profile
+              if (latestApp.adminRemarks) {
+                try {
+                  const remarks = JSON.parse(latestApp.adminRemarks);
+                  if (Array.isArray(remarks)) allAdminRemarks.push(...remarks);
+                } catch (e) { }
+              }
+
+              // Collect remarks from RSBSA
+              if (rsbsaApps.length > 0 && rsbsaApps[0].adminRemarks) {
+                try {
+                  const remarks = JSON.parse(rsbsaApps[0].adminRemarks);
+                  if (Array.isArray(remarks)) allAdminRemarks.push(...remarks);
+                } catch (e) { }
+              }
+
+              if (allAdminRemarks.length > 0) {
+                // Sort by date (assuming date is in a sortable format or just use reverse if we want latest first)
+                // For now, let's just use the renderRemarks helper
+                renderRemarks('farm-remarks-container', allAdminRemarks);
+              } else {
+                // Fallback to farmer's own remarks if no admin feedback
+                remarksContainer.innerHTML = `
+                  <div style="border-left: 4px solid #2d6a2d; margin-bottom: 12px; background: #eef2e8; padding: 12px; border-radius: 4px;">
+                    <div style="font-weight:800;color:#111;font-size:13px;margin-bottom:4px;">Year 1</div>
+                    <div style="font-size:12px;color:#555;line-height:1.4;">${latestApp.remarksY1 || 'None'}</div>
+                  </div>
+                  <div style="border-left: 4px solid #2d6a2d; margin-bottom: 12px; background: #eef2e8; padding: 12px; border-radius: 4px;">
+                    <div style="font-weight:800;color:#111;font-size:13px;margin-bottom:4px;">Year 2</div>
+                    <div style="font-size:12px;color:#555;line-height:1.4;">${latestApp.remarksY2 || 'None'}</div>
+                  </div>
+                  <div style="border-left: 4px solid #2d6a2d; background: #eef2e8; padding: 12px; border-radius: 4px;">
+                    <div style="font-weight:800;color:#111;font-size:13px;margin-bottom:4px;">Year 3</div>
+                    <div style="font-size:12px;color:#555;line-height:1.4;">${latestApp.remarksY3 || 'None'}</div>
+                  </div>
+                `;
+              }
+            }
+
+            // Update Crop Records Summary
+            if (document.getElementById('crop-summary-area')) document.getElementById('crop-summary-area').textContent = (latestApp.hectares || 0) + ' ha';
+            if (document.getElementById('crop-summary-type')) document.getElementById('crop-summary-type').textContent = latestApp.cropType || '—';
+            const cropStatus = document.getElementById('crop-summary-status');
+            if (cropStatus) {
+              cropStatus.textContent = latestApp.status || 'Pending';
+              cropStatus.className = latestApp.status === 'Approved' ? 'badge badge-green' : 'badge badge-orange';
+            }
+          }
+
+          if (rsbsaApps.length > 0) {
+            const latestRsbsa = rsbsaApps[0];
+            document.getElementById('rsbsa-app-id').value = latestRsbsa.id;
+            prefillRSBSA(latestRsbsa);
+
+            const statusBadge = document.getElementById('rsbsa-status-badge');
+            if (statusBadge) {
+              statusBadge.textContent = latestRsbsa.status || 'Pending';
+              statusBadge.className = latestRsbsa.status === 'Approved' ? 'badge badge-green' : latestRsbsa.status === 'Rejected' ? 'badge badge-red' : 'badge badge-orange';
+            }
+            if (document.getElementById('rsbsa-submitted-date')) {
+              document.getElementById('rsbsa-submitted-date').textContent = latestRsbsa.submittedAt ? new Date(latestRsbsa.submittedAt).toLocaleDateString() : '—';
+            }
+
+            // Render Admin Remarks for RSBSA
+            const rsbsaRemarksContainer = document.getElementById('rsbsa-remarks');
+            if (rsbsaRemarksContainer) {
+              if (latestRsbsa.adminRemarks) {
+                try {
+                  const remarks = JSON.parse(latestRsbsa.adminRemarks);
+                  if (Array.isArray(remarks) && remarks.length > 0) {
+                    renderRemarks('rsbsa-remarks', remarks);
+                  } else {
+                    rsbsaRemarksContainer.innerHTML = '<div class="empty-state remarks-empty">No remarks from admin yet.</div>';
+                  }
+                } catch (e) {
+                  rsbsaRemarksContainer.innerHTML = `<div class="remarks-card">
+                    <div class="remarks-header"><span class="remarks-title">💬 Admin Note</span></div>
+                    <div class="remarks-body">${latestRsbsa.adminRemarks}</div>
+                  </div>`;
+                }
+              } else {
+                rsbsaRemarksContainer.innerHTML = '<div class="empty-state remarks-empty">No remarks from admin yet.</div>';
+              }
+            }
+
+            // Disable submit button if already pending or approved
+            if (latestRsbsa.status === 'Approved' || latestRsbsa.status === 'Pending') {
+              const submitBtn = document.getElementById('rsbsa-submit-btn');
+              if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.style.background = '#888';
+                submitBtn.style.borderColor = '#888';
+                submitBtn.innerHTML = latestRsbsa.status === 'Approved' ? 'Enrolled' : 'Submitted';
+              }
+              const draftBtn = document.getElementById('rsbsa-draft-btn');
+              if (draftBtn) draftBtn.style.display = 'none';
+            } else {
+              // If Rejected, allow editing
+              const submitBtn = document.getElementById('rsbsa-submit-btn');
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.style.background = '';
+                submitBtn.style.borderColor = '';
+                submitBtn.innerHTML = 'Update & Resubmit';
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load apps', err);
+      }
+    }
+
+    function renderRemarks(containerId, remarks) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = remarks.map(r => `
+        <div style="background:#f4f7f0; padding:12px; border-radius:8px; margin-bottom:12px; font-size:13px; border-left:4px solid ${r.type === 'approved' ? '#2d6a2d' : '#c0392b'}; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span style="font-weight:800; text-transform:uppercase; font-size:10px; color:${r.type === 'approved' ? '#2d6a2d' : '#c0392b'};">${r.type}</span>
+            <span style="color:#999; font-size:10px;">${r.date}</span>
+          </div>
+          <div style="color:#333; line-height:1.5; font-weight: 500;">${r.message}</div>
+          <div style="text-align:right; font-size:10px; color:#888; margin-top:6px; font-style: italic;">— Agriculture Office</div>
+        </div>
+      `).reverse().join('');
+    }
+
+    // ── VIEW SWITCHING ──────────────────────────────────────
+    // ── VIEW HISTORY TRACKING ──────────────────────────
+    let viewHistory = [];
+
+    function showView(name, el, isBack = false) {
+      // Track history before switching
+      const currentActive = document.querySelector('.view.active');
+      if (currentActive && !isBack) {
+        const currentName = currentActive.id.replace('view-', '');
+        if (currentName !== name) {
+          viewHistory.push(currentName);
+        }
+      }
+
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      var t = document.getElementById('view-' + name);
+      if (t) t.classList.add('active');
+
+      document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+
+      // Highlight sidebar item
+      if (name === 'app-member-profile' || name === 'app-rsbsa') {
+        document.querySelectorAll('.sidebar-item').forEach(s => {
+          if (s.getAttribute('onclick') && s.getAttribute('onclick').includes("'applications'")) s.classList.add('active');
+        });
+      } else if (el) {
+        el.classList.add('active');
+      } else {
+        // Try to find matching sidebar item if el is null
+        document.querySelectorAll('.sidebar-item').forEach(s => {
+          const oc = s.getAttribute('onclick');
+          if (oc && oc.includes("'" + name + "'")) s.classList.add('active');
+        });
+      }
+    }
+
+    function goBackView() {
+      if (viewHistory.length > 0) {
+        const prevView = viewHistory.pop();
+        showView(prevView, null, true);
+      }
+    }
+
+    document.addEventListener('keydown', function (e) {
+      // Alt + Left Arrow
+      if (e.altKey && e.key === 'ArrowLeft') {
+        if (viewHistory.length > 0) {
+          e.preventDefault();
+          goBackView();
+        }
+      }
+    });
+
+
+    // ── UNLIMITED MULTIPLE UPLOAD HANDLER ───────────────────
+    var uploadedFilesMap = {}; // Global object para i-save ang lahat ng uploaded files per section
+
+    function handleUpload(input, id) {
+      if (!input.files || input.files.length === 0) return;
+      if (!uploadedFilesMap[id]) uploadedFilesMap[id] = [];
+
+      // I-add ang mga bagong files sa array para hindi mabura ang mga nauna
+      Array.from(input.files).forEach(f => uploadedFilesMap[id].push(f));
+
+      var zone = document.getElementById('zone-' + id);
+      var status = document.getElementById('status-' + id);
+      var checkItem = document.getElementById('check-' + id);
+
+      zone.classList.add('has-file');
+      status.textContent = '✓ Uploaded (' + uploadedFilesMap[id].length + ')';
+      status.classList.add('done');
+
+      if (checkItem) {
+        checkItem.classList.add('done');
+        checkItem.querySelector('.req-check-icon').textContent = '✓';
+      }
+
+      renderPreviews(id);
+
+      // I-update ang checklist tracker based sa na-upload na required items
+      var count = document.querySelectorAll('.req-check-item.done').length;
+      var countDisplay = document.getElementById('upload-count');
+      if (countDisplay) countDisplay.textContent = count;
+
+      // I-reset ang input field value para maka-select ulit ng panibago
+      input.value = "";
+    }
+
+    function removeFile(sectionId, index) {
+      if (uploadedFilesMap[sectionId]) {
+        uploadedFilesMap[sectionId].splice(index, 1);
+
+        var status = document.getElementById('status-' + sectionId);
+        var zone = document.getElementById('zone-' + sectionId);
+        var checkItem = document.getElementById('check-' + sectionId);
+
+        if (uploadedFilesMap[sectionId].length === 0) {
+          status.textContent = 'No file chosen';
+          status.classList.remove('done');
+          zone.classList.remove('has-file');
+          if (checkItem) {
+            checkItem.classList.remove('done');
+            checkItem.querySelector('.req-check-icon').textContent = '○';
+          }
+        } else {
+          status.textContent = '✓ Uploaded (' + uploadedFilesMap[sectionId].length + ')';
+        }
+
+        renderPreviews(sectionId);
+
+        var count = document.querySelectorAll('.req-check-item.done').length;
+        var countDisplay = document.getElementById('upload-count');
+        if (countDisplay) countDisplay.textContent = count;
+      }
+    }
+
+    function renderPreviews(id) {
+      var preview = document.getElementById('preview-' + id);
+      if (!preview) return;
+
+      preview.innerHTML = '';
+      if (!uploadedFilesMap[id] || uploadedFilesMap[id].length === 0) {
+        preview.classList.remove('show');
+        return;
+      }
+
+      preview.classList.add('show');
+      uploadedFilesMap[id].forEach((file, index) => {
+        var wrap = document.createElement('div');
+        wrap.className = 'file-thumb-wrap';
+
+        var removeBtn = document.createElement('div');
+        removeBtn.className = 'remove-file-btn';
+        removeBtn.innerHTML = '×';
+        removeBtn.title = 'Remove file';
+        removeBtn.onclick = (e) => {
+          e.stopPropagation();
+          removeFile(id, index);
+        };
+        wrap.appendChild(removeBtn);
+
+        if (file.type && file.type.startsWith('image/')) {
+          var img = document.createElement('img');
+          var r = new FileReader();
+          r.onload = e => { img.src = e.target.result; };
+          r.readAsDataURL(file);
+          wrap.appendChild(img);
+        } else {
+          var icon = document.createElement('div');
+          icon.style.cssText = "width:56px;height:56px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:20px;border:1px solid #d8ddd0;";
+          icon.textContent = '📄';
+          wrap.appendChild(icon);
+        }
+
+        var nameBadge = document.createElement('div');
+        nameBadge.className = 'file-name-badge';
+        nameBadge.title = file.name;
+        nameBadge.textContent = file.name;
+        wrap.appendChild(nameBadge);
+
+        preview.appendChild(wrap);
+      });
+    }
+
+    // ── HELPER: render admin remarks ────────────────────────
+    function renderRemarks(containerId, remarks) {
+      var el = document.getElementById(containerId);
+      if (!el) return;
+      if (!remarks || remarks.length === 0) {
+        el.innerHTML = '<div class="empty-state remarks-empty">No remarks from admin yet.</div>';
+        return;
+      }
+      var icons = { info: '💬', warning: '⚠️', approved: '✅', rejected: '❌' };
+      el.innerHTML = remarks.map(r => `
+        <div class="remarks-card">
+          <div class="remarks-header">
+            <span class="remarks-title">${icons[r.type] || '💬'} Admin Note</span>
+            <span class="remarks-date">${r.date || ''}</span>
+          </div>
+          <div class="remarks-body">${r.message}</div>
+          <div class="remarks-author">— ${r.author || 'Admin'}</div>
+        </div>
+      `).join('');
+    }
+
+    // ── HELPER: render farm info rows ───────────────────────
+    function renderRows(containerId, rows) {
+      var el = document.getElementById(containerId);
+      if (!el || !rows) return;
+      el.innerHTML = rows.map(r => `
+        <div class="farm-summary-row">
+          <span class="farm-key">${r.key}</span>
+          <span class="farm-val">${r.val}</span>
+        </div>
+      `).join('');
+    }
+
+    // ── HELPER: render income bar chart ────────────────────
+    function renderIncomeChart(containerId, data) {
+      var el = document.getElementById(containerId);
+      if (!el || !data) return;
+      el.innerHTML = '<div class="chart-bars">' + data.map(d => `
+        <div class="chart-bar-col">
+          <div class="chart-val">₱${d.amount}</div>
+          <div class="chart-bar" style="height:${d.heightPct}%;${d.highlight ? 'background:' + d.highlight : ''}"></div>
+          <div class="chart-label">${d.year}</div>
+        </div>
+      `).join('') + '</div>';
+    }
+
+    // ── HELPER: render crop table rows ─────────────────────
+    function renderCropTable(tbodyId, rows) {
+      var el = document.getElementById(tbodyId);
+      if (!el || !rows) return;
+      var badgeMap = { Harvested: 'badge-green', Growing: 'badge-blue', Planted: 'badge-orange', Lost: 'badge-red' };
+      el.innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.season}</td><td>${r.crop}</td><td>${r.area}</td>
+          <td>${r.yield || '—'}</td><td>${r.income || '—'}</td>
+          <td><span class="badge ${badgeMap[r.status] || 'badge-gray'}">${r.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // ── HELPER: render programs ────────────────────────────
+    function renderPrograms(containerId, programs) {
+      var el = document.getElementById(containerId);
+      if (!el || !programs) return;
+      el.innerHTML = programs.map(p => `
+        <div class="program-card">
+          <div class="program-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <div class="program-title">${p.title}</div>
+            <div class="program-desc">${p.desc}</div>
+            <div class="program-deadline">⏳ ${p.deadline}</div>
+          </div>
+          <button class="btn-sm ${p.enrolled ? 'active' : ''}" style="margin-left:auto;flex-shrink:0">${p.enrolled ? 'Enrolled' : 'Apply'}</button>
+        </div>
+      `).join('');
+      var badge = document.getElementById('programs-badge');
+      if (badge) badge.textContent = programs.length;
+    }
+
+    // ── HELPER: render announcements ───────────────────────
+    function renderAnnouncements(containerId, items) {
+      var el = document.getElementById(containerId);
+      if (!el || !items) return;
+      el.innerHTML = items.map(a => `
+        <div class="announcement">
+          <div class="announcement-title">${a.title}</div>
+          <div class="announcement-body">${a.body}</div>
+          <div class="announcement-date">${a.date}</div>
+        </div>
+      `).join('');
+    }
+
+    // ========================================================
+    // MEMBER PROFILE APPLICATION JAVASCRIPT FUNCTIONS
+    // ========================================================
+    function toggleSelect(id) {
+      // Cluster remains editable even in edit mode now per latest request
+      const t = document.getElementById(id + '-trigger'), o = document.getElementById(id + '-options'), open = o.classList.contains('open');
+      closeAll();
+      if (!open) { o.classList.add('open'); t.classList.add('open') }
+    }
+
+    function pickOption(id, val) {
+      document.getElementById(id + '-label').textContent = val;
+      document.getElementById(id + '-value').value = val;
+      document.getElementById(id + '-trigger').classList.add('selected');
+      closeAll();
+
+      // Auto-set maxlength on ID Number input when ID type is selected
+      if (id === 'idtype') {
+        const idInput = document.getElementById('id-number-input');
+        if (idInput) {
+          const idLimits = {
+            'Philippine Identification (PhilID/ePhilID)': { max: 16, placeholder: 'XXXX-XXXX-XXXX-XXXX (16 digits)' },
+            'TIN ID': { max: 12, placeholder: 'XXX-XXX-XXX-XXX (9-12 digits)' },
+            'PhilHealth ID': { max: 12, placeholder: 'XX-XXXXXXXXX-X (12 chars)' },
+            'Voters ID': { max: 19, placeholder: 'e.g., VID-XXXXXXXX-XXXXXX' },
+            'Drivers License': { max: 11, placeholder: 'AXX-XX-XXXXXX (11 chars)' },
+            'PRC ID': { max: 7, placeholder: 'XXXXXXX (7 digits)' },
+            'Postal ID': { max: 20, placeholder: 'Enter Postal ID Number' },
+            'Senior Citizen ID': { max: 20, placeholder: 'Enter Senior Citizen ID No.' }
+          };
+          const config = idLimits[val];
+          if (config) {
+            idInput.maxLength = config.max;
+            idInput.placeholder = config.placeholder;
+          } else {
+            idInput.removeAttribute('maxlength');
+            idInput.placeholder = 'Enter ID Number';
+          }
+        }
+      }
+    }
+
+    function closeAll() {
+      document.querySelectorAll('.custom-options.open').forEach(e => e.classList.remove('open'));
+      document.querySelectorAll('.custom-select-trigger.open').forEach(e => e.classList.remove('open'));
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.custom-select-wrapper')) closeAll()
+    });
+
+    const barangayData = {
+      "Iriga City": ["Antipolo", "Cristo Rey", "Del Rosario (Banao)", "Francia", "La Anunciacion", "La Medalla", "La Purisima", "La Trinidad", "Nino Jesus", "Perpetual Help", "Sagrada", "Salvacion", "San Agustin", "San Andres", "San Antonio", "San Francisco (Pob.)", "San Isidro", "San Jose", "San Juan", "San Miguel", "San Nicolas", "San Pedro", "San Rafael", "San Ramon", "San Vicente Norte", "San Vicente Sur", "Santa Cruz Norte", "Santa Cruz Sur", "Santa Elena", "Santa Isabel", "Santa Maria", "Santa Teresita", "Santo Domingo", "Santo Nino", "Santiago", "San Roque (Pob.)"],
+      "Sagnay": ["Aniog", "Atulayan", "Bongalon", "Buracan", "Catalotoan", "Del Carmen", "Kilantaao", "Kilomaon", "Mabca", "Minadongjol", "Nato", "Patitinan", "San Antonio", "San Isidro", "San Roque", "Santo Niño", "Sibaguan", "Tinorongan", "Turague"]
+    };
+
+    function computeTotalRice() {
+      const irrigated = parseFloat(document.getElementById('rice-irrigated').value) || 0;
+      const rainfed = parseFloat(document.getElementById('rice-rainfed').value) || 0;
+      const upland = parseFloat(document.getElementById('rice-upland').value) || 0;
+      document.getElementById('rice-total').value = (irrigated + rainfed + upland).toFixed(2);
+    }
+
+    function computeAge() {
+      const dob = document.getElementById('farmer-dob').value;
+      if (dob) {
+        const today = new Date();
+        const birthDate = new Date(dob);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        const ageEl = document.getElementById('farmer-age');
+        if (ageEl) ageEl.value = age > 0 ? age : 0;
+      }
+    }
+
+    function formatIncome(input) {
+      let val = input.value.replace(/,/g, '');
+      if (val === '') return;
+      if (!isNaN(val)) {
+        let parts = val.split('.');
+        parts[0] = Number(parts[0]).toLocaleString('en-US');
+        input.value = parts.join('.');
+      }
+    }
+
+    function updateBarangay(mun) {
+      const c = document.getElementById('barangay-options'), list = barangayData[mun] || [];
+      document.getElementById('barangay-label').textContent = 'Select Barangay';
+      document.getElementById('barangay-value').value = '';
+      document.getElementById('barangay-trigger').classList.remove('selected');
+      c.innerHTML = list.length ? list.map(b => `<div class="custom-option" onclick="pickOption('barangay','${b}')">${b}</div>`).join('') : '<div class="custom-option" style="color:#bbb;pointer-events:none">No barangays listed</div>';
+    }
+
+    function getVal(id) {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : '';
+    }
+
+    function prefillMemberProfile(app) {
+      if (!app) return;
+      document.getElementById('member-app-id').value = app.id;
+
+      // Personal Info
+      if (document.getElementById('mp-lastname')) document.getElementById('mp-lastname').value = app.lastName || '';
+      if (document.getElementById('mp-firstname')) document.getElementById('mp-firstname').value = app.firstName || '';
+      if (document.getElementById('mp-middlename')) document.getElementById('mp-middlename').value = app.middleName || '';
+      if (document.getElementById('farmer-age')) document.getElementById('farmer-age').value = app.age || '';
+      if (document.getElementById('farmer-dob')) document.getElementById('farmer-dob').value = app.dob || '';
+
+      // Custom Selects
+      if (app.cluster) {
+        pickOption('cluster', app.cluster);
+      }
+      if (app.sex) pickOption('sex', app.sex);
+      if (app.civilStatus) pickOption('civil', app.civilStatus);
+      if (app.education) pickOption('education', app.education);
+      if (app.municipality) {
+        pickOption('municipality', app.municipality);
+        updateBarangay(app.municipality);
+        if (app.barangay) pickOption('barangay', app.barangay);
+      }
+      if (app.landTenure) pickOption('tenure', app.landTenure);
+      if (app.membership) pickOption('membership', app.membership);
+      if (app.idType) pickOption('idtype', app.idType);
+
+      // Other fields
+      if (document.getElementById('mp-street')) document.getElementById('mp-street').value = app.street || '';
+      if (document.querySelector('input[placeholder*="09XX"]')) document.querySelector('input[placeholder*="09XX"]').value = app.contactNumber || '';
+      if (document.querySelector('input[placeholder*="05-017"]')) document.querySelector('input[placeholder*="05-017"]').value = app.rsbsaNo || '';
+
+      // Crop Info
+      const riceInputs = document.querySelectorAll('.inner-card.green input[type="number"]');
+      if (riceInputs[0]) riceInputs[0].value = app.riceIrrigated || 0;
+      if (riceInputs[1]) riceInputs[1].value = app.riceRainfed || 0;
+      if (riceInputs[2]) riceInputs[2].value = app.riceUpland || 0;
+      computeTotalRice();
+
+      const yieldInputs = document.querySelectorAll('.inner-card.beige input[type="number"]');
+      if (yieldInputs[0]) yieldInputs[0].value = app.yieldDry || 0;
+      if (yieldInputs[1]) yieldInputs[1].value = app.yieldWet || 0;
+      if (yieldInputs[2]) yieldInputs[2].value = app.yieldKg || 0;
+      if (document.querySelector('input[placeholder="e.g., Corn, Vegetables"]')) {
+        let crops = app.cropType || '';
+        if (crops.startsWith('Rice + ')) crops = crops.replace('Rice + ', '');
+        else if (crops === 'Rice') crops = '';
+        document.querySelector('input[placeholder="e.g., Corn, Vegetables"]').value = crops;
+      }
+
+      // Income
+      const incomeInputs = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Annual Income'))?.nextElementSibling?.querySelectorAll('input') || [];
+      if (incomeInputs[0]) {
+        incomeInputs[0].value = app.incomeY1 || 0;
+        formatIncome(incomeInputs[0]);
+      }
+      if (incomeInputs[1]) {
+        incomeInputs[1].value = app.incomeY2 || 0;
+        formatIncome(incomeInputs[1]);
+      }
+      if (incomeInputs[2]) {
+        incomeInputs[2].value = app.incomeY3 || 0;
+        formatIncome(incomeInputs[2]);
+      }
+
+      // Remarks
+      const remarksTextareas = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Remarks'))?.nextElementSibling?.querySelectorAll('textarea') || [];
+      if (remarksTextareas[0]) remarksTextareas[0].value = app.remarksY1 || '';
+      if (remarksTextareas[1]) remarksTextareas[1].value = app.remarksY2 || '';
+      if (remarksTextareas[2]) remarksTextareas[2].value = app.remarksY3 || '';
+
+      // Status Indicators (Checkboxes)
+      if (app.statusIndicators) {
+        const indicators = app.statusIndicators.split(', ');
+        document.querySelectorAll('.checkbox-item').forEach(item => {
+          const cb = item.querySelector('input');
+          if (cb) cb.checked = indicators.includes(item.textContent.trim());
+        });
+      }
+
+      // Only disable submit when NOT in edit mode
+      if (!window.isEditMode) {
+        if (app.status === 'Pending' || app.status === 'Approved') {
+          const btn = document.getElementById('submit-btn');
+          if (btn) {
+            btn.disabled = true;
+            btn.textContent = app.status === 'Approved' ? 'Already Registered' : 'Under Review';
+            btn.style.background = '#888';
+            btn.style.borderColor = '#888';
+          }
+        } else if (app.status === 'Rejected') {
+          // In non-edit mode, allow resubmit via the same form (acts as edit mode auto)
+          window.isEditMode = true;
+          const btn = document.getElementById('submit-btn');
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Resubmit Application';
+            btn.style.background = '#c0392b';
+            btn.style.borderColor = '#c0392b';
+          }
+        }
+      }
+    }
+
+    function openEditProfile(isRejected) {
+      // Set edit mode flag BEFORE loading so prefillMemberProfile respects it
+      window.isEditMode = true;
+
+      // Update form header to indicate edit mode
+      const tagEl = document.getElementById('mp-form-tag');
+      const titleEl = document.getElementById('mp-form-title');
+      const subtitleEl = document.getElementById('mp-form-subtitle');
+
+      if (isRejected) {
+        if (tagEl) { tagEl.textContent = 'RESUBMIT'; tagEl.style.background = '#c0392b'; }
+        if (titleEl) titleEl.textContent = 'Resubmit Member Profile';
+        if (subtitleEl) subtitleEl.textContent = 'Your application was rejected. Update your information and resubmit for admin review.';
+      } else {
+        if (tagEl) { tagEl.textContent = 'EDIT PROFILE'; tagEl.style.background = '#1a4fa0'; }
+        if (titleEl) titleEl.textContent = 'Edit Farmer Profile';
+        if (subtitleEl) subtitleEl.textContent = 'Update your information below. Changes will be re-submitted for admin review and approval.';
+      }
+
+      // Hide old success/error messages
+      const successEl = document.getElementById('submit-success');
+      const errEl = document.getElementById('submit-error');
+      if (successEl) successEl.style.display = 'none';
+      if (errEl) errEl.style.display = 'none';
+
+      // Immediately enable and style submit button
+      const btn = document.getElementById('submit-btn');
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = isRejected ? 'Resubmit Application' : 'Re-Submit Profile Update';
+        btn.style.background = isRejected ? '#c0392b' : '#1a4fa0';
+        btn.style.borderColor = isRejected ? '#c0392b' : '#1a4fa0';
+      }
+
+      // Pre-fill form with existing data and navigate
+      showView('app-member-profile', null);
+      loadMyApplications(); // triggers prefillMemberProfile() — won't disable btn in edit mode
+    }
+
+    function openNewApplication() {
+      // Reset edit mode flag
+      window.isEditMode = false;
+
+      // Restore default form header
+      const tagEl = document.getElementById('mp-form-tag');
+      const titleEl = document.getElementById('mp-form-title');
+      const subtitleEl = document.getElementById('mp-form-subtitle');
+      if (tagEl) { tagEl.textContent = 'APPLY NOW'; tagEl.style.background = ''; }
+      if (titleEl) titleEl.textContent = 'Member Profile Application';
+      if (subtitleEl) subtitleEl.textContent = 'Complete the form for your RSBSA registration process';
+
+      const btn = document.getElementById('submit-btn');
+      if (btn) { btn.disabled = false; btn.textContent = 'Submit Application'; btn.style.background = ''; }
+
+      showView('app-member-profile', null);
+    }
+
+    function prefillRSBSA(app) {
+      if (!app) return;
+      document.getElementById('rsbsa-app-id').value = app.id;
+
+      if (document.getElementById('rsbsa-fname')) document.getElementById('rsbsa-fname').value = app.firstName || '';
+      if (document.getElementById('rsbsa-lname')) document.getElementById('rsbsa-lname').value = app.lastName || '';
+      if (document.getElementById('rsbsa-dob')) document.getElementById('rsbsa-dob').value = app.dob || '';
+      if (document.getElementById('rsbsa-sex')) document.getElementById('rsbsa-sex').value = app.sex || '';
+      if (document.getElementById('rsbsa-address')) document.getElementById('rsbsa-address').value = app.barangay || '';
+
+      // Note: Files are harder to prefill as they are binary/base64. 
+      // For now, we'll let them re-upload if they need to change them, 
+      // but we show the status as "Previously Uploaded" in the UI.
+      if (app.uploadedFiles) {
+        try {
+          const fragments = app.uploadedFiles.split('|||').filter(Boolean);
+          let allFiles = [];
+          fragments.forEach(frag => {
+            const trimmed = frag.trim();
+            if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+              try {
+                const parsed = JSON.parse(trimmed);
+                if (Array.isArray(parsed)) allFiles = allFiles.concat(parsed);
+                else allFiles.push(parsed);
+              } catch (e) {
+                let cleaned = trimmed;
+                if (cleaned.startsWith('[')) cleaned = cleaned.substring(1);
+                if (cleaned.endsWith(']')) cleaned = cleaned.substring(0, cleaned.length - 1);
+                try { allFiles.push(JSON.parse(cleaned)); } catch (e2) { allFiles.push(trimmed); }
+              }
+            } else {
+              allFiles.push(trimmed);
+            }
+          });
+          // We can't easily put these back into the input[type=file], 
+          // but we could store them in a temporary object if we wanted to avoid re-upload.
+        } catch (e) { }
+      }
+    }
+
+    async function submitApplication() {
+      const errEl = document.getElementById('submit-error');
+      errEl.style.display = 'none';
+
+      // Collect required fields
+      const cluster = getVal('cluster-value');
+      const lastName = document.querySelector('input[placeholder="Enter last name"]')?.value.trim() || '';
+      const firstName = document.querySelector('input[placeholder="Enter first name"]')?.value.trim() || '';
+      const middleName = document.querySelector('input[placeholder="Enter middle name"]')?.value.trim() || '';
+      const barangay = getVal('barangay-value');
+      const landTenure = getVal('tenure-value');
+      const membership = getVal('membership-value');
+
+      // Collect new fields
+      const dob = document.getElementById('farmer-dob')?.value || '';
+      const sex = getVal('sex-value');
+      const civilStatus = getVal('civil-value');
+      const education = getVal('education-value');
+      const contactNumber = document.querySelector('input[placeholder*="09XX"]')?.value.trim() || '';
+      const rsbsaNo = document.querySelector('input[placeholder*="05-017"]')?.value.trim() || '';
+      const province = 'Camarines Sur';
+      const municipality = getVal('municipality-value');
+      const street = document.querySelector('input[placeholder*="Enter street"]')?.value.trim() || '';
+      const statusIndicators = Array.from(document.querySelectorAll('.checkbox-item input:checked')).map(cb => cb.parentElement.textContent.trim()).join(', ');
+
+      // Collect crop info
+      const riceInputs = document.querySelectorAll('.inner-card.green input[type="number"]');
+      const riceIrrigated = riceInputs[0] ? parseFloat(riceInputs[0].value) || 0 : 0;
+      const riceRainfed = riceInputs[1] ? parseFloat(riceInputs[1].value) || 0 : 0;
+      const riceUpland = riceInputs[2] ? parseFloat(riceInputs[2].value) || 0 : 0;
+      const totalHectares = riceInputs[3] ? parseFloat(riceInputs[3].value) || 0 : 0;
+
+      const yieldInputs = document.querySelectorAll('.inner-card.beige input[type="number"]');
+      const yieldDry = yieldInputs[0] ? parseFloat(yieldInputs[0].value) || 0 : 0;
+      const yieldWet = yieldInputs[1] ? parseFloat(yieldInputs[1].value) || 0 : 0;
+      const yieldKg = yieldInputs[2] ? parseFloat(yieldInputs[2].value) || 0 : 0;
+      const otherCrops = document.querySelector('input[placeholder="e.g., Corn, Vegetables"]')?.value.trim() || '';
+      const cropType = otherCrops ? `Rice + ${otherCrops}` : 'Rice';
+
+      const incomeInputs = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Annual Income'))?.nextElementSibling?.querySelectorAll('input') || [];
+      const incomeY1 = incomeInputs[0] ? parseFloat(incomeInputs[0].value.replace(/,/g, '')) || 0 : 0;
+      const incomeY2 = incomeInputs[1] ? parseFloat(incomeInputs[1].value.replace(/,/g, '')) || 0 : 0;
+      const incomeY3 = incomeInputs[2] ? parseFloat(incomeInputs[2].value.replace(/,/g, '')) || 0 : 0;
+
+      const remarksTextareas = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Remarks'))?.nextElementSibling?.querySelectorAll('textarea') || [];
+      const remarksY1 = remarksTextareas[0] ? remarksTextareas[0].value.trim() : '';
+      const remarksY2 = remarksTextareas[1] ? remarksTextareas[1].value.trim() : '';
+      const remarksY3 = remarksTextareas[2] ? remarksTextareas[2].value.trim() : '';
+
+      const idType = getVal('idtype-value');
+
+      // ── Collect the date-of-membership and ID number ──────────────────────
+      const dateOfMembership = document.querySelector('.inner-card.beige input[type="date"]')?.value || '';
+      const idNumber = document.getElementById('id-number-input')?.value.trim() || '';
+
+      // ── Clear previous error highlights ──────────────────────────────────
+      document.querySelectorAll('.field-invalid').forEach(el => el.classList.remove('field-invalid'));
+      document.querySelectorAll('.field-error-msg').forEach(el => el.remove());
+
+      // ── Helper: mark a form-group as invalid ─────────────────────────────
+      function markInvalid(groupEl, label) {
+        if (!groupEl) return;
+        groupEl.classList.add('field-invalid');
+        const msg = document.createElement('div');
+        msg.className = 'field-error-msg';
+        msg.textContent = label + ' is required.';
+        groupEl.appendChild(msg);
+      }
+
+      // ── Required field definitions ────────────────────────────────────────
+      const required = [
+        { value: cluster,          selector: '#cluster-trigger',       label: 'Cluster / Association',      isSelect: true },
+        { value: dateOfMembership, selector: '.inner-card.beige input[type="date"]', label: 'Date of Membership', isInput: true },
+        { value: membership,       selector: '#membership-trigger',    label: 'Type of Membership',         isSelect: true },
+        { value: lastName,         selector: '#mp-lastname',           label: 'Last Name',                  isInput: true },
+        { value: firstName,        selector: '#mp-firstname',          label: 'First Name',                 isInput: true },
+        { value: middleName,       selector: '#mp-middlename',         label: 'Middle Name / Initial',      isInput: true },
+        { value: dob,              selector: '#farmer-dob',            label: 'Date of Birth',              isInput: true },
+        { value: sex,              selector: '#sex-trigger',           label: 'Sex',                        isSelect: true },
+        { value: civilStatus,      selector: '#civil-trigger',         label: 'Civil Status',               isSelect: true },
+        { value: education,        selector: '#education-trigger',     label: 'Educational Attainment',     isSelect: true },
+        { value: contactNumber,    selector: 'input[placeholder*="09XX"]', label: 'Contact Number',         isInput: true },
+        { value: municipality,     selector: '#municipality-trigger',  label: 'Municipality',               isSelect: true },
+        { value: barangay,         selector: '#barangay-trigger',      label: 'Barangay',                  isSelect: true },
+        { value: landTenure,       selector: '#tenure-trigger',        label: 'Land Tenure',                isSelect: true },
+        { value: idType,           selector: '#idtype-trigger',        label: 'Government ID Type',         isSelect: true },
+        { value: idNumber,         selector: '#id-number-input',       label: 'ID Number',                  isInput: true },
+      ];
+
+      const missing = [];
+      required.forEach(field => {
+        if (!field.value) {
+          missing.push(field.label);
+          // Highlight the parent .mp-form-group
+          const inputEl = document.querySelector(field.selector);
+          const groupEl = inputEl ? inputEl.closest('.mp-form-group') : null;
+          markInvalid(groupEl, field.label);
+        }
+      });
+
+      if (missing.length) {
+        errEl.innerHTML = '<strong>Please fill in all required fields:</strong><ul style="margin:6px 0 0 18px;line-height:1.8;">' +
+          missing.map(m => `<li>${m}</li>`).join('') + '</ul>';
+        errEl.style.display = 'block';
+        // Scroll to the first invalid field
+        const firstInvalid = document.querySelector('.field-invalid');
+        if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      if (contactNumber.length !== 11) {
+        errEl.textContent = 'Contact number must be exactly 11 digits.';
+        errEl.style.display = 'block';
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      if (yieldKg < 50) {
+        errEl.textContent = 'Kg/bag (yield) must be at least 50.';
+        errEl.style.display = 'block';
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      if (yieldDry < 0 || yieldWet < 0) {
+        errEl.textContent = 'Yield values cannot be negative.';
+        errEl.style.display = 'block';
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      const applicationType = 'Member Profile';
+
+      // Build record — always reset to Pending for admin re-review
+      const record = {
+        applicationType,
+        cluster, lastName, firstName, middleName, dob, sex, civilStatus, education, contactNumber,
+        rsbsaNo, province, municipality, barangay, street, statusIndicators,
+        landTenure, membership, cropType, hectares: totalHectares,
+        riceIrrigated, riceRainfed, riceUpland, yieldDry, yieldWet, yieldKg, otherCrops,
+        incomeY1, incomeY2, incomeY3, remarksY1, remarksY2, remarksY3,
+        idType,
+        submittedAt: new Date().toISOString(),
+        status: 'Pending',
+        email: sessionStorage.getItem('user_email') || '',
+        user_id: sessionStorage.getItem('user_id') || null
+      };
+
+      // In edit mode: update the existing application (PUT) so status resets to Pending for re-approval
+      // In new application mode: create a new record (POST)
+      const existingId = document.getElementById('member-app-id')?.value;
+      const url = (window.isEditMode && existingId) ? `/api/applications/${existingId}` : '/api/applications';
+      const method = (window.isEditMode && existingId) ? 'PUT' : 'POST';
+
+      // Save via API
+      try {
+        const response = await fetch(url, {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(record)
+        });
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.error || 'Server error');
+        }
+      } catch (err) {
+        errEl.textContent = 'Failed to submit: ' + err.message;
+        errEl.style.display = 'block';
+        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Show success
+      const successEl = document.getElementById('submit-success');
+      if (window.isEditMode) {
+        successEl.textContent = '✓ Profile update submitted successfully! Your changes are now pending admin review and approval.';
+      }
+      successEl.style.display = 'block';
+      document.getElementById('submit-btn').disabled = true;
+      document.getElementById('submit-btn').textContent = window.isEditMode ? 'Update Submitted' : 'Submitted';
+      document.getElementById('submit-btn').style.background = '#888';
+      successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Refresh dashboard data so My Profile, My Farm, and Crop Records update immediately
+      await loadMyApplications();
+      await fetchCropRecords();
+
+      // Navigate back to Applications after a short delay
+      setTimeout(() => {
+        window.isEditMode = false;
+        showView('applications', document.querySelector('.sidebar-item[onclick*="applications"]'));
+      }, 2500);
+    }
+
+    async function submitRsbsa() {
+      const errEl = document.getElementById('rsbsa-submit-error');
+      errEl.style.display = 'none';
+
+      const fname = document.getElementById('rsbsa-fname').value.trim();
+      const lname = document.getElementById('rsbsa-lname').value.trim();
+      const dob = document.getElementById('rsbsa-dob').value;
+      const sex = document.getElementById('rsbsa-sex').value;
+      const address = document.getElementById('rsbsa-address').value.trim();
+
+      const uploadedCount = document.querySelectorAll('.req-check-item.done').length;
+
+      const missing = [];
+      if (!fname) missing.push('First Name');
+      if (!lname) missing.push('Last Name');
+      if (!dob) missing.push('Date of Birth');
+      if (!sex) missing.push('Sex');
+      if (!address) missing.push('Barangay / Address');
+      if (uploadedCount < 5) missing.push('All 5 requirements must be uploaded');
+
+      if (missing.length) {
+        errEl.textContent = 'Please complete: ' + missing.join(', ');
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const categories = {
+        '1': '📸 2x2 Picture',
+        '2': '📋 Filled Out RSBSA Form',
+        '3': '🪪 Government Issued ID',
+        '4': '📄 Proof of Ownership',
+        '5': '📍 Georeferencing Stub (Geotag)',
+        '6': '📁 Additional Documents'
+      };
+
+      const fileNames = [];
+      const filePromises = [];
+
+      for (const key in uploadedFilesMap) {
+        uploadedFilesMap[key].forEach(f => {
+          const promise = new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              resolve({ category: categories[key], name: f.name, dataUrl: e.target.result });
+            };
+            reader.onerror = () => reject(new Error('Failed to read file: ' + f.name));
+            reader.readAsDataURL(f);
+          });
+          filePromises.push(promise);
+        });
+      }
+
+      try {
+        const fileData = await Promise.all(filePromises);
+        fileNames.push(...fileData);
+      } catch (err) {
+        errEl.textContent = err.message;
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const record = {
+        firstName: fname,
+        lastName: lname,
+        dob: dob,
+        sex: sex,
+        barangay: address,
+        applicationType: 'RSBSA Enrolment',
+        uploadedFiles: JSON.stringify(fileNames),
+        submittedAt: new Date().toISOString(),
+        status: 'Pending',
+        email: sessionStorage.getItem('user_email') || '',
+        user_id: sessionStorage.getItem('user_id') || null
+      };
+
+      const appId = document.getElementById('rsbsa-app-id').value;
+      const url = appId ? `/api/applications/${appId}` : '/api/applications';
+      const method = appId ? 'PUT' : 'POST';
+
+      try {
+        const response = await fetch(url, {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(record)
+        });
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.error || 'Server error');
+        }
+      } catch (err) {
+        errEl.textContent = 'Failed to submit: ' + err.message;
+        errEl.style.display = 'block';
+        return;
+      }
+
+      // Show success
+      document.getElementById('rsbsa-submit-success').style.display = 'block';
+      const submitBtn = document.getElementById('rsbsa-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.style.background = '#888';
+      submitBtn.style.borderColor = '#888';
+      submitBtn.innerHTML = 'Submitted';
+
+      const draftBtn = document.getElementById('rsbsa-draft-btn');
+      if (draftBtn) draftBtn.style.display = 'none';
+
+      document.getElementById('rsbsa-status-badge').className = 'badge badge-orange';
+      document.getElementById('rsbsa-status-badge').textContent = 'Pending Review';
+      document.getElementById('rsbsa-submitted-date').textContent = new Date().toLocaleDateString('en-US');
+    }
+
+    function saveRsbsaDraft() {
+      alert('Draft saved successfully!');
+      document.getElementById('rsbsa-status-badge').textContent = 'Draft Saved';
+    }
+    let confirmCallback = null;
+    function showConfirm(title, message, onConfirm) {
+      const modal = document.getElementById('confirm-modal');
+      const titleEl = document.getElementById('confirm-title');
+      const msgEl = document.getElementById('confirm-message');
+      const btn = document.getElementById('confirm-btn');
+
+      titleEl.textContent = title;
+      msgEl.textContent = message;
+      confirmCallback = onConfirm;
+
+      if (title.toLowerCase().includes('delete')) {
+        btn.style.background = '#c0392b';
+        btn.style.borderColor = '#c0392b';
+      } else {
+        btn.style.background = '#2d6a2d';
+        btn.style.borderColor = '#2d6a2d';
+      }
+      modal.style.display = 'flex';
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirm-modal').style.display = 'none';
+      confirmCallback = null;
+    }
+
+    // ── ESC key closes the confirm modal ────────────────────────────────────
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      const confirmModal = document.getElementById('confirm-modal');
+      if (confirmModal && confirmModal.style.display !== 'none') {
+        closeConfirmModal();
+      }
+    });
+    // ────────────────────────────────────────────────────────────────────────
+
+    document.getElementById('confirm-btn')?.addEventListener('click', () => {
+      if (confirmCallback) confirmCallback();
+      closeConfirmModal();
+    });
+
+    function handleSignOut() {
+      showConfirm('Sign Out', 'Are you sure you want to sign out?', () => {
+        window.location.href = 'login.html';
+      });
+    }
+
+    async function deleteCropRecord(id) {
+      showConfirm('Delete Record', 'Are you sure you want to delete this crop record?', async () => {
+        try {
+          const res = await fetch(`/api/crop_records/${id}`, { method: 'DELETE' });
+          if (!res.ok) throw new Error('Failed to delete');
+          fetchCropRecords();
+        } catch (e) {
+          alert(e.message);
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>
