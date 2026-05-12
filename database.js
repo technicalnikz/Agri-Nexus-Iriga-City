@@ -51,6 +51,7 @@ if (process.env.DATABASE_URL) {
     };
 } else {
     // SQLite Configuration (for Local Development)
+    const sqlite3 = require('sqlite3').verbose();
     const dbPath = path.resolve(__dirname, 'agrinexus.db');
     db = new sqlite3.Database(dbPath, (err) => {
         if (err) console.error('Error connecting to SQLite:', err.message);
