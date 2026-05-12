@@ -102,47 +102,6 @@
       margin-bottom: 22px;
     }
 
-    .role-toggle {
-      display: flex;
-      background: #f0f2ef;
-      border-radius: 10px;
-      padding: 4px;
-      margin-bottom: 16px;
-      gap: 4px;
-    }
-
-    .role-btn {
-      flex: 1;
-      padding: 10px 12px;
-      border: none;
-      border-radius: 8px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      background: transparent;
-      color: #888;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    }
-
-    .role-btn.active {
-      background: #fff;
-      color: #007128;
-      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.10);
-    }
-
-    .role-btn svg {
-      width: 17px;
-      height: 17px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.8;
-      flex-shrink: 0;
-    }
 
     .role-badge {
       display: inline-flex;
@@ -359,21 +318,7 @@
     <div class="card">
       <h1>Create Your Account</h1>
 
-      <div class="role-toggle">
-        <button class="role-btn active" id="btn-farmer" onclick="setRole('farmer')">
-          <svg viewBox="0 0 24 24">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
-          Farmer
-        </button>
-        <button class="role-btn" id="btn-admin" onclick="setRole('admin')">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          </svg>
-          Admin
-        </button>
-      </div>
+
 
       <div class="role-badge" id="role-badge">
         <svg viewBox="0 0 24 24">
@@ -435,20 +380,6 @@
   <script>
     let currentRole = 'farmer';
     const pwdVis = {};
-
-    function setRole(role) {
-      currentRole = role;
-      document.getElementById('btn-farmer').classList.toggle('active', role === 'farmer');
-      document.getElementById('btn-admin').classList.toggle('active', role === 'admin');
-
-      const isFarmer = role === 'farmer';
-      const icon = isFarmer
-        ? '<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'
-        : '<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
-
-      document.getElementById('role-badge').innerHTML = icon + `<span>Registering as ${isFarmer ? 'Farmer' : 'Admin'}</span>`;
-      document.getElementById('submit-btn').textContent = isFarmer ? 'Continue' : 'Continue';
-    }
 
     function togglePwd(id) {
       pwdVis[id] = !pwdVis[id];
