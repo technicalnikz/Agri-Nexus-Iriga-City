@@ -1300,6 +1300,35 @@
       background: #f0ece3
     }
 
+    .custom-search-wrapper {
+      padding: 8px 12px;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      z-index: 10;
+    }
+
+    .custom-search-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .custom-search-input:focus {
+      border-color: var(--gm);
+    }
+
+    .barangay-list-container {
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
     /* MODAL */
     .modal-overlay {
       display: none;
@@ -1800,7 +1829,7 @@
                 <div class="mp-form-group">
                   <label>Date of Membership *</label>
                   <div class="input-icon-wrapper">
-                    <input type="date" />
+                    <input type="date" id="mp-membership-date" />
                   </div>
                 </div>
                 <div class="mp-form-group">
@@ -1837,9 +1866,9 @@
                   placeholder="e.g. Jr., Sr." /></div>
             </div>
             <div class="grid-2" style="margin-bottom:16px">
-              <div class="mp-form-group"><label>RSBSA No. (if existing)</label><input type="text"
+              <div class="mp-form-group"><label>RSBSA No. (if existing)</label><input type="text" id="mp-rsbsa"
                   placeholder="e.g., 05-017-16-024-XXXXX" /></div>
-              <div class="mp-form-group"><label>Contact Number *</label><input type="text" placeholder="09XX XXX XXXX"
+              <div class="mp-form-group"><label>Contact Number *</label><input type="text" id="mp-contact" placeholder="09XX XXX XXXX"
                   maxlength="11" minlength="11"
                   oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);" /></div>
             </div>
@@ -1937,8 +1966,13 @@
                   <button type="button" class="custom-select-trigger" id="barangay-trigger"
                     onclick="toggleSelect('barangay')"><span id="barangay-label">Select Barangay</span><span
                       class="arrow"></span></button>
-                  <div class="custom-options" id="barangay-options">
-                    <div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first</div>
+                  <div class="custom-options" id="barangay-options" style="padding:0; overflow:hidden;">
+                    <div class="custom-search-wrapper">
+                      <input type="text" id="barangay-search" class="custom-search-input" placeholder="Search barangay..." onkeyup="filterBarangays()" onclick="event.stopPropagation()">
+                    </div>
+                    <div class="barangay-list-container" id="barangay-list">
+                      <div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first</div>
+                    </div>
                   </div>
                   <input type="hidden" id="barangay-value" name="barangay" />
                 </div>
@@ -1968,34 +2002,34 @@
             <div class="inner-card beige" style="margin-bottom:16px">
               <div class="inner-card-title">Yield</div>
               <div class="grid-4">
-                <div class="mp-form-group"><label>Dry Season (bag/ha)</label><input type="number" value="0" min="0" />
+                <div class="mp-form-group"><label>Dry Season (bag/ha)</label><input type="number" id="yield-dry" value="0" min="0" />
                 </div>
-                <div class="mp-form-group"><label>Wet season (bag/ha)</label><input type="number" value="0" min="0" />
+                <div class="mp-form-group"><label>Wet season (bag/ha)</label><input type="number" id="yield-wet" value="0" min="0" />
                 </div>
-                <div class="mp-form-group"><label>Kg/bag</label><input type="number" value="50" min="50" /></div>
-                <div class="mp-form-group"><label>Other Crops (specify)</label><input type="text"
+                <div class="mp-form-group"><label>Kg/bag</label><input type="number" id="yield-kg" value="50" min="50" /></div>
+                <div class="mp-form-group"><label>Other Crops (specify)</label><input type="text" id="other-crops"
                     placeholder="e.g., Corn, Vegetables" /></div>
               </div>
             </div>
             <div class="inner-card light" style="margin-bottom:16px">
               <div class="inner-card-title">Annual Income (Php)</div>
               <div class="grid-3">
-                <div class="mp-form-group"><label>Year 1</label><input type="text" value="0.00"
+                <div class="mp-form-group"><label>Year 1</label><input type="text" id="income-y1" value="0.00"
                     oninput="formatIncome(this)" /></div>
-                <div class="mp-form-group"><label>Year 2</label><input type="text" value="0.00"
+                <div class="mp-form-group"><label>Year 2</label><input type="text" id="income-y2" value="0.00"
                     oninput="formatIncome(this)" /></div>
-                <div class="mp-form-group"><label>Year 3</label><input type="text" value="0.00"
+                <div class="mp-form-group"><label>Year 3</label><input type="text" id="income-y3" value="0.00"
                     oninput="formatIncome(this)" /></div>
               </div>
             </div>
             <div class="inner-card light">
               <div class="inner-card-title">Remarks (Challenges/Issues)</div>
               <div class="grid-3">
-                <div class="mp-form-group"><label>Year 1</label><textarea
+                <div class="mp-form-group"><label>Year 1</label><textarea id="remarks-y1"
                     placeholder="e.g., typhoon damage, low price"></textarea></div>
-                <div class="mp-form-group"><label>Year 2</label><textarea
+                <div class="mp-form-group"><label>Year 2</label><textarea id="remarks-y2"
                     placeholder="e.g., lack of source of water"></textarea></div>
-                <div class="mp-form-group"><label>Year 3</label><textarea
+                <div class="mp-form-group"><label>Year 3</label><textarea id="remarks-y3"
                     placeholder="e.g., pest &amp; disease"></textarea></div>
               </div>
             </div>
@@ -2020,7 +2054,7 @@
                 </div>
               </div>
               <div class="mp-form-group"><label>Types of Equipment/Machines/Facilities Owned</label><input type="text"
-                  placeholder="e.g., Hand tractor, Thresher, Water Pump" /></div>
+                  id="mp-equipment" placeholder="e.g., Hand tractor, Thresher, Water Pump" /></div>
             </div>
           </div>
 
@@ -3156,7 +3190,19 @@
       // Cluster remains editable even in edit mode now per latest request
       const t = document.getElementById(id + '-trigger'), o = document.getElementById(id + '-options'), open = o.classList.contains('open');
       closeAll();
-      if (!open) { o.classList.add('open'); t.classList.add('open') }
+      if (!open) { 
+        o.classList.add('open'); 
+        t.classList.add('open');
+        // Focus search if it's barangay
+        if (id === 'barangay') {
+          const s = document.getElementById('barangay-search');
+          if (s) {
+            s.value = '';
+            filterBarangays();
+            setTimeout(() => s.focus(), 50);
+          }
+        }
+      }
     }
 
     function pickOption(id, val) {
@@ -3238,11 +3284,51 @@
     }
 
     function updateBarangay(mun) {
-      const c = document.getElementById('barangay-options'), list = barangayData[mun] || [];
+      const c = document.getElementById('barangay-list'), list = barangayData[mun] || [];
       document.getElementById('barangay-label').textContent = 'Select Barangay';
       document.getElementById('barangay-value').value = '';
       document.getElementById('barangay-trigger').classList.remove('selected');
-      c.innerHTML = list.length ? list.map(b => `<div class="custom-option" onclick="pickOption('barangay','${b}')">${b}</div>`).join('') : '<div class="custom-option" style="color:#bbb;pointer-events:none">No barangays listed</div>';
+      if (c) {
+        c.innerHTML = list.length ? list.map(b => `<div class="custom-option" onclick="pickOption('barangay','${b}')">${b}</div>`).join('') : '<div class="custom-option" style="color:#bbb;pointer-events:none">No barangays listed</div>';
+      }
+      const s = document.getElementById('barangay-search');
+      if (s) s.value = '';
+    }
+
+    function filterBarangays() {
+      const input = document.getElementById('barangay-search');
+      if (!input) return;
+      const filter = input.value.toUpperCase();
+      const container = document.getElementById('barangay-list');
+      const options = container.getElementsByClassName('custom-option');
+      
+      let visibleCount = 0;
+      for (let i = 0; i < options.length; i++) {
+        // Skip the "No matches" message if it exists
+        if (options[i].id === 'no-match-msg') continue;
+        
+        const txtValue = options[i].textContent || options[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          options[i].style.display = "";
+          visibleCount++;
+        } else {
+          options[i].style.display = "none";
+        }
+      }
+      
+      // Remove existing no-match message
+      const existingMsg = document.getElementById('no-match-msg');
+      if (existingMsg) existingMsg.remove();
+
+      if (visibleCount === 0 && filter !== '') {
+        const noMatch = document.createElement('div');
+        noMatch.id = 'no-match-msg';
+        noMatch.className = 'custom-option';
+        noMatch.style.color = '#bbb';
+        noMatch.style.pointerEvents = 'none';
+        noMatch.textContent = 'No matches found';
+        container.appendChild(noMatch);
+      }
     }
 
     function getVal(id) {
@@ -3284,43 +3370,42 @@
       if (document.querySelector('input[placeholder*="05-017"]')) document.querySelector('input[placeholder*="05-017"]').value = app.rsbsaNo || '';
 
       // Crop Info
-      const riceInputs = document.querySelectorAll('.inner-card.green input[type="number"]');
-      if (riceInputs[0]) riceInputs[0].value = app.riceIrrigated || 0;
-      if (riceInputs[1]) riceInputs[1].value = app.riceRainfed || 0;
-      if (riceInputs[2]) riceInputs[2].value = app.riceUpland || 0;
+      if (document.getElementById('rice-irrigated')) document.getElementById('rice-irrigated').value = app.riceIrrigated || 0;
+      if (document.getElementById('rice-rainfed')) document.getElementById('rice-rainfed').value = app.riceRainfed || 0;
+      if (document.getElementById('rice-upland')) document.getElementById('rice-upland').value = app.riceUpland || 0;
       computeTotalRice();
 
-      const yieldInputs = document.querySelectorAll('.inner-card.beige input[type="number"]');
-      if (yieldInputs[0]) yieldInputs[0].value = app.yieldDry || 0;
-      if (yieldInputs[1]) yieldInputs[1].value = app.yieldWet || 0;
-      if (yieldInputs[2]) yieldInputs[2].value = app.yieldKg || 0;
-      if (document.querySelector('input[placeholder="e.g., Corn, Vegetables"]')) {
+      if (document.getElementById('yield-dry')) document.getElementById('yield-dry').value = app.yieldDry || 0;
+      if (document.getElementById('yield-wet')) document.getElementById('yield-wet').value = app.yieldWet || 0;
+      if (document.getElementById('yield-kg')) document.getElementById('yield-kg').value = app.yieldKg || 0;
+      if (document.getElementById('other-crops')) {
         let crops = app.cropType || '';
         if (crops.startsWith('Rice + ')) crops = crops.replace('Rice + ', '');
         else if (crops === 'Rice') crops = '';
-        document.querySelector('input[placeholder="e.g., Corn, Vegetables"]').value = crops;
+        document.getElementById('other-crops').value = crops;
       }
 
       // Income
-      const incomeInputs = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Annual Income'))?.nextElementSibling?.querySelectorAll('input') || [];
-      if (incomeInputs[0]) {
-        incomeInputs[0].value = app.incomeY1 || 0;
-        formatIncome(incomeInputs[0]);
+      if (document.getElementById('income-y1')) {
+        document.getElementById('income-y1').value = app.incomeY1 || 0;
+        formatIncome(document.getElementById('income-y1'));
       }
-      if (incomeInputs[1]) {
-        incomeInputs[1].value = app.incomeY2 || 0;
-        formatIncome(incomeInputs[1]);
+      if (document.getElementById('income-y2')) {
+        document.getElementById('income-y2').value = app.incomeY2 || 0;
+        formatIncome(document.getElementById('income-y2'));
       }
-      if (incomeInputs[2]) {
-        incomeInputs[2].value = app.incomeY3 || 0;
-        formatIncome(incomeInputs[2]);
+      if (document.getElementById('income-y3')) {
+        document.getElementById('income-y3').value = app.incomeY3 || 0;
+        formatIncome(document.getElementById('income-y3'));
       }
 
       // Remarks
-      const remarksTextareas = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Remarks'))?.nextElementSibling?.querySelectorAll('textarea') || [];
-      if (remarksTextareas[0]) remarksTextareas[0].value = app.remarksY1 || '';
-      if (remarksTextareas[1]) remarksTextareas[1].value = app.remarksY2 || '';
-      if (remarksTextareas[2]) remarksTextareas[2].value = app.remarksY3 || '';
+      if (document.getElementById('remarks-y1')) document.getElementById('remarks-y1').value = app.remarksY1 || '';
+      if (document.getElementById('remarks-y2')) document.getElementById('remarks-y2').value = app.remarksY2 || '';
+      if (document.getElementById('remarks-y3')) document.getElementById('remarks-y3').value = app.remarksY3 || '';
+
+      // Equipment
+      if (document.getElementById('mp-equipment')) document.getElementById('mp-equipment').value = app.equipment || '';
 
       // Status Indicators (Checkboxes)
       if (app.statusIndicators) {
@@ -3460,10 +3545,10 @@
 
       // Collect required fields
       const cluster = getVal('cluster-value');
-      const lastName = document.querySelector('input[placeholder="Enter last name"]')?.value.trim() || '';
-      const firstName = document.querySelector('input[placeholder="Enter first name"]')?.value.trim() || '';
-      const middleName = document.querySelector('input[placeholder="Enter middle name"]')?.value.trim() || '';
-      const extensionName = document.getElementById('mp-extname')?.value.trim() || '';
+      const lastName = getVal('mp-lastname');
+      const firstName = getVal('mp-firstname');
+      const middleName = getVal('mp-middlename');
+      const extensionName = getVal('mp-extname');
       const barangay = getVal('barangay-value');
       const landTenure = getVal('tenure-value');
       const membership = getVal('membership-value');
@@ -3473,37 +3558,34 @@
       const sex = getVal('sex-value');
       const civilStatus = getVal('civil-value');
       const education = getVal('education-value');
-      const contactNumber = document.querySelector('input[placeholder*="09XX"]')?.value.trim() || '';
-      const rsbsaNo = document.querySelector('input[placeholder*="05-017"]')?.value.trim() || '';
+      const contactNumber = getVal('mp-contact');
+      const rsbsaNo = getVal('mp-rsbsa');
       const province = 'Camarines Sur';
       const municipality = getVal('municipality-value');
-      const street = document.querySelector('input[placeholder*="Enter street"]')?.value.trim() || '';
+      const street = getVal('mp-street');
       const statusIndicators = Array.from(document.querySelectorAll('.checkbox-item input:checked')).map(cb => cb.parentElement.textContent.trim()).join(', ');
 
       // Collect crop info
-      const riceInputs = document.querySelectorAll('.inner-card.green input[type="number"]');
-      const riceIrrigated = riceInputs[0] ? parseFloat(riceInputs[0].value) || 0 : 0;
-      const riceRainfed = riceInputs[1] ? parseFloat(riceInputs[1].value) || 0 : 0;
-      const riceUpland = riceInputs[2] ? parseFloat(riceInputs[2].value) || 0 : 0;
-      const totalHectares = riceInputs[3] ? parseFloat(riceInputs[3].value) || 0 : 0;
+      const riceIrrigated = parseFloat(document.getElementById('rice-irrigated').value) || 0;
+      const riceRainfed = parseFloat(document.getElementById('rice-rainfed').value) || 0;
+      const riceUpland = parseFloat(document.getElementById('rice-upland').value) || 0;
+      const totalHectares = parseFloat(document.getElementById('rice-total').value) || 0;
 
-      const yieldInputs = document.querySelectorAll('.inner-card.beige input[type="number"]');
-      const yieldDry = yieldInputs[0] ? parseFloat(yieldInputs[0].value) || 0 : 0;
-      const yieldWet = yieldInputs[1] ? parseFloat(yieldInputs[1].value) || 0 : 0;
-      const yieldKg = yieldInputs[2] ? parseFloat(yieldInputs[2].value) || 0 : 0;
-      const otherCrops = document.querySelector('input[placeholder="e.g., Corn, Vegetables"]')?.value.trim() || '';
+      const yieldDry = parseFloat(document.getElementById('yield-dry').value) || 0;
+      const yieldWet = parseFloat(document.getElementById('yield-wet').value) || 0;
+      const yieldKg = parseFloat(document.getElementById('yield-kg').value) || 0;
+      const otherCrops = document.getElementById('other-crops').value.trim();
       const cropType = otherCrops ? `Rice + ${otherCrops}` : 'Rice';
 
-      const incomeInputs = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Annual Income'))?.nextElementSibling?.querySelectorAll('input') || [];
-      const incomeY1 = incomeInputs[0] ? parseFloat(incomeInputs[0].value.replace(/,/g, '')) || 0 : 0;
-      const incomeY2 = incomeInputs[1] ? parseFloat(incomeInputs[1].value.replace(/,/g, '')) || 0 : 0;
-      const incomeY3 = incomeInputs[2] ? parseFloat(incomeInputs[2].value.replace(/,/g, '')) || 0 : 0;
+      const incomeY1 = parseFloat(document.getElementById('income-y1').value.replace(/,/g, '')) || 0;
+      const incomeY2 = parseFloat(document.getElementById('income-y2').value.replace(/,/g, '')) || 0;
+      const incomeY3 = parseFloat(document.getElementById('income-y3').value.replace(/,/g, '')) || 0;
 
-      const remarksTextareas = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Remarks'))?.nextElementSibling?.querySelectorAll('textarea') || [];
-      const remarksY1 = remarksTextareas[0] ? remarksTextareas[0].value.trim() : '';
-      const remarksY2 = remarksTextareas[1] ? remarksTextareas[1].value.trim() : '';
-      const remarksY3 = remarksTextareas[2] ? remarksTextareas[2].value.trim() : '';
+      const remarksY1 = document.getElementById('remarks-y1').value.trim();
+      const remarksY2 = document.getElementById('remarks-y2').value.trim();
+      const remarksY3 = document.getElementById('remarks-y3').value.trim();
 
+      const equipment = document.getElementById('mp-equipment').value.trim();
       const idType = getVal('idtype-value');
 
       // ── Collect the date-of-membership and ID number ──────────────────────

@@ -1289,6 +1289,60 @@
       background: #f0ece3
     }
 
+    .custom-search-wrapper {
+      padding: 8px 12px;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      z-index: 10;
+    }
+
+    .custom-search-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'Montserrat', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .custom-search-input:focus {
+      border-color: #2d6a2d;
+    }
+
+    .barangay-list-container {
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    /* Validation Styles */
+    .field-invalid .custom-select-trigger,
+    .field-invalid input,
+    .field-invalid textarea {
+      border-color: #e74c3c !important;
+      background-color: #fdf2f2 !important;
+    }
+
+    .field-invalid label {
+      color: #e74c3c !important;
+    }
+
+    .field-error-msg {
+      color: #e74c3c;
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 4px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* MODAL */
     .modal-overlay {
       display: none;
@@ -1646,28 +1700,30 @@
                     onclick="toggleSelect('cluster')">
                     <span id="cluster-label">Select your cluster/association</span><span class="arrow"></span>
                   </button>
-                  <div class="custom-options" id="cluster-options">
-                    <div class="custom-option"
-                      onclick="pickOption('cluster','Ka-Agriprenuers Agriculture Cooperative')">Ka-Agriprenuers
-                      Agriculture Cooperative</div>
-                    <div class="custom-option" onclick="pickOption('cluster','La Trinidad Farmers Association')">La
-                      Trinidad Farmers Association</div>
-                    <div class="custom-option" onclick="pickOption('cluster','Mabukug Farmers Association Inc.')">
-                      Mabukug Farmers Association Inc.</div>
-                    <div class="custom-option"
-                      onclick="pickOption('cluster','SAGMONREY-AN Communal Irrigation Association Inc.')">SAGMONREY-AN
-                      Communal Irrigation Association Inc.</div>
-                    <div class="custom-option"
-                      onclick="pickOption('cluster','Salvacion Farmers Agriculture Cooperative')">Salvacion Farmers
-                      Agriculture Cooperative</div>
-                    <div class="custom-option"
-                      onclick="pickOption('cluster','Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.')">
-                      Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.</div>
-                    <div class="custom-option"
-                      onclick="pickOption('cluster','San Jose Farmers Association of Iriga City Camarines Sur')">San
-                      Jose Farmers Association of Iriga City Camarines Sur</div>
-                    <div class="custom-option" onclick="pickOption('cluster','Sto. Nino Farmers Association')">Sto. Nino
-                      Farmers Association</div>
+                  <div class="custom-options" id="cluster-options" style="padding:0; overflow:hidden;">
+                    <div class="options-list-container" id="cluster-list" style="max-height:220px; overflow-y:auto;">
+                      <div class="custom-option"
+                        onclick="pickOption('cluster','Ka-Agriprenuers Agriculture Cooperative')">Ka-Agriprenuers
+                        Agriculture Cooperative</div>
+                      <div class="custom-option" onclick="pickOption('cluster','La Trinidad Farmers Association')">La
+                        Trinidad Farmers Association</div>
+                      <div class="custom-option" onclick="pickOption('cluster','Mabukug Farmers Association Inc.')">
+                        Mabukug Farmers Association Inc.</div>
+                      <div class="custom-option"
+                        onclick="pickOption('cluster','SAGMONREY-AN Communal Irrigation Association Inc.')">SAGMONREY-AN
+                        Communal Irrigation Association Inc.</div>
+                      <div class="custom-option"
+                        onclick="pickOption('cluster','Salvacion Farmers Agriculture Cooperative')">Salvacion Farmers
+                        Agriculture Cooperative</div>
+                      <div class="custom-option"
+                        onclick="pickOption('cluster','Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.')">
+                        Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.</div>
+                      <div class="custom-option"
+                        onclick="pickOption('cluster','San Jose Farmers Association of Iriga City Camarines Sur')">San
+                        Jose Farmers Association of Iriga City Camarines Sur</div>
+                      <div class="custom-option" onclick="pickOption('cluster','Sto. Nino Farmers Association')">Sto. Nino
+                        Farmers Association</div>
+                    </div>
                   </div>
                   <input type="hidden" id="cluster-value" name="cluster" />
                 </div>
@@ -1676,7 +1732,7 @@
                 <div class="mp-form-group">
                   <label>Date of Membership *</label>
                   <div class="input-icon-wrapper">
-                    <input type="date" />
+                    <input type="date" id="mp-membership-date" />
                   </div>
                 </div>
                 <div class="mp-form-group">
@@ -1701,23 +1757,25 @@
           <div class="form-section">
             <div class="section-title">Personal Information</div>
             <div class="grid-4" style="margin-bottom:16px">
-              <div class="mp-form-group"><label>Last Name *</label><input type="text" placeholder="Enter last name" />
+              <div class="mp-form-group"><label>Last Name *</label><input type="text" id="mp-lastname"
+                  placeholder="Enter last name" />
               </div>
-              <div class="mp-form-group"><label>First Name *</label><input type="text" placeholder="Enter first name" />
+              <div class="mp-form-group"><label>First Name *</label><input type="text" id="mp-firstname"
+                  placeholder="Enter first name" />
               </div>
-              <div class="mp-form-group"><label>Middle Name/Initial *</label><input type="text"
+              <div class="mp-form-group"><label>Middle Name/Initial *</label><input type="text" id="mp-middlename"
                   placeholder="Enter middle name" /></div>
-              <div class="mp-form-group"><label>Age *</label><input type="number" id="farmer-age" placeholder="Age"
-                  readonly /></div>
+              <div class="mp-form-group"><label>Extension Name</label><input type="text" id="mp-extname"
+                  placeholder="e.g. Jr., Sr." /></div>
             </div>
             <div class="grid-2" style="margin-bottom:16px">
-              <div class="mp-form-group"><label>RSBSA No. (if existing)</label><input type="text"
+              <div class="mp-form-group"><label>RSBSA No. (if existing)</label><input type="text" id="mp-rsbsa"
                   placeholder="e.g., 05-017-16-024-XXXXX" /></div>
-              <div class="mp-form-group"><label>Contact Number *</label><input type="text" placeholder="09XX XXX XXXX"
-                  maxlength="11" minlength="11"
+              <div class="mp-form-group"><label>Contact Number *</label><input type="text" id="mp-contact"
+                  placeholder="09XX XXX XXXX" maxlength="11" minlength="11"
                   oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);" /></div>
             </div>
-            <div class="grid-4" style="margin-bottom:20px">
+            <div class="grid-3" style="margin-bottom:16px">
               <div class="mp-form-group">
                 <label>Sex *</label>
                 <div class="custom-select-wrapper">
@@ -1767,8 +1825,12 @@
                   <input type="hidden" id="education-value" name="education" />
                 </div>
               </div>
+            </div>
+            <div class="grid-2" style="margin-bottom:20px">
               <div class="mp-form-group"><label>Date of Birth *</label><input type="date" id="farmer-dob"
                   onchange="computeAge()" /></div>
+              <div class="mp-form-group"><label>Age *</label><input type="number" id="farmer-age" placeholder="Age"
+                  readonly /></div>
             </div>
             <div class="inner-card light">
               <div class="inner-card-title">Status Indicators (Check all that apply)</div>
@@ -1807,14 +1869,19 @@
                   <button type="button" class="custom-select-trigger" id="barangay-trigger"
                     onclick="toggleSelect('barangay')"><span id="barangay-label">Select Barangay</span><span
                       class="arrow"></span></button>
-                  <div class="custom-options" id="barangay-options">
-                    <div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first</div>
+                  <div class="custom-options" id="barangay-options" style="padding:0; overflow:hidden;">
+                    <div class="custom-search-wrapper">
+                      <input type="text" id="barangay-search" class="custom-search-input" placeholder="Search barangay..." onkeyup="filterOptions('barangay')" onclick="event.stopPropagation()">
+                    </div>
+                    <div class="barangay-list-container" id="barangay-list">
+                      <div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first</div>
+                    </div>
                   </div>
                   <input type="hidden" id="barangay-value" name="barangay" />
                 </div>
               </div>
             </div>
-            <div class="mp-form-group"><label>Street/Purok/Sitio</label><input type="text"
+            <div class="mp-form-group"><label>Street/Purok/Sitio</label><input type="text" id="mp-street"
                 placeholder="Enter street, purok, or sitio" /></div>
           </div>
 
@@ -1838,34 +1905,34 @@
             <div class="inner-card beige" style="margin-bottom:16px">
               <div class="inner-card-title">Yield</div>
               <div class="grid-4">
-                <div class="mp-form-group"><label>Dry Season (bag/ha)</label><input type="number" value="0" min="0" />
+                <div class="mp-form-group"><label>Dry Season (bag/ha)</label><input type="number" id="yield-dry" value="0" min="0" />
                 </div>
-                <div class="mp-form-group"><label>Wet season (bag/ha)</label><input type="number" value="0" min="0" />
+                <div class="mp-form-group"><label>Wet season (bag/ha)</label><input type="number" id="yield-wet" value="0" min="0" />
                 </div>
-                <div class="mp-form-group"><label>Kg/bag</label><input type="number" value="50" min="50" /></div>
-                <div class="mp-form-group"><label>Other Crops (specify)</label><input type="text"
+                <div class="mp-form-group"><label>Kg/bag</label><input type="number" id="yield-kg" value="50" min="50" /></div>
+                <div class="mp-form-group"><label>Other Crops (specify)</label><input type="text" id="other-crops"
                     placeholder="e.g., Corn, Vegetables" /></div>
               </div>
             </div>
             <div class="inner-card light" style="margin-bottom:16px">
               <div class="inner-card-title">Annual Income (Php)</div>
               <div class="grid-3">
-                <div class="mp-form-group"><label>Year 1</label><input type="text" value="0.00"
+                <div class="mp-form-group"><label>Year 1</label><input type="text" id="income-y1" value="0.00"
                     oninput="formatIncome(this)" /></div>
-                <div class="mp-form-group"><label>Year 2</label><input type="text" value="0.00"
+                <div class="mp-form-group"><label>Year 2</label><input type="text" id="income-y2" value="0.00"
                     oninput="formatIncome(this)" /></div>
-                <div class="mp-form-group"><label>Year 3</label><input type="text" value="0.00"
+                <div class="mp-form-group"><label>Year 3</label><input type="text" id="income-y3" value="0.00"
                     oninput="formatIncome(this)" /></div>
               </div>
             </div>
             <div class="inner-card light">
               <div class="inner-card-title">Remarks (Challenges/Issues)</div>
               <div class="grid-3">
-                <div class="mp-form-group"><label>Year 1</label><textarea
+                <div class="mp-form-group"><label>Year 1</label><textarea id="remarks-y1"
                     placeholder="e.g., typhoon damage, low price"></textarea></div>
-                <div class="mp-form-group"><label>Year 2</label><textarea
+                <div class="mp-form-group"><label>Year 2</label><textarea id="remarks-y2"
                     placeholder="e.g., lack of source of water"></textarea></div>
-                <div class="mp-form-group"><label>Year 3</label><textarea
+                <div class="mp-form-group"><label>Year 3</label><textarea id="remarks-y3"
                     placeholder="e.g., pest &amp; disease"></textarea></div>
               </div>
             </div>
@@ -1890,7 +1957,7 @@
                 </div>
               </div>
               <div class="mp-form-group"><label>Types of Equipment/Machines/Facilities Owned</label><input type="text"
-                  placeholder="e.g., Hand tractor, Thresher, Water Pump" /></div>
+                  id="mp-equipment" placeholder="e.g., Hand tractor, Thresher, Water Pump" /></div>
             </div>
           </div>
 
@@ -2954,8 +3021,13 @@
         apps = apps.filter(a => {
           const name = [a.firstName, a.middleName, a.lastName].filter(Boolean).join(' ').toLowerCase();
           const cluster = (a.cluster || '').toLowerCase();
+          const barangay = (a.barangay || '').toLowerCase();
 
-          const matchesSearch = !searchQuery || name.includes(searchQuery) || cluster.includes(searchQuery);
+          const matchesSearch = !searchQuery || 
+                               name.includes(searchQuery) || 
+                               cluster.includes(searchQuery) || 
+                               barangay.includes(searchQuery);
+                               
           const matchesCluster = !clusterFilter || a.cluster === clusterFilter || (clusterFilter.includes('San Jose') && cluster.includes('san jose'));
 
           return matchesSearch && matchesCluster;
@@ -3499,7 +3571,17 @@
     function toggleSelect(id) {
       const t = document.getElementById(id + '-trigger'), o = document.getElementById(id + '-options'), open = o.classList.contains('open');
       closeAll();
-      if (!open) { o.classList.add('open'); t.classList.add('open') }
+      if (!open) { 
+        o.classList.add('open'); 
+        t.classList.add('open');
+        // Focus search if it exists
+        const s = document.getElementById(id + '-search');
+        if (s) {
+          s.value = '';
+          filterOptions(id);
+          setTimeout(() => s.focus(), 50);
+        }
+      }
     }
 
     function pickOption(id, val) {
@@ -3581,11 +3663,50 @@
     }
 
     function updateBarangay(mun) {
-      const c = document.getElementById('barangay-options'), list = barangayData[mun] || [];
+      const c = document.getElementById('barangay-list'), list = barangayData[mun] || [];
       document.getElementById('barangay-label').textContent = 'Select Barangay';
       document.getElementById('barangay-value').value = '';
       document.getElementById('barangay-trigger').classList.remove('selected');
-      c.innerHTML = list.length ? list.map(b => `<div class="custom-option" onclick="pickOption('barangay','${b}')">${b}</div>`).join('') : '<div class="custom-option" style="color:#bbb;pointer-events:none">No barangays listed</div>';
+      if (c) {
+        c.innerHTML = list.length ? list.map(b => `<div class="custom-option" onclick="pickOption('barangay','${b}')">${b}</div>`).join('') : '<div class="custom-option" style="color:#bbb;pointer-events:none">No barangays listed</div>';
+      }
+      const s = document.getElementById('barangay-search');
+      if (s) s.value = '';
+    }
+
+    function filterOptions(id) {
+      const input = document.getElementById(id + '-search');
+      if (!input) return;
+      const filter = input.value.toUpperCase();
+      const container = document.getElementById(id + '-list');
+      if (!container) return;
+      const options = container.getElementsByClassName('custom-option');
+      
+      let visibleCount = 0;
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].id === id + '-no-match-msg') continue;
+        
+        const txtValue = options[i].textContent || options[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          options[i].style.display = "";
+          visibleCount++;
+        } else {
+          options[i].style.display = "none";
+        }
+      }
+      
+      const existingMsg = document.getElementById(id + '-no-match-msg');
+      if (existingMsg) existingMsg.remove();
+
+      if (visibleCount === 0 && filter !== '') {
+        const noMatch = document.createElement('div');
+        noMatch.id = id + '-no-match-msg';
+        noMatch.className = 'custom-option';
+        noMatch.style.color = '#bbb';
+        noMatch.style.pointerEvents = 'none';
+        noMatch.textContent = 'No matches found';
+        container.appendChild(noMatch);
+      }
     }
 
     function getVal(id) {
@@ -3641,8 +3762,8 @@
       });
 
       // Reset barangay options to default
-      const brgyOpts = document.getElementById('barangay-options');
-      if (brgyOpts) brgyOpts.innerHTML = '<div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first</div>';
+      const brgyList = document.getElementById('barangay-list');
+      if (brgyList) brgyList.innerHTML = '<div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first</div>';
 
       // Reset income fields to 0.00
       view.querySelectorAll('.inner-card-title')
@@ -3674,10 +3795,10 @@
 
       // Collect required fields
       const cluster = getVal('cluster-value');
-      const lastName = document.querySelector('input[placeholder="Enter last name"]')?.value.trim() || '';
-      const firstName = document.querySelector('input[placeholder="Enter first name"]')?.value.trim() || '';
-      const middleName = document.querySelector('input[placeholder="Enter middle name"]')?.value.trim() || '';
-      const extensionName = document.getElementById('mp-extname')?.value.trim() || '';
+      const lastName = getVal('mp-lastname');
+      const firstName = getVal('mp-firstname');
+      const middleName = getVal('mp-middlename');
+      const extensionName = getVal('mp-extname');
       const barangay = getVal('barangay-value');
       const landTenure = getVal('tenure-value');
       const membership = getVal('membership-value');
@@ -3687,54 +3808,96 @@
       const sex = getVal('sex-value');
       const civilStatus = getVal('civil-value');
       const education = getVal('education-value');
-      const contactNumber = document.querySelector('input[placeholder*="09XX"]')?.value.trim() || '';
-      const rsbsaNo = document.querySelector('input[placeholder*="05-017"]')?.value.trim() || '';
+      const contactNumber = getVal('mp-contact');
+      const rsbsaNo = getVal('mp-rsbsa');
       const province = 'Camarines Sur';
       const municipality = getVal('municipality-value');
-      const street = document.querySelector('input[placeholder*="Enter street"]')?.value.trim() || '';
+      const street = getVal('mp-street');
       const statusIndicators = Array.from(document.querySelectorAll('.checkbox-item input:checked')).map(cb => cb.parentElement.textContent.trim()).join(', ');
 
       // Collect crop info
-      const riceInputs = document.querySelectorAll('.inner-card.green input[type="number"]');
-      const riceIrrigated = riceInputs[0] ? parseFloat(riceInputs[0].value) || 0 : 0;
-      const riceRainfed = riceInputs[1] ? parseFloat(riceInputs[1].value) || 0 : 0;
-      const riceUpland = riceInputs[2] ? parseFloat(riceInputs[2].value) || 0 : 0;
-      const totalHectares = riceInputs[3] ? parseFloat(riceInputs[3].value) || 0 : 0;
+      const riceIrrigated = parseFloat(document.getElementById('rice-irrigated').value) || 0;
+      const riceRainfed = parseFloat(document.getElementById('rice-rainfed').value) || 0;
+      const riceUpland = parseFloat(document.getElementById('rice-upland').value) || 0;
+      const totalHectares = parseFloat(document.getElementById('rice-total').value) || 0;
 
-      const yieldInputs = document.querySelectorAll('.inner-card.beige input[type="number"]');
-      const yieldDry = yieldInputs[0] ? parseFloat(yieldInputs[0].value) || 0 : 0;
-      const yieldWet = yieldInputs[1] ? parseFloat(yieldInputs[1].value) || 0 : 0;
-      const yieldKg = yieldInputs[2] ? parseFloat(yieldInputs[2].value) || 0 : 0;
-      const otherCrops = document.querySelector('input[placeholder="e.g., Corn, Vegetables"]')?.value.trim() || '';
+      const yieldDry = parseFloat(document.getElementById('yield-dry').value) || 0;
+      const yieldWet = parseFloat(document.getElementById('yield-wet').value) || 0;
+      const yieldKg = parseFloat(document.getElementById('yield-kg').value) || 0;
+      const otherCrops = document.getElementById('other-crops').value.trim();
       const cropType = otherCrops ? `Rice + ${otherCrops}` : 'Rice';
 
-      const incomeInputs = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Annual Income'))?.nextElementSibling?.querySelectorAll('input') || [];
-      const incomeY1 = incomeInputs[0] ? parseFloat(incomeInputs[0].value.replace(/,/g, '')) || 0 : 0;
-      const incomeY2 = incomeInputs[1] ? parseFloat(incomeInputs[1].value.replace(/,/g, '')) || 0 : 0;
-      const incomeY3 = incomeInputs[2] ? parseFloat(incomeInputs[2].value.replace(/,/g, '')) || 0 : 0;
+      const incomeY1 = parseFloat(document.getElementById('income-y1').value.replace(/,/g, '')) || 0;
+      const incomeY2 = parseFloat(document.getElementById('income-y2').value.replace(/,/g, '')) || 0;
+      const incomeY3 = parseFloat(document.getElementById('income-y3').value.replace(/,/g, '')) || 0;
 
-      const remarksTextareas = Array.from(document.querySelectorAll('.inner-card-title')).find(el => el.textContent.includes('Remarks'))?.nextElementSibling?.querySelectorAll('textarea') || [];
-      const remarksY1 = remarksTextareas[0] ? remarksTextareas[0].value.trim() : '';
-      const remarksY2 = remarksTextareas[1] ? remarksTextareas[1].value.trim() : '';
-      const remarksY3 = remarksTextareas[2] ? remarksTextareas[2].value.trim() : '';
+      const remarksY1 = document.getElementById('remarks-y1').value.trim();
+      const remarksY2 = document.getElementById('remarks-y2').value.trim();
+      const remarksY3 = document.getElementById('remarks-y3').value.trim();
 
+      const equipment = document.getElementById('mp-equipment').value.trim();
       const idType = getVal('idtype-value');
 
-      // Validation
+      // ── Collect the date-of-membership and ID number ──────────────────────
+      const dateOfMembership = document.getElementById('mp-membership-date')?.value || '';
+      const idNumber = document.getElementById('id-number-input')?.value.trim() || '';
+
+      // ── Clear previous error highlights ──────────────────────────────────
+      document.querySelectorAll('.field-invalid').forEach(el => el.classList.remove('field-invalid'));
+      document.querySelectorAll('.field-error-msg').forEach(el => el.remove());
+
+      // ── Helper: mark a form-group as invalid ─────────────────────────────
+      function markInvalid(groupEl, label) {
+        if (!groupEl) return;
+        groupEl.classList.add('field-invalid');
+        const msg = document.createElement('div');
+        msg.className = 'field-error-msg';
+        msg.textContent = label + ' is required.';
+        groupEl.appendChild(msg);
+      }
+
+      // ── Required field definitions ────────────────────────────────────────
+      const required = [
+        { value: cluster,          selector: '#cluster-trigger',       label: 'Cluster / Association',      isSelect: true },
+        { value: dateOfMembership, selector: '#mp-membership-date',    label: 'Date of Membership',         isInput: true },
+        { value: membership,       selector: '#membership-trigger',    label: 'Type of Membership',         isSelect: true },
+        { value: lastName,         selector: '#mp-lastname',           label: 'Last Name',                  isInput: true },
+        { value: firstName,        selector: '#mp-firstname',          label: 'First Name',                 isInput: true },
+        { value: middleName,       selector: '#mp-middlename',         label: 'Middle Name / Initial',      isInput: true },
+        { value: dob,              selector: '#farmer-dob',            label: 'Date of Birth',              isInput: true },
+        { value: sex,              selector: '#sex-trigger',           label: 'Sex',                        isSelect: true },
+        { value: civilStatus,      selector: '#civil-trigger',         label: 'Civil Status',               isSelect: true },
+        { value: education,        selector: '#education-trigger',     label: 'Educational Attainment',     isSelect: true },
+        { value: contactNumber,    selector: '#mp-contact',            label: 'Contact Number',             isInput: true },
+        { value: municipality,     selector: '#municipality-trigger',  label: 'Municipality',               isSelect: true },
+        { value: barangay,         selector: '#barangay-trigger',      label: 'Barangay',                   isSelect: true },
+        { value: landTenure,       selector: '#tenure-trigger',        label: 'Land Tenure',                isSelect: true },
+        { value: idType,           selector: '#idtype-trigger',        label: 'Government ID Type',         isSelect: true },
+        { value: idNumber,         selector: '#id-number-input',       label: 'ID Number',                  isInput: true },
+      ];
+
       const missing = [];
-      if (!cluster) missing.push('Cluster / Association');
-      if (!lastName) missing.push('Last Name');
-      if (!firstName) missing.push('First Name');
-      if (!barangay) missing.push('Barangay');
+      required.forEach(field => {
+        if (!field.value) {
+          missing.push(field.label);
+          // Highlight the parent .mp-form-group
+          const inputEl = document.querySelector(field.selector);
+          const groupEl = inputEl ? inputEl.closest('.mp-form-group') : null;
+          markInvalid(groupEl, field.label);
+        }
+      });
 
       if (missing.length) {
-        errEl.textContent = 'Please fill in required fields: ' + missing.join(', ');
+        errEl.innerHTML = '<strong>Please fill in all required fields:</strong><ul style="margin:6px 0 0 18px;line-height:1.8;">' +
+          missing.map(m => `<li>${m}</li>`).join('') + '</ul>';
         errEl.style.display = 'block';
-        errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Scroll to the first invalid field
+        const firstInvalid = document.querySelector('.field-invalid');
+        if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
 
-      if (contactNumber && contactNumber.length !== 11) {
+      if (contactNumber.length !== 11) {
         errEl.textContent = 'Contact number must be exactly 11 digits.';
         errEl.style.display = 'block';
         errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -3755,7 +3918,7 @@
         landTenure, membership, cropType, hectares: totalHectares,
         riceIrrigated, riceRainfed, riceUpland, yieldDry, yieldWet, yieldKg, otherCrops,
         incomeY1, incomeY2, incomeY3, remarksY1, remarksY2, remarksY3,
-        idType,
+        idType, idNumber, dateOfMembership,
         submittedAt: new Date().toISOString(),
         status: 'Pending',
         email: 'admin@irigacity.gov.ph',
