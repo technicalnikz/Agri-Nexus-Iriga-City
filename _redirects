@@ -1,2 +1,2 @@
-/api/*  https://YOUR-RENDER-APP-NAME.onrender.com/api/:splat  200
+/api/*  https://agri-nexus-api.onrender.com/api/:splat  200
 /*      /index.html  200
