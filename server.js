@@ -29,12 +29,38 @@ async function initializeTables() {
             const queries = schema.split(';').filter(q => q.trim());
             for (const q of queries) { await db.query(q); }
             await db.query(`INSERT INTO roles (role_id, role_name) VALUES (1, 'farmer'), (2, 'admin') ON CONFLICT (role_id) DO NOTHING`);
+            
+            // Automatic Admin Seeding for PostgreSQL
+            const adminEmail = (process.env.ADMIN_EMAIL || 'admin@agrinexus.com').toLowerCase();
+            const adminPassword = process.env.ADMIN_PASSWORD || 'Admin123!';
+            const adminCheck = await db.query("SELECT * FROM users u JOIN roles r ON u.role_id = r.role_id WHERE u.email = $1 AND r.role_name = 'admin'", [adminEmail]);
+            if (adminCheck.rowCount === 0) {
+                const roleRes = await db.query("SELECT role_id FROM roles WHERE role_name = 'admin'");
+                if (roleRes.rowCount > 0) {
+                    await db.query("INSERT INTO users (email, password, role_id) VALUES ($1, $2, $3)", [adminEmail, adminPassword, roleRes.rows[0].role_id]);
+                    console.log(`🚀 Initial admin account created: ${adminEmail}`);
+                }
+            }
         } else {
             // For SQLite, we use serialize/run
             db.serialize(() => {
                 const queries = schema.split(';').filter(q => q.trim());
                 queries.forEach(q => db.run(q.replace(/SERIAL PRIMARY KEY/g, 'INTEGER PRIMARY KEY AUTOINCREMENT')));
                 db.run(`INSERT OR IGNORE INTO roles (role_id, role_name) VALUES (1, 'farmer'), (2, 'admin')`);
+                
+                // Automatic Admin Seeding for SQLite
+                const adminEmail = (process.env.ADMIN_EMAIL || 'admin@agrinexus.com').toLowerCase();
+                const adminPassword = process.env.ADMIN_PASSWORD || 'Admin123!';
+                db.get("SELECT u.user_id FROM users u JOIN roles r ON u.role_id = r.role_id WHERE u.email = ? AND r.role_name = 'admin'", [adminEmail], (err, row) => {
+                    if (!row) {
+                        db.get("SELECT role_id FROM roles WHERE role_name = 'admin'", [], (err, role) => {
+                            if (role) {
+                                db.run("INSERT INTO users (email, password, role_id) VALUES (?, ?, ?)", [adminEmail, adminPassword, role.role_id]);
+                                console.log(`🚀 Initial admin account created: ${adminEmail}`);
+                            }
+                        });
+                    }
+                });
             });
         }
         console.log("✅ Database tables verified/created.");
