@@ -3,6 +3,47 @@ const cors = require('cors');
 const path = require('path');
 const db = require('./database'); // Import the database setup
 
+// --- AUTO-INITIALIZE TABLES ---
+async function initializeTables() {
+    const isPG = !!process.env.DATABASE_URL;
+    const schema = `
+        CREATE TABLE IF NOT EXISTS roles (role_id SERIAL PRIMARY KEY, role_name TEXT UNIQUE NOT NULL);
+        CREATE TABLE IF NOT EXISTS users (user_id SERIAL PRIMARY KEY, role_id INTEGER NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP);
+        CREATE TABLE IF NOT EXISTS farmers (farmer_id SERIAL PRIMARY KEY, user_id INTEGER UNIQUE, first_name TEXT, last_name TEXT, middle_name TEXT, extension_name TEXT, dob TEXT, sex TEXT, civil_status TEXT, education TEXT, contact_number TEXT, id_type TEXT, rsbsa_no TEXT);
+        CREATE TABLE IF NOT EXISTS addresses (address_id SERIAL PRIMARY KEY, farmer_id INTEGER UNIQUE NOT NULL, province TEXT, municipality TEXT, barangay TEXT, street TEXT, cluster_name TEXT);
+        CREATE TABLE IF NOT EXISTS applications (application_id SERIAL PRIMARY KEY, farmer_id INTEGER NOT NULL, application_type TEXT DEFAULT 'Member Profile', status TEXT DEFAULT 'Pending', admin_remarks TEXT, submitted_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP);
+        CREATE TABLE IF NOT EXISTS application_files (file_id SERIAL PRIMARY KEY, application_id INTEGER NOT NULL, file_path TEXT NOT NULL, uploaded_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP);
+        CREATE TABLE IF NOT EXISTS application_status_indicators (id SERIAL PRIMARY KEY, application_id INTEGER NOT NULL, indicator_name TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS farm_profiles (farm_profile_id SERIAL PRIMARY KEY, application_id INTEGER UNIQUE NOT NULL, land_tenure TEXT, membership_type TEXT, total_hectares REAL);
+        CREATE TABLE IF NOT EXISTS rice_production (rice_prod_id SERIAL PRIMARY KEY, farm_profile_id INTEGER UNIQUE NOT NULL, irrigated_area REAL, rainfed_area REAL, upland_area REAL, yield_dry_season REAL, yield_wet_season REAL, total_yield_kg REAL);
+        CREATE TABLE IF NOT EXISTS farm_crops (farm_crop_id SERIAL PRIMARY KEY, farm_profile_id INTEGER NOT NULL, crop_name TEXT NOT NULL, is_primary BOOLEAN DEFAULT FALSE);
+        CREATE TABLE IF NOT EXISTS annual_incomes (income_id SERIAL PRIMARY KEY, application_id INTEGER NOT NULL, year_offset INTEGER NOT NULL, amount REAL, remarks TEXT);
+        CREATE TABLE IF NOT EXISTS crop_types (crop_type_id SERIAL PRIMARY KEY, crop_name TEXT UNIQUE NOT NULL);
+        CREATE TABLE IF NOT EXISTS seasons (season_id SERIAL PRIMARY KEY, season_name TEXT UNIQUE NOT NULL);
+        CREATE TABLE IF NOT EXISTS crop_records (record_id SERIAL PRIMARY KEY, farmer_id INTEGER NOT NULL, season_id INTEGER, crop_type_id INTEGER, area REAL, yield_amount REAL, income REAL, status TEXT, created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP);
+    `.replace(/SERIAL/g, isPG ? 'SERIAL' : 'INTEGER').replace(/TIMESTAMPTZ/g, isPG ? 'TIMESTAMPTZ' : 'DATETIME');
+
+    try {
+        if (isPG) {
+            // For PostgreSQL, we can run multiple queries or use client.query
+            const queries = schema.split(';').filter(q => q.trim());
+            for (const q of queries) { await db.query(q); }
+            await db.query(`INSERT INTO roles (role_id, role_name) VALUES (1, 'farmer'), (2, 'admin') ON CONFLICT (role_id) DO NOTHING`);
+        } else {
+            // For SQLite, we use serialize/run
+            db.serialize(() => {
+                const queries = schema.split(';').filter(q => q.trim());
+                queries.forEach(q => db.run(q.replace(/SERIAL PRIMARY KEY/g, 'INTEGER PRIMARY KEY AUTOINCREMENT')));
+                db.run(`INSERT OR IGNORE INTO roles (role_id, role_name) VALUES (1, 'farmer'), (2, 'admin')`);
+            });
+        }
+        console.log("✅ Database tables verified/created.");
+    } catch (e) {
+        console.error("❌ Table initialization error:", e.message);
+    }
+}
+initializeTables();
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
