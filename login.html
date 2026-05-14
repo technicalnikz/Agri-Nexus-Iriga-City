@@ -390,7 +390,7 @@
 
       <button class="btn-submit" id="submit-btn" onclick="handleLogin()">Sign In as Farmer</button>
 
-      <p class="register-text">
+      <p class="register-text" id="register-link-container">
         Don't have an account? <a href="register.html">Register here</a>
       </p>
     </div>
@@ -416,10 +416,12 @@
         hintText.textContent = 'Farmer';
         hintIcon.innerHTML = '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>';
         submitBtn.textContent = 'Sign In as Farmer';
+        document.getElementById('register-link-container').style.display = 'block';
       } else {
         hintText.textContent = 'Admin';
         hintIcon.innerHTML = '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>';
         submitBtn.textContent = 'Sign In as Admin';
+        document.getElementById('register-link-container').style.display = 'none';
       }
       clearError();
     }
