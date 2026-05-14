@@ -2158,8 +2158,7 @@
                     <option>Male</option>
                     <option>Female</option>
                   </select></div>
-                <div class="form-group full"><label class="form-label">Barangay / Address</label><input
-                    class="form-input" type="text" id="rsbsa-address" /></div>
+
               </div>
             </div>
           </div>
@@ -3519,7 +3518,7 @@
       if (document.getElementById('rsbsa-extname')) document.getElementById('rsbsa-extname').value = app.extensionName || '';
       if (document.getElementById('rsbsa-cluster')) document.getElementById('rsbsa-cluster').value = app.cluster || '';
       if (document.getElementById('rsbsa-sex')) document.getElementById('rsbsa-sex').value = app.sex || '';
-      if (document.getElementById('rsbsa-address')) document.getElementById('rsbsa-address').value = app.barangay || '';
+
 
       // Note: Files are harder to prefill as they are binary/base64. 
       // For now, we'll let them re-upload if they need to change them, 
@@ -3753,7 +3752,7 @@
       const extname = document.getElementById('rsbsa-extname').value.trim();
       const cluster = document.getElementById('rsbsa-cluster').value;
       const sex = document.getElementById('rsbsa-sex').value;
-      const address = document.getElementById('rsbsa-address').value.trim();
+
 
       const uploadedCount = document.querySelectorAll('.req-check-item.done').length;
 
@@ -3762,7 +3761,7 @@
       if (!lname) missing.push('Last Name');
       if (!cluster) missing.push('Cluster');
       if (!sex) missing.push('Sex');
-      if (!address) missing.push('Barangay / Address');
+
       if (uploadedCount < 5) missing.push('All 5 requirements must be uploaded');
 
       if (missing.length) {
@@ -3813,7 +3812,7 @@
         extensionName: extname,
         cluster: cluster,
         sex: sex,
-        barangay: address,
+
         applicationType: 'RSBSA Enrolment',
         uploadedFiles: JSON.stringify(fileNames),
         submittedAt: new Date().toISOString(),
