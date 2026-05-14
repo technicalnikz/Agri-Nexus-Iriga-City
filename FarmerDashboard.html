@@ -2139,8 +2139,20 @@
                     id="rsbsa-lname" /></div>
                 <div class="form-group"><label class="form-label">Extension Name</label><input class="form-input" type="text"
                     id="rsbsa-extname" /></div>
-                <div class="form-group"><label class="form-label">Date of Birth</label><input class="form-input"
-                    type="date" id="rsbsa-dob" /></div>
+                <div class="form-group">
+                  <label class="form-label">Cluster</label>
+                  <select class="form-select" id="rsbsa-cluster">
+                    <option value="">Select Cluster</option>
+                    <option>Ka-Agriprenuers Agriculture Cooperative</option>
+                    <option>La Trinidad Farmers Association</option>
+                    <option>Mabukug Farmers Association Inc.</option>
+                    <option>SAGMONREY-AN Communal Irrigation Association Inc.</option>
+                    <option>Salvacion Farmers Agriculture Cooperative</option>
+                    <option>Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.</option>
+                    <option>San Jose Farmers Association of Iriga City Camarines Sur</option>
+                    <option>Sto. Nino Farmers Association</option>
+                  </select>
+                </div>
                 <div class="form-group"><label class="form-label">Sex</label><select class="form-select" id="rsbsa-sex">
                     <option value="">Select</option>
                     <option>Male</option>
@@ -3505,7 +3517,7 @@
       if (document.getElementById('rsbsa-mname')) document.getElementById('rsbsa-mname').value = app.middleName || '';
       if (document.getElementById('rsbsa-lname')) document.getElementById('rsbsa-lname').value = app.lastName || '';
       if (document.getElementById('rsbsa-extname')) document.getElementById('rsbsa-extname').value = app.extensionName || '';
-      if (document.getElementById('rsbsa-dob')) document.getElementById('rsbsa-dob').value = app.dob || '';
+      if (document.getElementById('rsbsa-cluster')) document.getElementById('rsbsa-cluster').value = app.cluster || '';
       if (document.getElementById('rsbsa-sex')) document.getElementById('rsbsa-sex').value = app.sex || '';
       if (document.getElementById('rsbsa-address')) document.getElementById('rsbsa-address').value = app.barangay || '';
 
@@ -3739,7 +3751,7 @@
       const mname = document.getElementById('rsbsa-mname').value.trim();
       const lname = document.getElementById('rsbsa-lname').value.trim();
       const extname = document.getElementById('rsbsa-extname').value.trim();
-      const dob = document.getElementById('rsbsa-dob').value;
+      const cluster = document.getElementById('rsbsa-cluster').value;
       const sex = document.getElementById('rsbsa-sex').value;
       const address = document.getElementById('rsbsa-address').value.trim();
 
@@ -3748,7 +3760,7 @@
       const missing = [];
       if (!fname) missing.push('First Name');
       if (!lname) missing.push('Last Name');
-      if (!dob) missing.push('Date of Birth');
+      if (!cluster) missing.push('Cluster');
       if (!sex) missing.push('Sex');
       if (!address) missing.push('Barangay / Address');
       if (uploadedCount < 5) missing.push('All 5 requirements must be uploaded');
@@ -3799,7 +3811,7 @@
         middleName: mname,
         lastName: lname,
         extensionName: extname,
-        dob: dob,
+        cluster: cluster,
         sex: sex,
         barangay: address,
         applicationType: 'RSBSA Enrolment',
