@@ -43,7 +43,9 @@ if (process.env.DATABASE_URL) {
         const pgSql = sql.replace(/\?/g, () => `$${i++}`);
         originalQuery(pgSql, params)
             .then(res => {
-                if (callback) callback.call({ lastID: res.oid || (res.rows[0] ? res.rows[0].id : null), changes: res.rowCount }, null);
+                // For PostgreSQL, we get the ID from the first row of results if RETURNING is used
+                const lastID = res.rows && res.rows[0] ? Object.values(res.rows[0])[0] : (res.oid || null);
+                if (callback) callback.call({ lastID: lastID, changes: res.rowCount }, null);
             })
             .catch(err => {
                 if (callback) callback(err);

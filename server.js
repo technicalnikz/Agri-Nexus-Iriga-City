@@ -267,12 +267,12 @@ function insertApplication(data, res) {
         };
 
         const proceedWithApplication = (farmerId) => {
-            db.run(`INSERT INTO applications (farmer_id, application_type, admin_remarks) VALUES (?, ?, ?)`,
+            db.run(`INSERT INTO applications (farmer_id, application_type, admin_remarks) VALUES (?, ?, ?) RETURNING application_id`,
                 [farmerId, data.applicationType || 'Member Profile', data.adminRemarks || null], function (err) {
                     if (err) return rollback(err);
                     const appId = this.lastID;
 
-                    db.run(`INSERT INTO farm_profiles (application_id, land_tenure, membership_type, membership_date, total_hectares) VALUES (?, ?, ?, ?, ?)`,
+                    db.run(`INSERT INTO farm_profiles (application_id, land_tenure, membership_type, membership_date, total_hectares) VALUES (?, ?, ?, ?, ?) RETURNING farm_profile_id`,
                         [appId, data.landTenure, data.membership, data.dateOfMembership, data.hectares], function (err) {
                             if (err) return rollback(err);
                             const fpId = this.lastID;
@@ -374,7 +374,7 @@ function insertApplication(data, res) {
             if (existingFarmer) {
                 farmerIdAction(existingFarmer.farmer_id);
             } else {
-                db.run(`INSERT INTO farmers (user_id, first_name, last_name, middle_name, extension_name, dob, sex, civil_status, education, contact_number, id_type, id_number, rsbsa_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                db.run(`INSERT INTO farmers (user_id, first_name, last_name, middle_name, extension_name, dob, sex, civil_status, education, contact_number, id_type, id_number, rsbsa_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING farmer_id`,
                     [data.user_id, data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.idNumber, data.rsbsaNo], function (err) {
                         if (err) return rollback(err);
                         farmerIdAction(this.lastID);
@@ -531,7 +531,7 @@ app.post('/api/crop_records', (req, res) => {
 
                             const query = `
                                 INSERT INTO crop_records (farmer_id, season_id, crop_type_id, area, yield_amount, income, status)
-                                VALUES (?, ?, ?, ?, ?, ?, ?)
+                                VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING record_id
                             `;
                             db.run(query, [farmerId, seasonId, cropTypeId, area, cropYield, income, status || 'Completed'], function (err) {
                                 if (err) return rollback(err);
