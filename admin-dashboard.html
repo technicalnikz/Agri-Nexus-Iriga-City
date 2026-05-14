@@ -2108,7 +2108,7 @@
             <thead>
               <tr>
                 <th style="text-transform:uppercase;">Applicant</th>
-                <th style="text-transform:uppercase;text-align:center;">Barangay</th>
+                <th style="text-transform:uppercase;text-align:center;">Cluster</th>
                 <th style="text-transform:uppercase;">Submitted</th>
                 <th style="text-transform:uppercase;text-align:center;">Files</th>
                 <th style="text-transform:uppercase;text-align:center;">Status</th>
@@ -2791,8 +2791,8 @@
 
       const filtered = window.rsbsaApps.filter(a => {
         const name = [a.firstName, a.lastName].filter(Boolean).join(' ').toLowerCase();
-        const brgy = (a.barangay || '').toLowerCase();
-        return name.includes(q) || brgy.includes(q);
+        const cluster = (a.cluster || '').toLowerCase();
+        return name.includes(q) || cluster.includes(q);
       });
 
       if (filtered.length === 0) {
@@ -2809,7 +2809,7 @@
           return `
             <tr>
               <td style="color:#555;font-weight:600;">${name}</td>
-              <td style="color:#666;text-align:center;">${a.barangay || '—'}</td>
+              <td style="color:#666;text-align:center;">${a.cluster || '—'}</td>
               <td style="color:#555;">${date}</td>
               <td style="color:#555;text-align:center;">${filesCount} files</td>
               <td style="text-align:center;"><span class="badge ${statusClass}">${a.status || 'Pending'}</span></td>
@@ -2878,7 +2878,7 @@
 
       document.getElementById('rsbsa-modal-content').innerHTML = `
         <div style="font-size:14px; margin-bottom:8px;"><strong>Applicant:</strong> ${app.firstName} ${app.lastName}</div>
-        <div style="font-size:13px; margin-bottom:8px;"><strong>Barangay:</strong> ${app.barangay || '—'}</div>
+        <div style="font-size:13px; margin-bottom:8px;"><strong>Cluster:</strong> ${app.cluster || '—'}</div>
         <div style="font-size:13px; margin-bottom:16px;"><strong>Submitted:</strong> ${app.submittedAt ? new Date(app.submittedAt).toLocaleDateString() : ''}</div>
         <div style="font-size:13px; margin-bottom:12px;"><strong>Uploaded Files:</strong><br><div style="background:#f4f7f0; padding:10px; border-radius:6px; margin-top:6px;">${filesHtml}</div></div>
         ${remarksHtml}
