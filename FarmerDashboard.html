@@ -3794,12 +3794,41 @@
       for (const key in uploadedFilesMap) {
         uploadedFilesMap[key].forEach(f => {
           const promise = new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              resolve({ category: categories[key], name: f.name, dataUrl: e.target.result });
+            if (!f.type.startsWith('image/')) {
+              const reader = new FileReader();
+              reader.onload = (e) => resolve({ category: categories[key], name: f.name, dataUrl: e.target.result });
+              reader.onerror = () => reject(new Error('Failed to read file: ' + f.name));
+              reader.readAsDataURL(f);
+              return;
+            }
+            const img = new Image();
+            const url = URL.createObjectURL(f);
+            img.onload = () => {
+              URL.revokeObjectURL(url);
+              const canvas = document.createElement('canvas');
+              let width = img.width;
+              let height = img.height;
+              const MAX_DIM = 1200;
+              if (width > height && width > MAX_DIM) {
+                height *= MAX_DIM / width;
+                width = MAX_DIM;
+              } else if (height > MAX_DIM) {
+                width *= MAX_DIM / height;
+                height = MAX_DIM;
+              }
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+              resolve({ category: categories[key], name: f.name, dataUrl: canvas.toDataURL('image/jpeg', 0.7) });
             };
-            reader.onerror = () => reject(new Error('Failed to read file: ' + f.name));
-            reader.readAsDataURL(f);
+            img.onerror = () => {
+              URL.revokeObjectURL(url);
+              const reader = new FileReader();
+              reader.onload = (e) => resolve({ category: categories[key], name: f.name, dataUrl: e.target.result });
+              reader.readAsDataURL(f);
+            };
+            img.src = url;
           });
           filePromises.push(promise);
         });
