@@ -2567,6 +2567,7 @@
           const rsbsaCard = document.querySelector('.app-choice-card[onclick*="app-rsbsa"]');
 
           const latestMember = memberApps.length > 0 ? memberApps[0] : null;
+          window.myLatestProfile = latestMember;
           const latestRsbsaCheck = rsbsaApps.length > 0 ? rsbsaApps[0] : null;
 
           function lockCard(card, status) {
@@ -3805,6 +3806,7 @@
         return;
       }
 
+      const profile = window.myLatestProfile || {};
       const record = {
         firstName: fname,
         middleName: mname,
@@ -3812,6 +3814,18 @@
         extensionName: extname,
         cluster: cluster,
         sex: sex,
+        
+        // Use existing profile data for other fields to avoid overwriting with NULLs
+        dob: profile.dob || '',
+        civilStatus: profile.civilStatus || '',
+        education: profile.education || '',
+        contactNumber: profile.contactNumber || '',
+        rsbsaNo: profile.rsbsaNo || '',
+        province: profile.province || 'Camarines Sur',
+        municipality: profile.municipality || 'Iriga City',
+        barangay: profile.barangay || '',
+        street: profile.street || '',
+        idType: profile.idType || '',
 
         applicationType: 'RSBSA Enrolment',
         uploadedFiles: JSON.stringify(fileNames),
@@ -3832,8 +3846,15 @@
           body: JSON.stringify(record)
         });
         if (!response.ok) {
-          const errData = await response.json();
-          throw new Error(errData.error || 'Server error');
+          let errorMsg = 'Server error';
+          try {
+            const errData = await response.json();
+            errorMsg = errData.error || errorMsg;
+          } catch (e) {
+            const text = await response.text();
+            errorMsg = text || response.statusText || errorMsg;
+          }
+          throw new Error(errorMsg);
         }
       } catch (err) {
         errEl.textContent = 'Failed to submit: ' + err.message;
