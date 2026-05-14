@@ -9,12 +9,12 @@ async function initializeTables() {
     const schema = `
         CREATE TABLE IF NOT EXISTS roles (role_id SERIAL PRIMARY KEY, role_name TEXT UNIQUE NOT NULL);
         CREATE TABLE IF NOT EXISTS users (user_id SERIAL PRIMARY KEY, role_id INTEGER NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP);
-        CREATE TABLE IF NOT EXISTS farmers (farmer_id SERIAL PRIMARY KEY, user_id INTEGER UNIQUE, first_name TEXT, last_name TEXT, middle_name TEXT, extension_name TEXT, dob TEXT, sex TEXT, civil_status TEXT, education TEXT, contact_number TEXT, id_type TEXT, rsbsa_no TEXT);
+        CREATE TABLE IF NOT EXISTS farmers (farmer_id SERIAL PRIMARY KEY, user_id INTEGER UNIQUE, first_name TEXT, last_name TEXT, middle_name TEXT, extension_name TEXT, dob TEXT, sex TEXT, civil_status TEXT, education TEXT, contact_number TEXT, id_type TEXT, id_number TEXT, rsbsa_no TEXT);
         CREATE TABLE IF NOT EXISTS addresses (address_id SERIAL PRIMARY KEY, farmer_id INTEGER UNIQUE NOT NULL, province TEXT, municipality TEXT, barangay TEXT, street TEXT, cluster_name TEXT);
         CREATE TABLE IF NOT EXISTS applications (application_id SERIAL PRIMARY KEY, farmer_id INTEGER NOT NULL, application_type TEXT DEFAULT 'Member Profile', status TEXT DEFAULT 'Pending', admin_remarks TEXT, submitted_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP);
         CREATE TABLE IF NOT EXISTS application_files (file_id SERIAL PRIMARY KEY, application_id INTEGER NOT NULL, file_path TEXT NOT NULL, uploaded_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP);
         CREATE TABLE IF NOT EXISTS application_status_indicators (id SERIAL PRIMARY KEY, application_id INTEGER NOT NULL, indicator_name TEXT NOT NULL);
-        CREATE TABLE IF NOT EXISTS farm_profiles (farm_profile_id SERIAL PRIMARY KEY, application_id INTEGER UNIQUE NOT NULL, land_tenure TEXT, membership_type TEXT, total_hectares REAL);
+        CREATE TABLE IF NOT EXISTS farm_profiles (farm_profile_id SERIAL PRIMARY KEY, application_id INTEGER UNIQUE NOT NULL, land_tenure TEXT, membership_type TEXT, membership_date TEXT, total_hectares REAL);
         CREATE TABLE IF NOT EXISTS rice_production (rice_prod_id SERIAL PRIMARY KEY, farm_profile_id INTEGER UNIQUE NOT NULL, irrigated_area REAL, rainfed_area REAL, upland_area REAL, yield_dry_season REAL, yield_wet_season REAL, total_yield_kg REAL);
         CREATE TABLE IF NOT EXISTS farm_crops (farm_crop_id SERIAL PRIMARY KEY, farm_profile_id INTEGER NOT NULL, crop_name TEXT NOT NULL, is_primary BOOLEAN DEFAULT FALSE);
         CREATE TABLE IF NOT EXISTS annual_incomes (income_id SERIAL PRIMARY KEY, application_id INTEGER NOT NULL, year_offset INTEGER NOT NULL, amount REAL, remarks TEXT);
@@ -133,9 +133,9 @@ const getApplicationsQuery = `
 SELECT 
   a.application_id as id, f.user_id as user_id, f.first_name as firstName, f.last_name as lastName, 
   f.middle_name as middleName, f.extension_name as extensionName, f.dob, f.sex, f.civil_status as civilStatus, f.education, 
-  f.contact_number as contactNumber, f.rsbsa_no as rsbsaNo, f.id_type as idType,
+  f.contact_number as contactNumber, f.rsbsa_no as rsbsaNo, f.id_type as idType, f.id_number as idNumber,
   addr.province, addr.municipality, addr.barangay, addr.street, addr.cluster_name as cluster,
-  fp.land_tenure as landTenure, fp.membership_type as membership, fp.total_hectares as hectares,
+  fp.land_tenure as landTenure, fp.membership_type as membership, fp.membership_date as dateOfMembership, fp.total_hectares as hectares,
   rp.irrigated_area as riceIrrigated, rp.rainfed_area as riceRainfed, rp.upland_area as riceUpland,
   rp.yield_dry_season as yieldDry, rp.yield_wet_season as yieldWet, rp.total_yield_kg as yieldKg,
   a.application_type as applicationType, a.status, a.admin_remarks as adminRemarks, a.submitted_at as submittedAt,
@@ -266,8 +266,8 @@ function insertApplication(data, res) {
                     if (err) return rollback(err);
                     const appId = this.lastID;
 
-                    db.run(`INSERT INTO farm_profiles (application_id, land_tenure, membership_type, total_hectares) VALUES (?, ?, ?, ?)`,
-                        [appId, data.landTenure, data.membership, data.hectares], function (err) {
+                    db.run(`INSERT INTO farm_profiles (application_id, land_tenure, membership_type, membership_date, total_hectares) VALUES (?, ?, ?, ?, ?)`,
+                        [appId, data.landTenure, data.membership, data.dateOfMembership, data.hectares], function (err) {
                             if (err) return rollback(err);
                             const fpId = this.lastID;
 
@@ -350,8 +350,8 @@ function insertApplication(data, res) {
             if (err) return rollback(err);
 
             const farmerIdAction = (fid) => {
-                db.run(`UPDATE farmers SET first_name=?, last_name=?, middle_name=?, extension_name=?, dob=?, sex=?, civil_status=?, education=?, contact_number=?, id_type=?, rsbsa_no=? WHERE farmer_id=?`,
-                    [data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.rsbsaNo, fid], (err) => {
+                db.run(`UPDATE farmers SET first_name=?, last_name=?, middle_name=?, extension_name=?, dob=?, sex=?, civil_status=?, education=?, contact_number=?, id_type=?, id_number=?, rsbsa_no=? WHERE farmer_id=?`,
+                    [data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.idNumber, data.rsbsaNo, fid], (err) => {
                         if (err) return rollback(err);
                         proceedWithAddress(fid);
                     });
@@ -360,8 +360,8 @@ function insertApplication(data, res) {
             if (existingFarmer) {
                 farmerIdAction(existingFarmer.farmer_id);
             } else {
-                db.run(`INSERT INTO farmers (user_id, first_name, last_name, middle_name, extension_name, dob, sex, civil_status, education, contact_number, id_type, rsbsa_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [data.user_id, data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.rsbsaNo], function (err) {
+                db.run(`INSERT INTO farmers (user_id, first_name, last_name, middle_name, extension_name, dob, sex, civil_status, education, contact_number, id_type, id_number, rsbsa_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [data.user_id, data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.idNumber, data.rsbsaNo], function (err) {
                         if (err) return rollback(err);
                         farmerIdAction(this.lastID);
                     });
@@ -383,8 +383,8 @@ app.put('/api/applications/:id', (req, res) => {
             if (err || !appRow) return rollback(err || new Error("Application not found"));
             const farmerId = appRow.farmer_id;
 
-            db.run(`UPDATE farmers SET first_name=?, last_name=?, middle_name=?, extension_name=?, dob=?, sex=?, civil_status=?, education=?, contact_number=?, id_type=?, rsbsa_no=? WHERE farmer_id=?`,
-                [data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.rsbsaNo, farmerId]);
+            db.run(`UPDATE farmers SET first_name=?, last_name=?, middle_name=?, extension_name=?, dob=?, sex=?, civil_status=?, education=?, contact_number=?, id_type=?, id_number=?, rsbsa_no=? WHERE farmer_id=?`,
+                [data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.idNumber, data.rsbsaNo, farmerId]);
 
             db.run(`UPDATE addresses SET province=?, municipality=?, barangay=?, street=?, cluster_name=? WHERE farmer_id=?`,
                 [data.province, data.municipality, data.barangay, data.street, data.cluster, farmerId]);
@@ -395,7 +395,7 @@ app.put('/api/applications/:id', (req, res) => {
                 if (err) return rollback(err);
 
                 const handleProduction = (fpId) => {
-                    db.run(`UPDATE farm_profiles SET land_tenure=?, membership_type=?, total_hectares=? WHERE farm_profile_id=?`, [data.landTenure, data.membership, data.hectares, fpId]);
+                    db.run(`UPDATE farm_profiles SET land_tenure=?, membership_type=?, membership_date=?, total_hectares=? WHERE farm_profile_id=?`, [data.landTenure, data.membership, data.dateOfMembership, data.hectares, fpId]);
                     
                     db.get(`SELECT farm_profile_id FROM rice_production WHERE farm_profile_id = ?`, [fpId], (err, rpRow) => {
                         if (rpRow) {
@@ -419,8 +419,8 @@ app.put('/api/applications/:id', (req, res) => {
                 if (fpRow) {
                     handleProduction(fpRow.farm_profile_id);
                 } else {
-                    db.run(`INSERT INTO farm_profiles (application_id, land_tenure, membership_type, total_hectares) VALUES (?, ?, ?, ?)`,
-                        [appId, data.landTenure, data.membership, data.hectares], function (err) {
+                    db.run(`INSERT INTO farm_profiles (application_id, land_tenure, membership_type, membership_date, total_hectares) VALUES (?, ?, ?, ?, ?)`,
+                        [appId, data.landTenure, data.membership, data.dateOfMembership, data.hectares], function (err) {
                             if (err) return rollback(err);
                             handleProduction(this.lastID);
                         });
