@@ -2501,6 +2501,7 @@
 
       try {
         const response = await fetch('/api/crop_records/me?user_id=' + userId);
+        if (!response.ok) throw new Error('Network error');
         const data = await response.json();
         const tbody = document.getElementById('crop-tbody');
         tbody.innerHTML = '';
@@ -2556,6 +2557,7 @@
       if (!userId) return;
       try {
         const res = await fetch(`/api/applications/me?user_id=${userId}`);
+        if (!res.ok) throw new Error('Failed to fetch apps');
         const apps = await res.json();
 
         if (apps.length > 0) {
@@ -3741,8 +3743,12 @@
       successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
       // Refresh dashboard data so My Profile, My Farm, and Crop Records update immediately
-      await loadMyApplications();
-      await fetchCropRecords();
+      try {
+        await loadMyApplications();
+        await fetchCropRecords();
+      } catch (e) {
+        console.error("Dashboard refresh error:", e);
+      }
 
       // Navigate back to Applications after a short delay
       setTimeout(() => {
@@ -3863,6 +3869,8 @@
         barangay: profile.barangay || '',
         street: profile.street || '',
         idType: profile.idType || '',
+        idNumber: profile.idNumber || '',
+        dateOfMembership: profile.dateOfMembership || '',
 
         applicationType: 'RSBSA Enrolment',
         uploadedFiles: JSON.stringify(fileNames),

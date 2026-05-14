@@ -284,23 +284,29 @@ function insertApplication(data, res) {
                                     if (data.statusIndicators) {
                                         const indicators = data.statusIndicators.split(',').map(s => s.trim());
                                         indicators.forEach(ind => {
-                                            db.run(`INSERT INTO application_status_indicators (application_id, indicator_name) VALUES (?, ?)`, [appId, ind]);
+                                            db.run(`INSERT INTO application_status_indicators (application_id, indicator_name) VALUES (?, ?)`, [appId, ind], (err) => {
+                                                if (err) console.error("Indicator insert error:", err.message);
+                                            });
                                         });
                                     }
 
                                     if (data.cropType) {
-                                        db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 1)`, [fpId, data.cropType]);
+                                        db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 1)`, [fpId, data.cropType], (err) => {
+                                            if (err) console.error("Crop type insert error:", err.message);
+                                        });
                                     }
                                     if (data.otherCrops) {
                                         const otherCropsList = data.otherCrops.split(',').map(s => s.trim());
                                         otherCropsList.forEach(crop => {
-                                            db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 0)`, [fpId, crop]);
+                                            db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 0)`, [fpId, crop], (err) => {
+                                                if (err) console.error("Other crops insert error:", err.message);
+                                            });
                                         });
                                     }
 
-                                    if (data.incomeY1 !== undefined && data.incomeY1 !== null && data.incomeY1 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 1, ?, ?)`, [appId, data.incomeY1, data.remarksY1]);
-                                    if (data.incomeY2 !== undefined && data.incomeY2 !== null && data.incomeY2 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 2, ?, ?)`, [appId, data.incomeY2, data.remarksY2]);
-                                    if (data.incomeY3 !== undefined && data.incomeY3 !== null && data.incomeY3 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 3, ?, ?)`, [appId, data.incomeY3, data.remarksY3]);
+                                    if (data.incomeY1 !== undefined && data.incomeY1 !== null && data.incomeY1 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 1, ?, ?)`, [appId, data.incomeY1, data.remarksY1], (err) => { if (err) console.error(err); });
+                                    if (data.incomeY2 !== undefined && data.incomeY2 !== null && data.incomeY2 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 2, ?, ?)`, [appId, data.incomeY2, data.remarksY2], (err) => { if (err) console.error(err); });
+                                    if (data.incomeY3 !== undefined && data.incomeY3 !== null && data.incomeY3 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 3, ?, ?)`, [appId, data.incomeY3, data.remarksY3], (err) => { if (err) console.error(err); });
 
                                     if (data.uploadedFiles) {
                                         let fileList = [];
@@ -320,7 +326,9 @@ function insertApplication(data, res) {
                                         }
 
                                         fileList.forEach(f => {
-                                            if (f) db.run(`INSERT INTO application_files (application_id, file_path) VALUES (?, ?)`, [appId, f]);
+                                            if (f) db.run(`INSERT INTO application_files (application_id, file_path) VALUES (?, ?)`, [appId, f], (err) => {
+                                                if (err) console.error("File insert error:", err.message);
+                                            });
                                         });
                                     }
 
@@ -390,33 +398,33 @@ app.put('/api/applications/:id', (req, res) => {
             const farmerId = appRow.farmer_id;
 
             db.run(`UPDATE farmers SET first_name=?, last_name=?, middle_name=?, extension_name=?, dob=?, sex=?, civil_status=?, education=?, contact_number=?, id_type=?, id_number=?, rsbsa_no=? WHERE farmer_id=?`,
-                [data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.idNumber, data.rsbsaNo, farmerId]);
+                [data.firstName, data.lastName, data.middleName, data.extensionName, data.dob, data.sex, data.civilStatus, data.education, data.contactNumber, data.idType, data.idNumber, data.rsbsaNo, farmerId], (err) => { if (err) console.error(err); });
 
             db.run(`UPDATE addresses SET province=?, municipality=?, barangay=?, street=?, cluster_name=? WHERE farmer_id=?`,
-                [data.province, data.municipality, data.barangay, data.street, data.cluster, farmerId]);
+                [data.province, data.municipality, data.barangay, data.street, data.cluster, farmerId], (err) => { if (err) console.error(err); });
 
-            db.run(`UPDATE applications SET status='Pending', submitted_at=CURRENT_TIMESTAMP WHERE application_id=?`, [appId]);
+            db.run(`UPDATE applications SET status='Pending', submitted_at=CURRENT_TIMESTAMP WHERE application_id=?`, [appId], (err) => { if (err) console.error(err); });
 
             db.get(`SELECT farm_profile_id FROM farm_profiles WHERE application_id = ?`, [appId], (err, fpRow) => {
                 if (err) return rollback(err);
 
                 const handleProduction = (fpId) => {
-                    db.run(`UPDATE farm_profiles SET land_tenure=?, membership_type=?, membership_date=?, total_hectares=? WHERE farm_profile_id=?`, [data.landTenure, data.membership, data.dateOfMembership, data.hectares, fpId]);
+                    db.run(`UPDATE farm_profiles SET land_tenure=?, membership_type=?, membership_date=?, total_hectares=? WHERE farm_profile_id=?`, [data.landTenure, data.membership, data.dateOfMembership, data.hectares, fpId], (err) => { if (err) console.error(err); });
                     
                     db.get(`SELECT farm_profile_id FROM rice_production WHERE farm_profile_id = ?`, [fpId], (err, rpRow) => {
                         if (rpRow) {
                             db.run(`UPDATE rice_production SET irrigated_area=?, rainfed_area=?, upland_area=?, yield_dry_season=?, yield_wet_season=?, total_yield_kg=? WHERE farm_profile_id=?`,
-                                [data.riceIrrigated, data.riceRainfed, data.riceUpland, data.yieldDry, data.yieldWet, data.yieldKg, fpId]);
+                                [data.riceIrrigated, data.riceRainfed, data.riceUpland, data.yieldDry, data.yieldWet, data.yieldKg, fpId], (err) => { if (err) console.error(err); });
                         } else {
                             db.run(`INSERT INTO rice_production (farm_profile_id, irrigated_area, rainfed_area, upland_area, yield_dry_season, yield_wet_season, total_yield_kg) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                                [fpId, data.riceIrrigated, data.riceRainfed, data.riceUpland, data.yieldDry, data.yieldWet, data.yieldKg]);
+                                [fpId, data.riceIrrigated, data.riceRainfed, data.riceUpland, data.yieldDry, data.yieldWet, data.yieldKg], (err) => { if (err) console.error(err); });
                         }
 
-                        db.run(`DELETE FROM farm_crops WHERE farm_profile_id=?`, [fpId]);
-                        if (data.cropType) db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 1)`, [fpId, data.cropType]);
+                        db.run(`DELETE FROM farm_crops WHERE farm_profile_id=?`, [fpId], (err) => { if (err) console.error(err); });
+                        if (data.cropType) db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 1)`, [fpId, data.cropType], (err) => { if (err) console.error(err); });
                         if (data.otherCrops) {
                             data.otherCrops.split(',').map(s => s.trim()).forEach(crop => {
-                                db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 0)`, [fpId, crop]);
+                                db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 0)`, [fpId, crop], (err) => { if (err) console.error(err); });
                             });
                         }
                     });
@@ -432,19 +440,19 @@ app.put('/api/applications/:id', (req, res) => {
                         });
                 }
 
-                db.run(`DELETE FROM application_status_indicators WHERE application_id=?`, [appId]);
+                db.run(`DELETE FROM application_status_indicators WHERE application_id=?`, [appId], (err) => { if (err) console.error(err); });
                 if (data.statusIndicators) {
                     data.statusIndicators.split(',').map(s => s.trim()).forEach(ind => {
-                        db.run(`INSERT INTO application_status_indicators (application_id, indicator_name) VALUES (?, ?)`, [appId, ind]);
+                        db.run(`INSERT INTO application_status_indicators (application_id, indicator_name) VALUES (?, ?)`, [appId, ind], (err) => { if (err) console.error(err); });
                     });
                 }
 
-                db.run(`DELETE FROM annual_incomes WHERE application_id=?`, [appId]);
-                if (data.incomeY1 !== undefined && data.incomeY1 !== null && data.incomeY1 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 1, ?, ?)`, [appId, data.incomeY1, data.remarksY1]);
-                if (data.incomeY2 !== undefined && data.incomeY2 !== null && data.incomeY2 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 2, ?, ?)`, [appId, data.incomeY2, data.remarksY2]);
-                if (data.incomeY3 !== undefined && data.incomeY3 !== null && data.incomeY3 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 3, ?, ?)`, [appId, data.incomeY3, data.remarksY3]);
+                db.run(`DELETE FROM annual_incomes WHERE application_id=?`, [appId], (err) => { if (err) console.error(err); });
+                if (data.incomeY1 !== undefined && data.incomeY1 !== null && data.incomeY1 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 1, ?, ?)`, [appId, data.incomeY1, data.remarksY1], (err) => { if (err) console.error(err); });
+                if (data.incomeY2 !== undefined && data.incomeY2 !== null && data.incomeY2 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 2, ?, ?)`, [appId, data.incomeY2, data.remarksY2], (err) => { if (err) console.error(err); });
+                if (data.incomeY3 !== undefined && data.incomeY3 !== null && data.incomeY3 !== '') db.run(`INSERT INTO annual_incomes (application_id, year_offset, amount, remarks) VALUES (?, 3, ?, ?)`, [appId, data.incomeY3, data.remarksY3], (err) => { if (err) console.error(err); });
 
-                db.run(`DELETE FROM application_files WHERE application_id=?`, [appId]);
+                db.run(`DELETE FROM application_files WHERE application_id=?`, [appId], (err) => { if (err) console.error(err); });
                 if (data.uploadedFiles) {
                     let fileList = [];
                     try {
@@ -463,7 +471,7 @@ app.put('/api/applications/:id', (req, res) => {
                     }
 
                     fileList.forEach(f => {
-                        if (f) db.run(`INSERT INTO application_files (application_id, file_path) VALUES (?, ?)`, [appId, f]);
+                        if (f) db.run(`INSERT INTO application_files (application_id, file_path) VALUES (?, ?)`, [appId, f], (err) => { if (err) console.error(err); });
                     });
                 }
 
