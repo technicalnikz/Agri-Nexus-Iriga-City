@@ -2807,7 +2807,10 @@
           const statusClass = a.status === 'Approved' ? 'badge-green' : a.status === 'Rejected' ? 'badge-red' : 'badge-orange';
           return `
             <tr>
-              <td style="color:#555;font-weight:600;">${name}</td>
+              <td style="color:#555;">
+                <div style="font-weight:700;">${name}</div>
+                <div style="font-size:11px;color:#888;margin-top:2px;">${a.cluster || '—'}</div>
+              </td>
               <td style="color:#666;text-align:center;">${a.cluster || '—'}</td>
               <td style="color:#555;">${date}</td>
               <td style="color:#555;text-align:center;">${filesCount} files</td>
