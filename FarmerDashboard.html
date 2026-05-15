@@ -1868,8 +1868,8 @@
             <div class="grid-2" style="margin-bottom:16px">
               <div class="mp-form-group"><label>RSBSA No. (if existing)</label><input type="text" id="mp-rsbsa"
                   placeholder="e.g., 05-017-16-024-XXXXX" /></div>
-              <div class="mp-form-group"><label>Contact Number *</label><input type="text" id="mp-contact" placeholder="09XX XXX XXXX"
-                  maxlength="11" minlength="11"
+              <div class="mp-form-group"><label>Contact Number *</label><input type="text" id="mp-contact"
+                  placeholder="09XX XXX XXXX" maxlength="11" minlength="11"
                   oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);" /></div>
             </div>
             <div class="grid-3" style="margin-bottom:16px">
@@ -1968,10 +1968,12 @@
                       class="arrow"></span></button>
                   <div class="custom-options" id="barangay-options" style="padding:0; overflow:hidden;">
                     <div class="custom-search-wrapper">
-                      <input type="text" id="barangay-search" class="custom-search-input" placeholder="Search cluster..." onkeyup="filterBarangays()" onclick="event.stopPropagation()">
+                      <input type="text" id="barangay-search" class="custom-search-input"
+                        placeholder="Search cluster..." onkeyup="filterBarangays()" onclick="event.stopPropagation()">
                     </div>
                     <div class="barangay-list-container" id="barangay-list">
-                      <div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first</div>
+                      <div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first
+                      </div>
                     </div>
                   </div>
                   <input type="hidden" id="barangay-value" name="barangay" />
@@ -2002,11 +2004,14 @@
             <div class="inner-card beige" style="margin-bottom:16px">
               <div class="inner-card-title">Yield</div>
               <div class="grid-4">
-                <div class="mp-form-group"><label>Dry Season (bag/ha)</label><input type="number" id="yield-dry" value="0" min="0" />
+                <div class="mp-form-group"><label>Dry Season (bag/ha)</label><input type="number" id="yield-dry"
+                    value="0" min="0" />
                 </div>
-                <div class="mp-form-group"><label>Wet season (bag/ha)</label><input type="number" id="yield-wet" value="0" min="0" />
+                <div class="mp-form-group"><label>Wet season (bag/ha)</label><input type="number" id="yield-wet"
+                    value="0" min="0" />
                 </div>
-                <div class="mp-form-group"><label>Kg/bag</label><input type="number" id="yield-kg" value="50" min="50" /></div>
+                <div class="mp-form-group"><label>Kg/bag</label><input type="number" id="yield-kg" value="50"
+                    min="50" /></div>
                 <div class="mp-form-group"><label>Other Crops (specify)</label><input type="text" id="other-crops"
                     placeholder="e.g., Corn, Vegetables" /></div>
               </div>
@@ -2133,12 +2138,12 @@
               <div class="form-grid" style="margin-top:14px">
                 <div class="form-group"><label class="form-label">First Name</label><input class="form-input"
                     type="text" id="rsbsa-fname" /></div>
-                <div class="form-group"><label class="form-label">Middle Name</label><input class="form-input" type="text"
-                    id="rsbsa-mname" /></div>
+                <div class="form-group"><label class="form-label">Middle Name</label><input class="form-input"
+                    type="text" id="rsbsa-mname" /></div>
                 <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text"
                     id="rsbsa-lname" /></div>
-                <div class="form-group"><label class="form-label">Extension Name</label><input class="form-input" type="text"
-                    id="rsbsa-extname" /></div>
+                <div class="form-group"><label class="form-label">Extension Name</label><input class="form-input"
+                    type="text" id="rsbsa-extname" /></div>
                 <div class="form-group">
                   <label class="form-label">Address</label>
                   <input class="form-input" type="text" id="rsbsa-cluster"
@@ -3195,8 +3200,8 @@
       // Cluster remains editable even in edit mode now per latest request
       const t = document.getElementById(id + '-trigger'), o = document.getElementById(id + '-options'), open = o.classList.contains('open');
       closeAll();
-      if (!open) { 
-        o.classList.add('open'); 
+      if (!open) {
+        o.classList.add('open');
         t.classList.add('open');
         // Focus search if it's barangay
         if (id === 'barangay') {
@@ -3306,12 +3311,12 @@
       const filter = input.value.toUpperCase();
       const container = document.getElementById('barangay-list');
       const options = container.getElementsByClassName('custom-option');
-      
+
       let visibleCount = 0;
       for (let i = 0; i < options.length; i++) {
         // Skip the "No matches" message if it exists
         if (options[i].id === 'no-match-msg') continue;
-        
+
         const txtValue = options[i].textContent || options[i].innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
           options[i].style.display = "";
@@ -3320,7 +3325,7 @@
           options[i].style.display = "none";
         }
       }
-      
+
       // Remove existing no-match message
       const existingMsg = document.getElementById('no-match-msg');
       if (existingMsg) existingMsg.remove();
@@ -3613,22 +3618,22 @@
 
       // ── Required field definitions ────────────────────────────────────────
       const required = [
-        { value: cluster,          selector: '#cluster-trigger',       label: 'Cluster / Association',      isSelect: true },
+        { value: cluster, selector: '#cluster-trigger', label: 'Cluster / Association', isSelect: true },
         { value: dateOfMembership, selector: '.inner-card.beige input[type="date"]', label: 'Date of Membership', isInput: true },
-        { value: membership,       selector: '#membership-trigger',    label: 'Type of Membership',         isSelect: true },
-        { value: lastName,         selector: '#mp-lastname',           label: 'Last Name',                  isInput: true },
-        { value: firstName,        selector: '#mp-firstname',          label: 'First Name',                 isInput: true },
-        { value: middleName,       selector: '#mp-middlename',         label: 'Middle Name / Initial',      isInput: true },
-        { value: dob,              selector: '#farmer-dob',            label: 'Date of Birth',              isInput: true },
-        { value: sex,              selector: '#sex-trigger',           label: 'Sex',                        isSelect: true },
-        { value: civilStatus,      selector: '#civil-trigger',         label: 'Civil Status',               isSelect: true },
-        { value: education,        selector: '#education-trigger',     label: 'Educational Attainment',     isSelect: true },
-        { value: contactNumber,    selector: 'input[placeholder*="09XX"]', label: 'Contact Number',         isInput: true },
-        { value: municipality,     selector: '#municipality-trigger',  label: 'Municipality',               isSelect: true },
-        { value: barangay,         selector: '#barangay-trigger',      label: 'Barangay',                  isSelect: true },
-        { value: landTenure,       selector: '#tenure-trigger',        label: 'Land Tenure',                isSelect: true },
-        { value: idType,           selector: '#idtype-trigger',        label: 'Government ID Type',         isSelect: true },
-        { value: idNumber,         selector: '#id-number-input',       label: 'ID Number',                  isInput: true },
+        { value: membership, selector: '#membership-trigger', label: 'Type of Membership', isSelect: true },
+        { value: lastName, selector: '#mp-lastname', label: 'Last Name', isInput: true },
+        { value: firstName, selector: '#mp-firstname', label: 'First Name', isInput: true },
+        { value: middleName, selector: '#mp-middlename', label: 'Middle Name / Initial', isInput: true },
+        { value: dob, selector: '#farmer-dob', label: 'Date of Birth', isInput: true },
+        { value: sex, selector: '#sex-trigger', label: 'Sex', isSelect: true },
+        { value: civilStatus, selector: '#civil-trigger', label: 'Civil Status', isSelect: true },
+        { value: education, selector: '#education-trigger', label: 'Educational Attainment', isSelect: true },
+        { value: contactNumber, selector: 'input[placeholder*="09XX"]', label: 'Contact Number', isInput: true },
+        { value: municipality, selector: '#municipality-trigger', label: 'Municipality', isSelect: true },
+        { value: barangay, selector: '#barangay-trigger', label: 'Barangay', isSelect: true },
+        { value: landTenure, selector: '#tenure-trigger', label: 'Land Tenure', isSelect: true },
+        { value: idType, selector: '#idtype-trigger', label: 'Government ID Type', isSelect: true },
+        { value: idNumber, selector: '#id-number-input', label: 'ID Number', isInput: true },
       ];
 
       const missing = [];
@@ -3703,7 +3708,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(record)
         });
-        
+
         if (!response.ok) {
           let errorMsg = 'Server error';
           const text = await response.text();
@@ -3848,7 +3853,7 @@
         extensionName: extname,
         cluster: cluster,
         sex: sex,
-        
+
         // Use existing profile data for other fields to avoid overwriting with NULLs
         dob: profile.dob || '',
         civilStatus: profile.civilStatus || '',
@@ -3881,7 +3886,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(record)
         });
-        
+
         if (!response.ok) {
           let errorMsg = 'Server error';
           const text = await response.text();
