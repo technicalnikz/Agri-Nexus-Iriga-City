@@ -2934,7 +2934,7 @@
 
       document.getElementById('rsbsa-modal-content').innerHTML = `
         <div style="font-size:14px; margin-bottom:8px;"><strong>Applicant:</strong> ${[app.firstName, app.middleName, app.lastName].filter(Boolean).join(' ')}</div>
-        <div style="font-size:13px; margin-bottom:8px;"><strong>Cluster:</strong> ${app.cluster || '—'}</div>
+        <div style="font-size:13px; margin-bottom:8px;"><strong>Address:</strong> ${app.cluster || '—'}</div>
         <div style="font-size:13px; margin-bottom:16px;"><strong>Submitted:</strong> ${app.submittedAt ? new Date(app.submittedAt).toLocaleDateString() : ''}</div>
         <div style="font-size:13px; margin-bottom:12px;"><strong>Uploaded Files:</strong><br><div style="background:#f4f7f0; padding:10px; border-radius:6px; margin-top:6px;">${filesHtml}</div></div>
         ${remarksHtml}
