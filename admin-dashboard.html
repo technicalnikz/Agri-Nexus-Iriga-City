@@ -2310,7 +2310,6 @@
                 <th style="text-transform:uppercase;">Full Name</th>
                 <th style="text-transform:uppercase;">Age</th>
                 <th style="text-transform:uppercase;">Sex</th>
-                <th style="text-transform:uppercase;">Barangay</th>
                 <th style="text-transform:uppercase;">Cluster</th>
                 <th style="text-transform:uppercase;">Crop Type</th>
                 <th style="text-transform:uppercase;">Hectares</th>
@@ -2366,7 +2365,6 @@
                 <th style="text-transform:uppercase;">Age</th>
                 <th style="text-transform:uppercase;">Date of Birth</th>
                 <th style="text-transform:uppercase;">Sex</th>
-                <th style="text-transform:uppercase;">Barangay</th>
                 <th style="text-transform:uppercase;">Cluster</th>
                 <th style="text-transform:uppercase;">Crop Type</th>
                 <th style="text-transform:uppercase;">Hectares</th>
@@ -4007,7 +4005,7 @@
           <td style="font-weight:600;color:#333;">${name}</td>
           <td>${age !== null ? age : '—'}</td>
           <td>${a.sex || '—'}</td>
-          <td>${a.barangay || '—'}</td>
+          <td style="font-size:12px;color:#666;line-height:1.3;">${a.cluster || '—'}</td>
           <td style="font-size:12px;color:#666;line-height:1.3;">${a.cluster || '—'}</td>
           <td>${a.cropType || '—'}</td>
           <td>${a.hectares || '0'}</td>
@@ -4096,7 +4094,6 @@
           <td><span class="badge badge-orange">${age}</span></td>
           <td>${dobDisplay}</td>
           <td>${a.sex || '—'}</td>
-          <td>${a.barangay || '—'}</td>
           <td style="font-size:12px;color:#666;line-height:1.3;">${a.cluster || '—'}</td>
           <td>${a.cropType || '—'}</td>
           <td>${a.hectares || '0'}</td>
