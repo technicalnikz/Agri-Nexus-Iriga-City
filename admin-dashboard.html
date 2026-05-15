@@ -1339,8 +1339,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-5px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* MODAL */
@@ -1721,7 +1728,8 @@
                       <div class="custom-option"
                         onclick="pickOption('cluster','San Jose Farmers Association of Iriga City Camarines Sur')">San
                         Jose Farmers Association of Iriga City Camarines Sur</div>
-                      <div class="custom-option" onclick="pickOption('cluster','Sto. Nino Farmers Association')">Sto. Nino
+                      <div class="custom-option" onclick="pickOption('cluster','Sto. Nino Farmers Association')">Sto.
+                        Nino
                         Farmers Association</div>
                     </div>
                   </div>
@@ -1871,10 +1879,13 @@
                       class="arrow"></span></button>
                   <div class="custom-options" id="barangay-options" style="padding:0; overflow:hidden;">
                     <div class="custom-search-wrapper">
-                      <input type="text" id="barangay-search" class="custom-search-input" placeholder="Search cluster..." onkeyup="filterOptions('barangay')" onclick="event.stopPropagation()">
+                      <input type="text" id="barangay-search" class="custom-search-input"
+                        placeholder="Search cluster..." onkeyup="filterOptions('barangay')"
+                        onclick="event.stopPropagation()">
                     </div>
                     <div class="barangay-list-container" id="barangay-list">
-                      <div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first</div>
+                      <div class="custom-option" style="color:#bbb;pointer-events:none">Select a municipality first
+                      </div>
                     </div>
                   </div>
                   <input type="hidden" id="barangay-value" name="barangay" />
@@ -1905,11 +1916,14 @@
             <div class="inner-card beige" style="margin-bottom:16px">
               <div class="inner-card-title">Yield</div>
               <div class="grid-4">
-                <div class="mp-form-group"><label>Dry Season (bag/ha)</label><input type="number" id="yield-dry" value="0" min="0" />
+                <div class="mp-form-group"><label>Dry Season (bag/ha)</label><input type="number" id="yield-dry"
+                    value="0" min="0" />
                 </div>
-                <div class="mp-form-group"><label>Wet season (bag/ha)</label><input type="number" id="yield-wet" value="0" min="0" />
+                <div class="mp-form-group"><label>Wet season (bag/ha)</label><input type="number" id="yield-wet"
+                    value="0" min="0" />
                 </div>
-                <div class="mp-form-group"><label>Kg/bag</label><input type="number" id="yield-kg" value="50" min="50" /></div>
+                <div class="mp-form-group"><label>Kg/bag</label><input type="number" id="yield-kg" value="50"
+                    min="50" /></div>
                 <div class="mp-form-group"><label>Other Crops (specify)</label><input type="text" id="other-crops"
                     placeholder="e.g., Corn, Vegetables" /></div>
               </div>
@@ -2141,51 +2155,75 @@
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
         <div class="card" style="cursor:pointer;" onclick="showView('cluster-report', null); renderClusterReport();">
           <div class="card-body">
-            <div style="width:44px;height:44px;background:#eaf3ea;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <div
+              style="width:44px;height:44px;background:#eaf3ea;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
               </svg>
             </div>
             <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Member Profile Application</div>
-            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">Register or update farmer membership profile with the City Agriculture Office. Required for accessing assistance programs and subsidies.</div>
-            <a href="#" onclick="event.preventDefault();showView('cluster-report',null);renderClusterReport();" style="font-size:13px;font-weight:700;color:#2d6a2d;text-decoration:none;">Continue →</a>
+            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">Register or update farmer
+              membership profile with the City Agriculture Office. Required for accessing assistance programs and
+              subsidies.</div>
+            <a href="#" onclick="event.preventDefault();showView('cluster-report',null);renderClusterReport();"
+              style="font-size:13px;font-weight:700;color:#2d6a2d;text-decoration:none;">Continue →</a>
           </div>
         </div>
         <div class="card" style="cursor:pointer;" onclick="showView('rsbsa', null)">
           <div class="card-body">
-            <div style="width:44px;height:44px;background:#eaf3ea;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <div
+              style="width:44px;height:44px;background:#eaf3ea;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2d6a2d" stroke-width="1.8">
-                <polyline points="9 11 12 14 22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                <polyline points="9 11 12 14 22 4" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
               </svg>
             </div>
-            <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">RSBSA Enrollment Application</div>
-            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">Enroll in the Registry System for Basic Sectors in Agriculture (RSBSA). Required for government agricultural programs, insurance, and financial assistance.</div>
-            <a href="#" onclick="event.preventDefault();" style="font-size:13px;font-weight:700;color:#2d6a2d;text-decoration:none;">Continue →</a>
+            <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">RSBSA Enrollment Application
+            </div>
+            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">Enroll in the Registry System for
+              Basic Sectors in Agriculture (RSBSA). Required for government agricultural programs, insurance, and
+              financial assistance.</div>
+            <a href="#" onclick="event.preventDefault();"
+              style="font-size:13px;font-weight:700;color:#2d6a2d;text-decoration:none;">Continue →</a>
           </div>
         </div>
         <div class="card" style="cursor:pointer;" onclick="showView('pwd-report', null); renderPwdReport();">
           <div class="card-body">
-            <div style="width:44px;height:44px;background:#e8f0ff;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <div
+              style="width:44px;height:44px;background:#e8f0ff;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a4fa0" stroke-width="1.8">
-                <circle cx="12" cy="5" r="2"/><path d="M12 7v6l3 3"/><path d="M6 11a6 6 0 1 0 12 0"/>
+                <circle cx="12" cy="5" r="2" />
+                <path d="M12 7v6l3 3" />
+                <path d="M6 11a6 6 0 1 0 12 0" />
               </svg>
             </div>
             <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">PWD Farmers Report</div>
-            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">View and export the list of registered farmers identified as Persons with Disability (PWD) based on approved member profile applications.</div>
-            <a href="#" onclick="event.preventDefault();showView('pwd-report',null);renderPwdReport();" style="font-size:13px;font-weight:700;color:#1a4fa0;text-decoration:none;">View Report →</a>
+            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">View and export the list of
+              registered farmers identified as Persons with Disability (PWD) based on approved member profile
+              applications.</div>
+            <a href="#" onclick="event.preventDefault();showView('pwd-report',null);renderPwdReport();"
+              style="font-size:13px;font-weight:700;color:#1a4fa0;text-decoration:none;">View Report →</a>
           </div>
         </div>
         <div class="card" style="cursor:pointer;" onclick="showView('senior-report', null); renderSeniorReport();">
           <div class="card-body">
-            <div style="width:44px;height:44px;background:#fff0d4;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <div
+              style="width:44px;height:44px;background:#fff0d4;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8c5700" stroke-width="1.8">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
             </div>
-            <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Senior Citizen Farmers Report</div>
-            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">View and export the list of registered farmers who are Senior Citizens (60 years old and above) based on approved member profile applications.</div>
-            <a href="#" onclick="event.preventDefault();showView('senior-report',null);renderSeniorReport();" style="font-size:13px;font-weight:700;color:#8c5700;text-decoration:none;">View Report →</a>
+            <div style="font-size:16px;font-weight:800;color:#111;margin-bottom:10px;">Senior Citizen Farmers Report
+            </div>
+            <div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;">View and export the list of
+              registered farmers who are Senior Citizens (60 years old and above) based on approved member profile
+              applications.</div>
+            <a href="#" onclick="event.preventDefault();showView('senior-report',null);renderSeniorReport();"
+              style="font-size:13px;font-weight:700;color:#8c5700;text-decoration:none;">View Report →</a>
           </div>
         </div>
       </div>
@@ -2283,9 +2321,12 @@
             <p id="pwd-page-subtitle">Persons with Disability among registered farmers</p>
           </div>
           <div style="display: flex; gap: 12px; align-items: center;">
-            <div style="display: flex; align-items: center; background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 0 12px; height: 38px; box-sizing: border-box; width: 250px;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" style="margin-right: 8px; flex-shrink: 0;">
-                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <div
+              style="display: flex; align-items: center; background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 0 12px; height: 38px; box-sizing: border-box; width: 250px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"
+                style="margin-right: 8px; flex-shrink: 0;">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <input type="text" id="pwd-search-input" placeholder="Search farmers..."
                 style="border:none;background:transparent;outline:none;font-family:'Montserrat',sans-serif;font-size:13px;width:100%;color:#333;height:100%;box-sizing:border-box;"
@@ -2293,8 +2334,11 @@
             </div>
             <button onclick="exportPwdCSV()"
               style="padding: 0 16px; height: 38px; box-sizing: border-box; font-weight: 700; background-color: #1a4fa0; border: none; color: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center; font-family:'Montserrat',sans-serif; font-size:13px; white-space:nowrap;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px;">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                style="margin-right: 6px;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
               Export to CSV
             </button>
@@ -2317,7 +2361,9 @@
               </tr>
             </thead>
             <tbody id="pwd-table-body">
-              <tr><td colspan="9" style="text-align:center;color:var(--text-light);padding:24px;">Loading...</td></tr>
+              <tr>
+                <td colspan="9" style="text-align:center;color:var(--text-light);padding:24px;">Loading...</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -2337,9 +2383,12 @@
             <p id="senior-page-subtitle">Farmers aged 60 years and above</p>
           </div>
           <div style="display: flex; gap: 12px; align-items: center;">
-            <div style="display: flex; align-items: center; background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 0 12px; height: 38px; box-sizing: border-box; width: 250px;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" style="margin-right: 8px; flex-shrink: 0;">
-                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <div
+              style="display: flex; align-items: center; background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 0 12px; height: 38px; box-sizing: border-box; width: 250px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"
+                style="margin-right: 8px; flex-shrink: 0;">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <input type="text" id="senior-search-input" placeholder="Search farmers..."
                 style="border:none;background:transparent;outline:none;font-family:'Montserrat',sans-serif;font-size:13px;width:100%;color:#333;height:100%;box-sizing:border-box;"
@@ -2347,8 +2396,11 @@
             </div>
             <button onclick="exportSeniorCSV()"
               style="padding: 0 16px; height: 38px; box-sizing: border-box; font-weight: 700; background-color: #7a5c00; border: none; color: #fff; border-radius: 6px; cursor: pointer; display: flex; align-items: center; font-family:'Montserrat',sans-serif; font-size:13px; white-space:nowrap;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px;">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                style="margin-right: 6px;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
               Export to CSV
             </button>
@@ -2372,7 +2424,9 @@
               </tr>
             </thead>
             <tbody id="senior-table-body">
-              <tr><td colspan="10" style="text-align:center;color:var(--text-light);padding:24px;">Loading...</td></tr>
+              <tr>
+                <td colspan="10" style="text-align:center;color:var(--text-light);padding:24px;">Loading...</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -3025,11 +3079,11 @@
           const cluster = (a.cluster || '').toLowerCase();
           const barangay = (a.barangay || '').toLowerCase();
 
-          const matchesSearch = !searchQuery || 
-                               name.includes(searchQuery) || 
-                               cluster.includes(searchQuery) || 
-                               barangay.includes(searchQuery);
-                               
+          const matchesSearch = !searchQuery ||
+            name.includes(searchQuery) ||
+            cluster.includes(searchQuery) ||
+            barangay.includes(searchQuery);
+
           const matchesCluster = !clusterFilter || a.cluster === clusterFilter || (clusterFilter.includes('San Jose') && cluster.includes('san jose'));
 
           return matchesSearch && matchesCluster;
@@ -3151,7 +3205,7 @@
               <h3 style="font-size:12px; text-transform:uppercase; color:var(--green-mid); letter-spacing:1px; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:4px;">Address & Location</h3>
               <div style="display:grid; gap:8px;">
                 <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Street:</span> <span style="font-weight:600;">${app.street || '—'}</span></div>
-                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Cluster:</span> <span style="font-weight:600;">${app.cluster || '—'}</span></div>
+                <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Barangay:</span> <span style="font-weight:600;">${app.barangay || '—'}</span></div>
                 <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:100px; display:inline-block;">Municipality:</span> <span style="font-weight:600;">${app.municipality || '—'}, ${app.province || '—'}</span></div>
               </div>
             </div>
@@ -3574,8 +3628,8 @@
     function toggleSelect(id) {
       const t = document.getElementById(id + '-trigger'), o = document.getElementById(id + '-options'), open = o.classList.contains('open');
       closeAll();
-      if (!open) { 
-        o.classList.add('open'); 
+      if (!open) {
+        o.classList.add('open');
         t.classList.add('open');
         // Focus search if it exists
         const s = document.getElementById(id + '-search');
@@ -3684,11 +3738,11 @@
       const container = document.getElementById(id + '-list');
       if (!container) return;
       const options = container.getElementsByClassName('custom-option');
-      
+
       let visibleCount = 0;
       for (let i = 0; i < options.length; i++) {
         if (options[i].id === id + '-no-match-msg') continue;
-        
+
         const txtValue = options[i].textContent || options[i].innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
           options[i].style.display = "";
@@ -3697,7 +3751,7 @@
           options[i].style.display = "none";
         }
       }
-      
+
       const existingMsg = document.getElementById(id + '-no-match-msg');
       if (existingMsg) existingMsg.remove();
 
@@ -3861,22 +3915,22 @@
 
       // ── Required field definitions ────────────────────────────────────────
       const required = [
-        { value: cluster,          selector: '#cluster-trigger',       label: 'Cluster / Association',      isSelect: true },
-        { value: dateOfMembership, selector: '#mp-membership-date',    label: 'Date of Membership',         isInput: true },
-        { value: membership,       selector: '#membership-trigger',    label: 'Type of Membership',         isSelect: true },
-        { value: lastName,         selector: '#mp-lastname',           label: 'Last Name',                  isInput: true },
-        { value: firstName,        selector: '#mp-firstname',          label: 'First Name',                 isInput: true },
-        { value: middleName,       selector: '#mp-middlename',         label: 'Middle Name / Initial',      isInput: true },
-        { value: dob,              selector: '#farmer-dob',            label: 'Date of Birth',              isInput: true },
-        { value: sex,              selector: '#sex-trigger',           label: 'Sex',                        isSelect: true },
-        { value: civilStatus,      selector: '#civil-trigger',         label: 'Civil Status',               isSelect: true },
-        { value: education,        selector: '#education-trigger',     label: 'Educational Attainment',     isSelect: true },
-        { value: contactNumber,    selector: '#mp-contact',            label: 'Contact Number',             isInput: true },
-        { value: municipality,     selector: '#municipality-trigger',  label: 'Municipality',               isSelect: true },
-        { value: barangay,         selector: '#barangay-trigger',      label: 'Cluster',                    isSelect: true },
-        { value: landTenure,       selector: '#tenure-trigger',        label: 'Land Tenure',                isSelect: true },
-        { value: idType,           selector: '#idtype-trigger',        label: 'Government ID Type',         isSelect: true },
-        { value: idNumber,         selector: '#id-number-input',       label: 'ID Number',                  isInput: true },
+        { value: cluster, selector: '#cluster-trigger', label: 'Cluster / Association', isSelect: true },
+        { value: dateOfMembership, selector: '#mp-membership-date', label: 'Date of Membership', isInput: true },
+        { value: membership, selector: '#membership-trigger', label: 'Type of Membership', isSelect: true },
+        { value: lastName, selector: '#mp-lastname', label: 'Last Name', isInput: true },
+        { value: firstName, selector: '#mp-firstname', label: 'First Name', isInput: true },
+        { value: middleName, selector: '#mp-middlename', label: 'Middle Name / Initial', isInput: true },
+        { value: dob, selector: '#farmer-dob', label: 'Date of Birth', isInput: true },
+        { value: sex, selector: '#sex-trigger', label: 'Sex', isSelect: true },
+        { value: civilStatus, selector: '#civil-trigger', label: 'Civil Status', isSelect: true },
+        { value: education, selector: '#education-trigger', label: 'Educational Attainment', isSelect: true },
+        { value: contactNumber, selector: '#mp-contact', label: 'Contact Number', isInput: true },
+        { value: municipality, selector: '#municipality-trigger', label: 'Municipality', isSelect: true },
+        { value: barangay, selector: '#barangay-trigger', label: 'Cluster', isSelect: true },
+        { value: landTenure, selector: '#tenure-trigger', label: 'Land Tenure', isSelect: true },
+        { value: idType, selector: '#idtype-trigger', label: 'Government ID Type', isSelect: true },
+        { value: idNumber, selector: '#id-number-input', label: 'ID Number', isInput: true },
       ];
 
       const missing = [];
@@ -4028,13 +4082,13 @@
       if (apps.length === 0) { alert('No PWD farmer records to export.'); return; }
 
       const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-      const headers = ['#','Last Name','First Name','Middle Name','Age','Date of Birth','Sex','Civil Status',
-        'Contact Number','Province','Municipality','Cluster','Street',
-        'Cluster / Association','Land Tenure','Membership',
-        'Status Indicators','Crop Type','Other Crops',
-        'Total Hectares','Irrigated (ha)','Rainfed (ha)','Upland (ha)',
-        'Dry Season Yield','Wet Season Yield','Total Yield (kg)',
-        'RSBSA No.','Application Status','Submitted At'];
+      const headers = ['#', 'Last Name', 'First Name', 'Middle Name', 'Age', 'Date of Birth', 'Sex', 'Civil Status',
+        'Contact Number', 'Province', 'Municipality', 'Cluster', 'Street',
+        'Cluster / Association', 'Land Tenure', 'Membership',
+        'Status Indicators', 'Crop Type', 'Other Crops',
+        'Total Hectares', 'Irrigated (ha)', 'Rainfed (ha)', 'Upland (ha)',
+        'Dry Season Yield', 'Wet Season Yield', 'Total Yield (kg)',
+        'RSBSA No.', 'Application Status', 'Submitted At'];
 
       const rows = apps.map((a, i) => [
         i + 1, a.lastName, a.firstName, a.middleName,
@@ -4045,7 +4099,7 @@
         a.hectares, a.riceIrrigated, a.riceRainfed, a.riceUpland,
         a.yieldDry, a.yieldWet, a.yieldKg,
         a.rsbsaNo, a.status,
-        a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-PH', { year:'numeric', month:'long', day:'numeric' }) : ''
+        a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' }) : ''
       ].map(esc).join(','));
 
       const bom = '\uFEFF';
@@ -4054,7 +4108,7 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `PWD_Farmers_Report_${new Date().toISOString().slice(0,10)}.csv`;
+      link.download = `PWD_Farmers_Report_${new Date().toISOString().slice(0, 10)}.csv`;
       link.click();
       URL.revokeObjectURL(url);
     }
@@ -4090,7 +4144,7 @@
       tbody.innerHTML = apps.map((a, i) => {
         const name = [a.lastName, a.firstName, a.middleName].filter(Boolean).join(', ') || '—';
         const age = calcAge(a.dob);
-        const dobDisplay = a.dob ? new Date(a.dob).toLocaleDateString('en-PH', { year:'numeric', month:'short', day:'numeric' }) : '—';
+        const dobDisplay = a.dob ? new Date(a.dob).toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' }) : '—';
         return `<tr>
           <td style="color:var(--text-light);font-size:13px;">${i + 1}</td>
           <td style="font-weight:600;color:#333;">${name}</td>
@@ -4116,13 +4170,13 @@
       if (apps.length === 0) { alert('No Senior Citizen farmer records to export.'); return; }
 
       const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-      const headers = ['#','Last Name','First Name','Middle Name','Age','Date of Birth','Sex','Civil Status',
-        'Contact Number','Province','Municipality','Cluster','Street',
-        'Cluster / Association','Land Tenure','Membership',
-        'Status Indicators','Crop Type','Other Crops',
-        'Total Hectares','Irrigated (ha)','Rainfed (ha)','Upland (ha)',
-        'Dry Season Yield','Wet Season Yield','Total Yield (kg)',
-        'RSBSA No.','Application Status','Submitted At'];
+      const headers = ['#', 'Last Name', 'First Name', 'Middle Name', 'Age', 'Date of Birth', 'Sex', 'Civil Status',
+        'Contact Number', 'Province', 'Municipality', 'Cluster', 'Street',
+        'Cluster / Association', 'Land Tenure', 'Membership',
+        'Status Indicators', 'Crop Type', 'Other Crops',
+        'Total Hectares', 'Irrigated (ha)', 'Rainfed (ha)', 'Upland (ha)',
+        'Dry Season Yield', 'Wet Season Yield', 'Total Yield (kg)',
+        'RSBSA No.', 'Application Status', 'Submitted At'];
 
       const rows = apps.map((a, i) => [
         i + 1, a.lastName, a.firstName, a.middleName,
@@ -4133,7 +4187,7 @@
         a.hectares, a.riceIrrigated, a.riceRainfed, a.riceUpland,
         a.yieldDry, a.yieldWet, a.yieldKg,
         a.rsbsaNo, a.status,
-        a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-PH', { year:'numeric', month:'long', day:'numeric' }) : ''
+        a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' }) : ''
       ].map(esc).join(','));
 
       const bom = '\uFEFF';
@@ -4142,7 +4196,7 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `SeniorCitizen_Farmers_Report_${new Date().toISOString().slice(0,10)}.csv`;
+      link.download = `SeniorCitizen_Farmers_Report_${new Date().toISOString().slice(0, 10)}.csv`;
       link.click();
       URL.revokeObjectURL(url);
     }
