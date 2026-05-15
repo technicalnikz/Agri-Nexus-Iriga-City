@@ -2122,7 +2122,7 @@
             <thead>
               <tr>
                 <th style="text-transform:uppercase;">Applicant</th>
-                <th style="text-transform:uppercase;text-align:center;">Cluster</th>
+                <th style="text-transform:uppercase;text-align:center;">Address</th>
                 <th style="text-transform:uppercase;">Submitted</th>
                 <th style="text-transform:uppercase;text-align:center;">Files</th>
                 <th style="text-transform:uppercase;text-align:center;">Status</th>
@@ -2863,9 +2863,9 @@
             <tr>
               <td style="color:#555;">
                 <div style="font-weight:700;">${name}</div>
-                <div style="font-size:11px;color:#888;margin-top:2px;">${a.cluster || '—'}</div>
+                <div style="font-size:11px;color:#888;margin-top:2px;">📍 ${a.cluster || '—'}</div>
               </td>
-              <td style="color:#666;text-align:center;">${a.cluster || '—'}</td>
+              <td style="color:#666;text-align:center;font-size:12px;">${a.cluster || '—'}</td>
               <td style="color:#555;">${date}</td>
               <td style="color:#555;text-align:center;">${filesCount} files</td>
               <td style="text-align:center;"><span class="badge ${statusClass}">${a.status || 'Pending'}</span></td>

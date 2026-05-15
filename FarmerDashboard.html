@@ -2140,18 +2140,9 @@
                 <div class="form-group"><label class="form-label">Extension Name</label><input class="form-input" type="text"
                     id="rsbsa-extname" /></div>
                 <div class="form-group">
-                  <label class="form-label">Cluster</label>
-                  <select class="form-select" id="rsbsa-cluster">
-                    <option value="">Select Cluster</option>
-                    <option>Ka-Agriprenuers Agriculture Cooperative</option>
-                    <option>La Trinidad Farmers Association</option>
-                    <option>Mabukug Farmers Association Inc.</option>
-                    <option>SAGMONREY-AN Communal Irrigation Association Inc.</option>
-                    <option>Salvacion Farmers Agriculture Cooperative</option>
-                    <option>Samahang Magkaisa Farmer Irrigators Association (SAMMAFIA) Inc.</option>
-                    <option>San Jose Farmers Association of Iriga City Camarines Sur</option>
-                    <option>Sto. Nino Farmers Association</option>
-                  </select>
+                  <label class="form-label">Address</label>
+                  <input class="form-input" type="text" id="rsbsa-cluster"
+                    placeholder="Enter your complete address (Barangay, Municipality)" />
                 </div>
                 <div class="form-group"><label class="form-label">Sex</label><select class="form-select" id="rsbsa-sex">
                     <option value="">Select</option>
@@ -3774,7 +3765,7 @@
       const missing = [];
       if (!fname) missing.push('First Name');
       if (!lname) missing.push('Last Name');
-      if (!cluster) missing.push('Cluster');
+      if (!cluster) missing.push('Address');
       if (!sex) missing.push('Sex');
 
       if (uploadedCount < 5) missing.push('All 5 requirements must be uploaded');
