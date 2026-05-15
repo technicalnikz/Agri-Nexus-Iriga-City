@@ -2255,7 +2255,7 @@
                 <th style="text-transform:uppercase;">#</th>
                 <th style="text-transform:uppercase;">Full Name</th>
                 <th style="text-transform:uppercase;">Contact</th>
-                <th style="text-transform:uppercase;">Address</th>
+                <th style="text-transform:uppercase;">Cluster</th>
                 <th style="text-transform:uppercase;">Land Tenure</th>
                 <th style="text-transform:uppercase;">Total Land Area</th>
                 <th style="text-transform:uppercase;">Type of Farm</th>
@@ -2720,7 +2720,7 @@
       } else {
         document.getElementById('pending-page-subtitle').textContent = `${filtered.length} applications awaiting review and approval`;
         tbodyPending.innerHTML = filtered.map((a, i) => {
-          const name = [a.firstName, a.middleName, a.lastName].filter(Boolean).join(' ') || '—';
+          const name = [a.lastName, a.firstName, a.middleName].filter(Boolean).join(', ') || '—';
           const date = a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '—';
           const type = a.applicationType || 'Member Profile';
           const userRsbsa = window.rsbsaApps ? window.rsbsaApps.find(r => r.user_id === a.user_id) : null;
@@ -2800,8 +2800,7 @@
       } else {
         document.getElementById('rsbsa-page-subtitle').textContent = pendingRsbsaCount > 0 ? `${pendingRsbsaCount} enrolments awaiting review` : "All enrolments reviewed";
         rsbsaTable.innerHTML = filtered.map(a => {
-          const mid = a.middleName ? a.middleName.charAt(0).toUpperCase() + '.' : '';
-          const name = [a.firstName, mid, a.lastName].filter(Boolean).join(' ') || '—';
+          const name = [a.lastName, a.firstName, a.middleName].filter(Boolean).join(', ') || '—';
           const date = a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-US') : '—';
           const files = robustParseFiles(a.uploadedFiles);
           const filesCount = files.length;
@@ -3039,7 +3038,7 @@
       } else {
         document.getElementById('farmers-page-subtitle').textContent = `Showing ${apps.length} registered farmers`;
         tbodyFarmers.innerHTML = apps.map((a, i) => {
-          const name = [a.firstName, a.middleName, a.lastName].filter(Boolean).join(' ') || '—';
+          const name = [a.lastName, a.firstName, a.middleName].filter(Boolean).join(', ') || '—';
           const num = String(i + 1).padStart(3, '0');
           const userRsbsa = window.rsbsaApps ? window.rsbsaApps.find(r => r.user_id === a.user_id) : null;
           let rsbsaBadge = '<span class="badge" style="background:#f0f0f0;color:#888;font-weight:700;border:1px solid #ddd;">Not Enrolled</span>';
@@ -3361,8 +3360,8 @@
         html = clusterApps.map((a, i) => {
           const name = [a.lastName, a.firstName, a.middleName, a.extensionName].filter(Boolean).join(', ') || '—';
           const contact = a.contactNumber || '—';
-          const address = [a.street, a.barangay].filter(Boolean).join(', ') || '—';
-          const farmLocation = a.barangay || '—';
+          const address = [a.street, a.cluster].filter(Boolean).join(', ') || '—';
+          const farmLocation = a.cluster || '—';
           const area = a.hectares != null ? Number(a.hectares).toFixed(2) + ' ha' : '—';
           const crop = a.cropType || '—';
           const date = a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' }) : '—';
