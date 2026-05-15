@@ -2934,9 +2934,18 @@
       }
 
       document.getElementById('rsbsa-modal-content').innerHTML = `
-        <div style="font-size:14px; margin-bottom:8px;"><strong>Applicant:</strong> ${app.lastName ? `(${app.lastName}, ${[app.firstName, app.middleName].filter(Boolean).join(' ')})` : ([app.firstName, app.middleName].filter(Boolean).join(' ') || '—')}</div>
-        <div style="font-size:13px; margin-bottom:8px;"><strong>Address:</strong> ${app.cluster || '—'}</div>
-        <div style="font-size:13px; margin-bottom:16px;"><strong>Submitted:</strong> ${app.submittedAt ? new Date(app.submittedAt).toLocaleDateString() : ''}</div>
+        <div style="margin-bottom:16px;">
+          <h3 style="font-size:12px; text-transform:uppercase; color:var(--green-mid); letter-spacing:1px; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:4px;">Farmer Information</h3>
+          <div style="display:grid; gap:8px;">
+            <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:120px; display:inline-block;">First Name:</span> <span style="font-weight:700; color:#111;">${app.firstName || '—'}</span></div>
+            <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:120px; display:inline-block;">Middle Name:</span> <span style="font-weight:700; color:#111;">${app.middleName || '—'}</span></div>
+            <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:120px; display:inline-block;">Last Name:</span> <span style="font-weight:700; color:#111;">${app.lastName || '—'}</span></div>
+            <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:120px; display:inline-block;">Extension Name:</span> <span style="font-weight:700; color:#111;">${app.extensionName || '—'}</span></div>
+            <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:120px; display:inline-block;">Barangay / Address:</span> <span style="font-weight:700; color:#111;">${app.cluster || '—'}</span></div>
+            <div style="font-size:13px;"><span style="color:#888; font-weight:600; width:120px; display:inline-block;">Sex:</span> <span style="font-weight:700; color:#111;">${app.sex || '—'}</span></div>
+          </div>
+        </div>
+        <div style="font-size:13px; margin-bottom:16px;"><strong>Submitted:</strong> ${app.submittedAt ? new Date(app.submittedAt).toLocaleDateString() : '—'}</div>
         <div style="font-size:13px; margin-bottom:12px;"><strong>Uploaded Files:</strong><br><div style="background:#f4f7f0; padding:10px; border-radius:6px; margin-top:6px;">${filesHtml}</div></div>
         ${remarksHtml}
       `;
