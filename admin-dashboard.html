@@ -2800,7 +2800,8 @@
       } else {
         document.getElementById('rsbsa-page-subtitle').textContent = pendingRsbsaCount > 0 ? `${pendingRsbsaCount} enrolments awaiting review` : "All enrolments reviewed";
         rsbsaTable.innerHTML = filtered.map(a => {
-          const name = [a.lastName, a.firstName, a.middleName].filter(Boolean).join(', ') || '—';
+          const mid = a.middleName ? a.middleName.charAt(0).toUpperCase() + '.' : '';
+          const name = [a.firstName, mid, a.lastName].filter(Boolean).join(' ') || '—';
           const date = a.submittedAt ? new Date(a.submittedAt).toLocaleDateString('en-US') : '—';
           const files = robustParseFiles(a.uploadedFiles);
           const filesCount = files.length;
