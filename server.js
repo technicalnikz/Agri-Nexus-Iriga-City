@@ -259,11 +259,12 @@ app.post('/api/applications', (req, res) => {
 });
 
 function insertApplication(data, res) {
-    db.serialize(() => {
-        db.run('BEGIN TRANSACTION');
+    const tx = db.transaction();
+    tx.serialize(() => {
+        tx.run('BEGIN TRANSACTION');
 
         const rollback = (err) => {
-            db.run('ROLLBACK');
+            tx.run('ROLLBACK');
             res.status(400).json({ error: err.message });
         };
 
