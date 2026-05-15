@@ -97,10 +97,10 @@ app.post('/api/register', (req, res) => {
     db.get(`SELECT role_id FROM roles WHERE role_name = ?`, [role], (err, row) => {
         if (err || !row) return res.status(400).json({ error: 'Invalid role' });
 
-        const query = `INSERT INTO users (email, password, role_id) VALUES (?, ?, ?)`;
+        const query = `INSERT INTO users (email, password, role_id) VALUES (?, ?, ?) RETURNING user_id`;
         db.run(query, [email.toLowerCase(), password, row.role_id], function (err) {
             if (err) {
-                if (err.message.includes('UNIQUE constraint failed')) {
+                if (err.message.includes('UNIQUE constraint failed') || err.code === '23505') {
                     return res.status(409).json({ error: 'This email is already in use' });
                 }
                 return res.status(500).json({ error: err.message });
@@ -145,16 +145,16 @@ SELECT
   rp.irrigated_area as riceIrrigated, rp.rainfed_area as riceRainfed, rp.upland_area as riceUpland,
   rp.yield_dry_season as yieldDry, rp.yield_wet_season as yieldWet, rp.total_yield_kg as yieldKg,
   a.application_type as applicationType, a.status, a.admin_remarks as adminRemarks, a.submitted_at as submittedAt,
-  (SELECT GROUP_CONCAT(indicator_name) FROM application_status_indicators WHERE application_id = a.application_id) as statusIndicators,
-  (SELECT GROUP_CONCAT(crop_name) FROM farm_crops WHERE farm_profile_id = fp.farm_profile_id AND is_primary = 1) as cropType,
-  (SELECT GROUP_CONCAT(crop_name) FROM farm_crops WHERE farm_profile_id = fp.farm_profile_id AND is_primary = 0) as otherCrops,
-  (SELECT amount FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 1) as incomeY1,
-  (SELECT amount FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 2) as incomeY2,
-  (SELECT amount FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 3) as incomeY3,
-  (SELECT remarks FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 1) as remarksY1,
-  (SELECT remarks FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 2) as remarksY2,
-  (SELECT remarks FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 3) as remarksY3,
-  (SELECT GROUP_CONCAT(file_path, '|||') FROM application_files WHERE application_id = a.application_id) as uploadedFiles
+  (SELECT STRING_AGG(indicator_name, ',') FROM application_status_indicators WHERE application_id = a.application_id) as "statusIndicators",
+  (SELECT STRING_AGG(crop_name, ',') FROM farm_crops WHERE farm_profile_id = fp.farm_profile_id AND is_primary = true) as "cropType",
+  (SELECT STRING_AGG(crop_name, ',') FROM farm_crops WHERE farm_profile_id = fp.farm_profile_id AND is_primary = false) as "otherCrops",
+  (SELECT amount FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 1) as "incomeY1",
+  (SELECT amount FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 2) as "incomeY2",
+  (SELECT amount FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 3) as "incomeY3",
+  (SELECT remarks FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 1) as "remarksY1",
+  (SELECT remarks FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 2) as "remarksY2",
+  (SELECT remarks FROM annual_incomes WHERE application_id = a.application_id AND year_offset = 3) as "remarksY3",
+  (SELECT STRING_AGG(file_path, '|||') FROM application_files WHERE application_id = a.application_id) as "uploadedFiles"
 FROM applications a
 JOIN farmers f ON a.farmer_id = f.farmer_id
 JOIN addresses addr ON f.farmer_id = addr.farmer_id
@@ -294,14 +294,14 @@ function insertApplication(data, res) {
                                     }
 
                                     if (data.cropType) {
-                                        db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 1)`, [fpId, data.cropType], (err) => {
+                                        db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, true)`, [fpId, data.cropType], (err) => {
                                             if (err) console.error("Crop type insert error:", err.message);
                                         });
                                     }
                                     if (data.otherCrops) {
                                         const otherCropsList = data.otherCrops.split(',').map(s => s.trim());
                                         otherCropsList.forEach(crop => {
-                                            db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 0)`, [fpId, crop], (err) => {
+                                            db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, false)`, [fpId, crop], (err) => {
                                                 if (err) console.error("Other crops insert error:", err.message);
                                             });
                                         });
@@ -345,15 +345,10 @@ function insertApplication(data, res) {
         };
 
         const proceedWithAddress = (farmerId) => {
-            db.run(`INSERT OR IGNORE INTO addresses (farmer_id, province, municipality, barangay, street, cluster_name) VALUES (?, ?, ?, ?, ?, ?)`,
+            db.run(`INSERT INTO addresses (farmer_id, province, municipality, barangay, street, cluster_name) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT (farmer_id) DO UPDATE SET province=EXCLUDED.province, municipality=EXCLUDED.municipality, barangay=EXCLUDED.barangay, street=EXCLUDED.street, cluster_name=EXCLUDED.cluster_name`,
                 [farmerId, data.province, data.municipality, data.barangay, data.street, data.cluster], function (err) {
                     if (err) return rollback(err);
-
-                    db.run(`UPDATE addresses SET province=?, municipality=?, barangay=?, street=?, cluster_name=? WHERE farmer_id=?`,
-                        [data.province, data.municipality, data.barangay, data.street, data.cluster, farmerId], (err) => {
-                            if (err) return rollback(err);
-                            proceedWithApplication(farmerId);
-                        });
+                    proceedWithApplication(farmerId);
                 });
         };
 
@@ -425,10 +420,10 @@ app.put('/api/applications/:id', (req, res) => {
                         }
 
                         db.run(`DELETE FROM farm_crops WHERE farm_profile_id=?`, [fpId], (err) => { if (err) console.error(err); });
-                        if (data.cropType) db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 1)`, [fpId, data.cropType], (err) => { if (err) console.error(err); });
+                        if (data.cropType) db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, true)`, [fpId, data.cropType], (err) => { if (err) console.error(err); });
                         if (data.otherCrops) {
                             data.otherCrops.split(',').map(s => s.trim()).forEach(crop => {
-                                db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, 0)`, [fpId, crop], (err) => { if (err) console.error(err); });
+                                db.run(`INSERT INTO farm_crops (farm_profile_id, crop_name, is_primary) VALUES (?, ?, false)`, [fpId, crop], (err) => { if (err) console.error(err); });
                             });
                         }
                     });
@@ -521,13 +516,13 @@ app.post('/api/crop_records', (req, res) => {
             if (err || !fRow) return rollback(err || new Error('Farmer profile not found. Please submit a member profile first.'));
             const farmerId = fRow.farmer_id;
 
-            db.run(`INSERT OR IGNORE INTO seasons (season_name) VALUES (?)`, [season], function (err) {
+            db.run(`INSERT INTO seasons (season_name) VALUES (?) ON CONFLICT (season_name) DO NOTHING`, [season], function (err) {
                 if (err) return rollback(err);
                 db.get(`SELECT season_id FROM seasons WHERE season_name = ?`, [season], (err, sRow) => {
                     if (err) return rollback(err);
                     const seasonId = sRow.season_id;
 
-                    db.run(`INSERT OR IGNORE INTO crop_types (crop_name) VALUES (?)`, [crop], function (err) {
+                    db.run(`INSERT INTO crop_types (crop_name) VALUES (?) ON CONFLICT (crop_name) DO NOTHING`, [crop], function (err) {
                         if (err) return rollback(err);
                         db.get(`SELECT crop_type_id FROM crop_types WHERE crop_name = ?`, [crop], (err, cRow) => {
                             if (err) return rollback(err);

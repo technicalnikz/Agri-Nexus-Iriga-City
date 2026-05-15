@@ -1,78 +1,100 @@
 const { Pool } = require('pg');
 require('dotenv').config();
-const path = require('path');
 
-let db;
-
-if (process.env.DATABASE_URL) {
-    console.log('Connecting to PostgreSQL database...');
-    const pool = new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }
-    });
-
-    // Use a single client for everything to support Transactions (BEGIN/COMMIT)
-    // which require the same connection/session.
-    let pgClient = null;
-    const getClient = async () => {
-        if (!pgClient) {
-            pgClient = await pool.connect();
-        }
-        return pgClient;
-    };
-
-    db = {};
-    db.serialize = (cb) => cb();
-
-    db.query = async (sql, params) => {
-        const client = await getClient();
-        return client.query(sql, params);
-    };
-
-    db.all = async (sql, params, callback) => {
-        try {
-            const client = await getClient();
-            let i = 1;
-            const pgSql = sql.replace(/\?/g, () => `$${i++}`);
-            const res = await client.query(pgSql, params);
-            if (callback) callback(null, res.rows);
-        } catch (err) {
-            if (callback) callback(err);
-        }
-    };
-
-    db.get = async (sql, params, callback) => {
-        try {
-            const client = await getClient();
-            let i = 1;
-            const pgSql = sql.replace(/\?/g, () => `$${i++}`);
-            const res = await client.query(pgSql, params);
-            if (callback) callback(null, res.rows[0]);
-        } catch (err) {
-            if (callback) callback(err);
-        }
-    };
-
-    db.run = async function (sql, params, callback) {
-        try {
-            const client = await getClient();
-            let i = 1;
-            const pgSql = sql.replace(/\?/g, () => `$${i++}`);
-            const res = await client.query(pgSql, params);
-            const lastID = res.rows && res.rows[0] ? Object.values(res.rows[0])[0] : (res.oid || null);
-            if (callback) callback.call({ lastID: lastID, changes: res.rowCount }, null);
-        } catch (err) {
-            if (callback) callback(err);
-        }
-    };
-} else {
-    // SQLite Configuration (for Local Development)
-    const sqlite3 = require('sqlite3').verbose();
-    const dbPath = path.resolve(__dirname, 'agrinexus.db');
-    db = new sqlite3.Database(dbPath, (err) => {
-        if (err) console.error('Error connecting to SQLite:', err.message);
-        else console.log('Connected to local SQLite database.');
-    });
+if (!process.env.DATABASE_URL) {
+    console.error('❌ DATABASE_URL is not set in .env');
+    process.exit(1);
 }
+
+console.log('Connecting to PostgreSQL...');
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false }
+});
+
+pool.on('error', (err) => console.error('PG pool error:', err));
+
+// Convert SQLite ? placeholders to PostgreSQL $1, $2, ...
+const cvt = (sql) => { let i = 1; return sql.replace(/\?/g, () => `$${i++}`); };
+
+// Sticky transaction client — shared across serialize() callbacks
+let txClient = null;
+
+const db = {
+    pool,
+
+    // No-op: just runs the callback immediately (SQLite compat)
+    serialize: (cb) => cb(),
+
+    // Raw pool query (PostgreSQL native)
+    query: (sql, params) => pool.query(sql, params),
+
+    get: async (sql, params, cb) => {
+        try {
+            const c = txClient || pool;
+            const res = await c.query(cvt(sql), params);
+            if (cb) cb(null, res.rows[0]);
+        } catch (err) {
+            if (cb) cb(err);
+        }
+    },
+
+    all: async (sql, params, cb) => {
+        try {
+            const c = txClient || pool;
+            const res = await c.query(cvt(sql), params);
+            if (cb) cb(null, res.rows);
+        } catch (err) {
+            if (cb) cb(err);
+        }
+    },
+
+    run: async function (sql, params, cb) {
+        const upper = sql.trim().toUpperCase();
+
+        // Intercept transaction control statements
+        if (upper === 'BEGIN' || upper === 'BEGIN TRANSACTION') {
+            try {
+                txClient = await pool.connect();
+                await txClient.query('BEGIN');
+                if (cb) cb.call({ lastID: null, changes: 0 }, null);
+            } catch (err) {
+                if (cb) cb(err);
+            }
+            return;
+        }
+        if (upper === 'COMMIT') {
+            try {
+                if (txClient) { await txClient.query('COMMIT'); txClient.release(); txClient = null; }
+                if (cb) cb.call({ lastID: null, changes: 0 }, null);
+            } catch (err) {
+                if (txClient) { txClient.release(); txClient = null; }
+                if (cb) cb(err);
+            }
+            return;
+        }
+        if (upper === 'ROLLBACK') {
+            try {
+                if (txClient) { await txClient.query('ROLLBACK'); txClient.release(); txClient = null; }
+                if (cb) cb.call({ lastID: null, changes: 0 }, null);
+            } catch (err) {
+                if (txClient) { txClient.release(); txClient = null; }
+                if (cb) cb(err);
+            }
+            return;
+        }
+
+        // Regular statement
+        try {
+            const c = txClient || pool;
+            const res = await c.query(cvt(sql), params);
+            const lastID = res.rows && res.rows[0] ? Object.values(res.rows[0])[0] : null;
+            if (cb) cb.call({ lastID, changes: res.rowCount }, null);
+        } catch (err) {
+            if (cb) cb(err);
+        }
+    }
+};
 
 module.exports = db;
