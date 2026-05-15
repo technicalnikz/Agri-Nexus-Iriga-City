@@ -209,6 +209,7 @@ app.delete('/api/applications/:id', (req, res) => {
         tx.run('BEGIN TRANSACTION', [], (err) => {
             if (err) return res.status(500).json({ error: err.message });
 
+            // 1. Get farmer_id before anything else
             tx.get(`SELECT farmer_id FROM applications WHERE application_id = ?`, [appId], (err, appRow) => {
                 if (err || !appRow) {
                     tx.run('ROLLBACK');
@@ -217,31 +218,61 @@ app.delete('/api/applications/:id', (req, res) => {
 
                 const farmerId = appRow.farmer_id;
 
-                tx.run(`DELETE FROM application_files WHERE application_id = ?`, [appId]);
-                tx.run(`DELETE FROM application_status_indicators WHERE application_id = ?`, [appId]);
-                tx.run(`DELETE FROM annual_incomes WHERE application_id = ?`, [appId]);
+                // 2. Delete all related records for this specific application
+                tx.run(`DELETE FROM application_files WHERE application_id = ?`, [appId], (err) => {
+                    if (err) { tx.run('ROLLBACK'); return res.status(500).json({ error: err.message }); }
 
-                tx.get(`SELECT farm_profile_id FROM farm_profiles WHERE application_id = ?`, [appId], (err, row) => {
-                    if (row) {
-                        tx.run(`DELETE FROM rice_production WHERE farm_profile_id = ?`, [row.farm_profile_id]);
-                        tx.run(`DELETE FROM farm_crops WHERE farm_profile_id = ?`, [row.farm_profile_id]);
-                        tx.run(`DELETE FROM farm_profiles WHERE application_id = ?`, [appId]);
-                    }
+                    tx.run(`DELETE FROM application_status_indicators WHERE application_id = ?`, [appId], (err) => {
+                        if (err) { tx.run('ROLLBACK'); return res.status(500).json({ error: err.message }); }
 
-                    // Check if this farmer has any other applications. If not, delete the farmer and address.
-                    tx.get(`SELECT application_id FROM applications WHERE farmer_id = ? AND application_id <> ?`, [farmerId, appId], (err, otherApp) => {
-                        if (!otherApp) {
-                            tx.run(`DELETE FROM addresses WHERE farmer_id = ?`, [farmerId]);
-                            tx.run(`DELETE FROM farmers WHERE farmer_id = ?`, [farmerId]);
-                        }
+                        tx.run(`DELETE FROM annual_incomes WHERE application_id = ?`, [appId], (err) => {
+                            if (err) { tx.run('ROLLBACK'); return res.status(500).json({ error: err.message }); }
 
-                        tx.run(`DELETE FROM applications WHERE application_id = ?`, [appId], function (err) {
-                            if (err) {
-                                tx.run('ROLLBACK');
-                                return res.status(500).json({ error: err.message });
-                            }
-                            tx.run('COMMIT');
-                            res.json({ message: 'Application and farmer data deleted successfully' });
+                            tx.get(`SELECT farm_profile_id FROM farm_profiles WHERE application_id = ?`, [appId], (err, fpRow) => {
+                                if (err) { tx.run('ROLLBACK'); return res.status(500).json({ error: err.message }); }
+
+                                const deleteAppStep = () => {
+                                    // 3. Delete the application itself (resolves FK constraint)
+                                    tx.run(`DELETE FROM applications WHERE application_id = ?`, [appId], (err) => {
+                                        if (err) { tx.run('ROLLBACK'); return res.status(500).json({ error: err.message }); }
+
+                                        // 4. Check if the farmer has any OTHER applications left
+                                        tx.get(`SELECT application_id FROM applications WHERE farmer_id = ? LIMIT 1`, [farmerId], (err, otherApp) => {
+                                            if (err) { tx.run('ROLLBACK'); return res.status(500).json({ error: err.message }); }
+
+                                            if (!otherApp) {
+                                                // 5. No other apps? Delete farmer and address
+                                                tx.run(`DELETE FROM addresses WHERE farmer_id = ?`, [farmerId], (err) => {
+                                                    if (err) { tx.run('ROLLBACK'); return res.status(500).json({ error: err.message }); }
+                                                    tx.run(`DELETE FROM farmers WHERE farmer_id = ?`, [farmerId], (err) => {
+                                                        if (err) { tx.run('ROLLBACK'); return res.status(500).json({ error: err.message }); }
+                                                        tx.run('COMMIT', [], () => res.json({ message: 'Profile and farmer data deleted successfully' }));
+                                                    });
+                                                });
+                                            } else {
+                                                // Other apps exist? Just commit
+                                                tx.run('COMMIT', [], () => res.json({ message: 'Application deleted successfully' }));
+                                            }
+                                        });
+                                    });
+                                };
+
+                                if (fpRow) {
+                                    const fpId = fpRow.farm_profile_id;
+                                    tx.run(`DELETE FROM rice_production WHERE farm_profile_id = ?`, [fpId], (err) => {
+                                        if (err) { tx.run('ROLLBACK'); return res.status(500).json({ error: err.message }); }
+                                        tx.run(`DELETE FROM farm_crops WHERE farm_profile_id = ?`, [fpId], (err) => {
+                                            if (err) { tx.run('ROLLBACK'); return res.status(500).json({ error: err.message }); }
+                                            tx.run(`DELETE FROM farm_profiles WHERE application_id = ?`, [appId], (err) => {
+                                                if (err) { tx.run('ROLLBACK'); return res.status(500).json({ error: err.message }); }
+                                                deleteAppStep();
+                                            });
+                                        });
+                                    });
+                                } else {
+                                    deleteAppStep();
+                                }
+                            });
                         });
                     });
                 });
