@@ -4026,7 +4026,7 @@
 
       const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
       const headers = ['#','Last Name','First Name','Middle Name','Age','Date of Birth','Sex','Civil Status',
-        'Contact Number','Province','Municipality','Barangay','Street',
+        'Contact Number','Province','Municipality','Cluster','Street',
         'Cluster / Association','Land Tenure','Membership',
         'Status Indicators','Crop Type','Other Crops',
         'Total Hectares','Irrigated (ha)','Rainfed (ha)','Upland (ha)',
@@ -4036,7 +4036,7 @@
       const rows = apps.map((a, i) => [
         i + 1, a.lastName, a.firstName, a.middleName,
         calcAge(a.dob) ?? '', a.dob, a.sex, a.civilStatus, a.contactNumber,
-        a.province, a.municipality, a.barangay, a.street,
+        a.province, a.municipality, a.cluster, a.street,
         a.cluster, a.landTenure, a.membership,
         a.statusIndicators, a.cropType, a.otherCrops,
         a.hectares, a.riceIrrigated, a.riceRainfed, a.riceUpland,
@@ -4114,7 +4114,7 @@
 
       const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
       const headers = ['#','Last Name','First Name','Middle Name','Age','Date of Birth','Sex','Civil Status',
-        'Contact Number','Province','Municipality','Barangay','Street',
+        'Contact Number','Province','Municipality','Cluster','Street',
         'Cluster / Association','Land Tenure','Membership',
         'Status Indicators','Crop Type','Other Crops',
         'Total Hectares','Irrigated (ha)','Rainfed (ha)','Upland (ha)',
@@ -4124,7 +4124,7 @@
       const rows = apps.map((a, i) => [
         i + 1, a.lastName, a.firstName, a.middleName,
         calcAge(a.dob) ?? '', a.dob, a.sex, a.civilStatus, a.contactNumber,
-        a.province, a.municipality, a.barangay, a.street,
+        a.province, a.municipality, a.cluster, a.street,
         a.cluster, a.landTenure, a.membership,
         a.statusIndicators, a.cropType, a.otherCrops,
         a.hectares, a.riceIrrigated, a.riceRainfed, a.riceUpland,
