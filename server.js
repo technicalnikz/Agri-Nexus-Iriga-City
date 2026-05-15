@@ -137,14 +137,14 @@ app.post('/api/login', (req, res) => {
 
 const getApplicationsQuery = `
 SELECT 
-  a.application_id as id, f.user_id as user_id, f.first_name as firstName, f.last_name as lastName, 
-  f.middle_name as middleName, f.extension_name as extensionName, f.dob, f.sex, f.civil_status as civilStatus, f.education, 
-  f.contact_number as contactNumber, f.rsbsa_no as rsbsaNo, f.id_type as idType, f.id_number as idNumber,
+  a.application_id as id, f.user_id as user_id, f.first_name as "firstName", f.last_name as "lastName", 
+  f.middle_name as "middleName", f.extension_name as "extensionName", f.dob, f.sex, f.civil_status as "civilStatus", f.education, 
+  f.contact_number as "contactNumber", f.rsbsa_no as "rsbsaNo", f.id_type as "idType", f.id_number as "idNumber",
   addr.province, addr.municipality, addr.barangay, addr.street, addr.cluster_name as cluster,
-  fp.land_tenure as landTenure, fp.membership_type as membership, fp.membership_date as dateOfMembership, fp.total_hectares as hectares,
-  rp.irrigated_area as riceIrrigated, rp.rainfed_area as riceRainfed, rp.upland_area as riceUpland,
-  rp.yield_dry_season as yieldDry, rp.yield_wet_season as yieldWet, rp.total_yield_kg as yieldKg,
-  a.application_type as applicationType, a.status, a.admin_remarks as adminRemarks, a.submitted_at as submittedAt,
+  fp.land_tenure as "landTenure", fp.membership_type as membership, fp.membership_date as "dateOfMembership", fp.total_hectares as hectares,
+  rp.irrigated_area as "riceIrrigated", rp.rainfed_area as "riceRainfed", rp.upland_area as "riceUpland",
+  rp.yield_dry_season as "yieldDry", rp.yield_wet_season as "yieldWet", rp.total_yield_kg as "yieldKg",
+  a.application_type as "applicationType", a.status, a.admin_remarks as "adminRemarks", a.submitted_at as "submittedAt",
   (SELECT STRING_AGG(indicator_name, ',') FROM application_status_indicators WHERE application_id = a.application_id) as "statusIndicators",
   (SELECT STRING_AGG(crop_name, ',') FROM farm_crops WHERE farm_profile_id = fp.farm_profile_id AND is_primary = true) as "cropType",
   (SELECT STRING_AGG(crop_name, ',') FROM farm_crops WHERE farm_profile_id = fp.farm_profile_id AND is_primary = false) as "otherCrops",
@@ -200,27 +200,51 @@ app.patch('/api/applications/:id/remarks', (req, res) => {
     });
 });
 
-// DELETE: Delete an application
+// DELETE: Delete an application (and associated farmer data)
 app.delete('/api/applications/:id', (req, res) => {
-    db.serialize(() => {
-        db.run('BEGIN TRANSACTION');
-        const appId = req.params.id;
-        db.run(`DELETE FROM application_files WHERE application_id = ?`, [appId]);
-        db.run(`DELETE FROM application_status_indicators WHERE application_id = ?`, [appId]);
-        db.run(`DELETE FROM annual_incomes WHERE application_id = ?`, [appId]);
-        db.get(`SELECT farm_profile_id FROM farm_profiles WHERE application_id = ?`, [appId], (err, row) => {
-            if (row) {
-                db.run(`DELETE FROM rice_production WHERE farm_profile_id = ?`, [row.farm_profile_id]);
-                db.run(`DELETE FROM farm_crops WHERE farm_profile_id = ?`, [row.farm_profile_id]);
-                db.run(`DELETE FROM farm_profiles WHERE application_id = ?`, [appId]);
-            }
-            db.run(`DELETE FROM applications WHERE application_id = ?`, [appId], function (err) {
-                if (err) {
-                    db.run('ROLLBACK');
-                    return res.status(500).json({ error: err.message });
+    const tx = db.transaction();
+    const appId = req.params.id;
+
+    tx.serialize(() => {
+        tx.run('BEGIN TRANSACTION', [], (err) => {
+            if (err) return res.status(500).json({ error: err.message });
+
+            tx.get(`SELECT farmer_id FROM applications WHERE application_id = ?`, [appId], (err, appRow) => {
+                if (err || !appRow) {
+                    tx.run('ROLLBACK');
+                    return res.status(404).json({ error: 'Application not found' });
                 }
-                db.run('COMMIT');
-                res.json({ message: 'Application deleted successfully' });
+
+                const farmerId = appRow.farmer_id;
+
+                tx.run(`DELETE FROM application_files WHERE application_id = ?`, [appId]);
+                tx.run(`DELETE FROM application_status_indicators WHERE application_id = ?`, [appId]);
+                tx.run(`DELETE FROM annual_incomes WHERE application_id = ?`, [appId]);
+
+                tx.get(`SELECT farm_profile_id FROM farm_profiles WHERE application_id = ?`, [appId], (err, row) => {
+                    if (row) {
+                        tx.run(`DELETE FROM rice_production WHERE farm_profile_id = ?`, [row.farm_profile_id]);
+                        tx.run(`DELETE FROM farm_crops WHERE farm_profile_id = ?`, [row.farm_profile_id]);
+                        tx.run(`DELETE FROM farm_profiles WHERE application_id = ?`, [appId]);
+                    }
+
+                    // Check if this farmer has any other applications. If not, delete the farmer and address.
+                    tx.get(`SELECT application_id FROM applications WHERE farmer_id = ? AND application_id <> ?`, [farmerId, appId], (err, otherApp) => {
+                        if (!otherApp) {
+                            tx.run(`DELETE FROM addresses WHERE farmer_id = ?`, [farmerId]);
+                            tx.run(`DELETE FROM farmers WHERE farmer_id = ?`, [farmerId]);
+                        }
+
+                        tx.run(`DELETE FROM applications WHERE application_id = ?`, [appId], function (err) {
+                            if (err) {
+                                tx.run('ROLLBACK');
+                                return res.status(500).json({ error: err.message });
+                            }
+                            tx.run('COMMIT');
+                            res.json({ message: 'Application and farmer data deleted successfully' });
+                        });
+                    });
+                });
             });
         });
     });
